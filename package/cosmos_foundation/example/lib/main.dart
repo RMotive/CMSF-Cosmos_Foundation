@@ -1,6 +1,6 @@
-import 'package:cosmos_foundation/widgets/conditionals/platform_condition_widget.dart';
-import 'package:example/screens/app_wrapper/app_wrapper.dart';
-import 'package:example/screens/welcome_package_screen.dart';
+import 'package:cosmos_foundation/extensions/int_extension.dart';
+import 'package:cosmos_foundation/widgets/hooks/future_widget.dart';
+import 'package:cosmos_foundation/widgets/simplifiers/colored_sizedbox.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -25,18 +25,38 @@ class MainApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: value,
           navigatorKey: navigatorHandler,
-          routes: <String, Widget Function(BuildContext)>{
-            '/platform-conditional-widget': (p0) => const PlatformConditionWidget(),
-          },
-          home: const WelcomePackageScreen(),
-          builder: (context, child) {
-            if (child == null) return ErrorWidget("Critical app wrapper routing resolve");
-            return AppWrapper(
-              screen: child,
-            );
-          },
+          home: const _Showcase(),
         );
       },
+    );
+  }
+}
+
+class _Showcase extends StatelessWidget {
+  const _Showcase();
+
+  Future<bool> example() async {
+    await Future.delayed(2.seconds);
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: ColoredBox(
+        color: Colors.white70,
+        child: Center(
+          child: FutureWidget(
+            future: example(),
+            successBuilder: (_, ___, __) {
+              return const ColoredSizedbox(
+                backgroundColor: Colors.red,
+                boxSize: Size(100, 100),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }
