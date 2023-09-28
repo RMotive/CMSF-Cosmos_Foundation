@@ -1,3 +1,5 @@
+import 'package:cosmos_foundation/extensions/int_extension.dart';
+import 'package:cosmos_foundation/widgets/hooks/themed_widget.dart';
 import 'package:flutter/material.dart';
 
 class FutureWidget<T> extends StatelessWidget {
@@ -28,25 +30,33 @@ class FutureWidget<T> extends StatelessWidget {
     return future;
   }
 
+  Widget builderWrapper(BuildContext ctx, BoxConstraints boxSurface, AsyncSnapshot<T> snapshot) {
+    if (snapshot.connectionState != ConnectionState.done) {
+      if (loadingBuilder == null) return const _DefaultLoadingView();
+      return loadingBuilder!(ctx, boxSurface);
+    }
+    if (snapshot.hasError || (emptyAsError && snapshot.data == null)) {
+      if (errorBuilder == null) return const _DefaultErrorView();
+      return errorBuilder!(ctx, boxSurface, snapshot.error, snapshot.data);
+    }
+
+    T data = snapshot.data as T;
+    return successBuilder(ctx, boxSurface, data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         return FutureBuilder(
-          future: futureWrapper(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              if (loadingBuilder == null) return const _DefaultLoadingView();
-              return loadingBuilder!(context, boxConstraints);
+            future: futureWrapper(),
+            builder: (context, snapshot) {
+              return AnimatedSwitcher(
+                duration: 2.seconds,
+                switchInCurve: Curves.decelerate,
+                child: builderWrapper(context, boxConstraints, snapshot),
+              );
             }
-            if (snapshot.hasError || (emptyAsError && snapshot.data == null)) {
-              if (errorBuilder == null) return const _DefaultErrorView();
-              return errorBuilder!(context, boxConstraints, snapshot.error, snapshot.data);
-            }
-
-            T data = snapshot.data as T;
-            return successBuilder(context, boxConstraints, data);
-          },
         );
       },
     );
@@ -84,6 +94,30 @@ class _DefaultErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ThemedWidget(
+      builder: (context, theme) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.error,
+              size: theme.primaryIconTheme.size,
+              color: theme.colorScheme.error,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Error cacthed",
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.error,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

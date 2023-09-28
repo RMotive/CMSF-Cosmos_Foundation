@@ -37,7 +37,8 @@ class _Showcase extends StatelessWidget {
 
   Future<bool> example() async {
     await Future.delayed(2.seconds);
-    return true;
+    
+    throw '';
   }
 
   @override
