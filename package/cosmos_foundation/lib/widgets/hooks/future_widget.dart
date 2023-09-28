@@ -46,19 +46,19 @@ class FutureWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, boxConstraints) {
-        return FutureBuilder(
-            future: futureWrapper(),
-            builder: (context, snapshot) {
-              return AnimatedSwitcher(
-                duration: 2.seconds,
-                switchInCurve: Curves.decelerate,
-                child: builderWrapper(context, boxConstraints, snapshot),
-              );
-            }
-        );
-      },
+    return FutureBuilder(
+        future: futureWrapper(),
+        builder: (context, snapshot) {
+          return AnimatedSwitcher(
+            duration: 2.seconds,
+            switchInCurve: Curves.decelerate,
+            child: LayoutBuilder(
+              builder: (context, boxConstraints) {
+                return builderWrapper(context, boxConstraints, snapshot);
+              },
+            ),
+          );
+        }
     );
   }
 }
