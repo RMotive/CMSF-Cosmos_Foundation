@@ -18,30 +18,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CosmosApp(
-      defaultTheme: const LightTheme(),
-      homeBuilder: (context) {
-        ThemeBase theme = getTheme();
-
-        return Center(
-          child: ColoredBox(
-            color: theme.primaryColor,
-            child: SizedBox(
-              width: 100,
-              height: 100,
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    updateTheme(const DarkTheme());
-                  },
-                  style: const ButtonStyle(),
-                  child: const Text("press"),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
+    return const CosmosApp(
+      defaultTheme: LightTheme(),
+      homeWidget: ColoredBox(
+        color: Colors.red,
+        child: SizedBox(),
+      ),
     );
   }
 }
