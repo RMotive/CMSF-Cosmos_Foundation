@@ -19,6 +19,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CosmosApp(
+      listenFrameSize: true,
       defaultTheme: LightTheme(),
       homeWidget: ColoredBox(
         color: Colors.red,

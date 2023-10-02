@@ -11,6 +11,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
   final Widget Function(BuildContext, Widget?)? generalBuilder;
   final RouterDelegate<Object>? routerDelegate;
   final RouterConfig<Object>? routerConfig;
+  final bool listenFrameSize;
   
 
   const CosmosApp({
@@ -21,6 +22,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
     this.generalBuilder,
     this.routerConfig,
     this.routerDelegate,
+    this.listenFrameSize = false,
   }) : assert(((homeWidget != null) != (homeBuilder != null)) || (homeWidget == null && homeBuilder == null), "The home widget and builder cannot be at the same time, must be just one or no one");
 
   const CosmosApp.router({
@@ -29,6 +31,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
     this.generalBuilder,
     this.routerConfig,
     this.routerDelegate,
+    this.listenFrameSize = false,
   })  : assert(routerConfig != null || routerDelegate != null, "Router config or Router delegate must be defined to use a router based Cosmos App"),
         homeBuilder = null,
         homeWidget = null;
@@ -53,8 +56,30 @@ class _CosmosAppState extends State<CosmosApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (_usesRouter) return _buildFromRouter();
-    return _build();
+    Widget wgt = _usesRouter ? _buildFromRouter() : _build();
+    if (!widget.listenFrameSize) return wgt;
+
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          Size frameSize = constraints.smallest;
+
+          return Stack(
+            children: <Widget>[
+              wgt,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(frameSize.toString()),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 
   Widget _build() {
