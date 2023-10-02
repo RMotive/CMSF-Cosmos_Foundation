@@ -1,6 +1,8 @@
-import 'package:cosmos_foundation/extensions/int_extension.dart';
-import 'package:cosmos_foundation/widgets/hooks/future_widget.dart';
-import 'package:cosmos_foundation/widgets/simplifiers/colored_sizedbox.dart';
+import 'package:cosmos_foundation/helpers/theme.dart';
+import 'package:cosmos_foundation/widgets/hooks/cosmos_app.dart';
+import 'package:example/dark_theme.dart';
+import 'package:example/light_theme.dart';
+import 'package:example/theme_base.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -16,48 +18,30 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: themeHandler,
-      builder: (context, value, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
-          themeMode: value,
-          navigatorKey: navigatorHandler,
-          home: const _Showcase(),
+    return CosmosApp(
+      defaultTheme: const LightTheme(),
+      homeBuilder: (context) {
+        ThemeBase theme = getTheme();
+
+        return Center(
+          child: ColoredBox(
+            color: theme.primaryColor,
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    updateTheme(const DarkTheme());
+                  },
+                  style: const ButtonStyle(),
+                  child: const Text("press"),
+                ),
+              ),
+            ),
+          ),
         );
       },
-    );
-  }
-}
-
-class _Showcase extends StatelessWidget {
-  const _Showcase();
-
-  Future<bool> example() async {
-    await Future.delayed(2.seconds);
-    
-    throw '';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: ColoredBox(
-        color: Colors.white70,
-        child: Center(
-          child: FutureWidget(
-            future: example(),
-            successBuilder: (_, ___, __) {
-              return const ColoredSizedbox(
-                backgroundColor: Colors.red,
-                boxSize: Size(100, 100),
-              );
-            },
-          ),
-        ),
-      ),
     );
   }
 }
