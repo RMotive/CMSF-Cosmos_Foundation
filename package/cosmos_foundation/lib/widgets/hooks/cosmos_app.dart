@@ -1,8 +1,9 @@
 import 'package:cosmos_foundation/contracts/cosmos_theme_base.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Theme;
 
-class CosmosApp<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase> extends StatefulWidget {
+class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
   final TThemeBase? defaultTheme;
   final List<TThemeBase>? themes;
   final Widget Function(BuildContext context)? homeBuilder;
@@ -15,20 +16,23 @@ class CosmosApp<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase> e
   });
 
   @override
-  State<CosmosApp<TThemeBase, TTheme>> createState() => _CosmosAppState<TThemeBase, TTheme>();
+  State<CosmosApp<TThemeBase>> createState() => _CosmosAppState<TThemeBase>();
 }
 
-class _CosmosAppState<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase> extends State<CosmosApp<TThemeBase, TTheme>> {
+class _CosmosAppState<TThemeBase extends CosmosThemeBase> extends State<CosmosApp<TThemeBase>> {
+  late final ValueListenable listener;
+  
   @override
   void initState() {
     super.initState();
     initTheme(widget.defaultTheme, widget.themes);
+    listener = listenTheme();
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: listenTheme(),
+      valueListenable: listener,
       builder: (context, value, child) {
         return MaterialApp(
           home: widget.homeBuilder?.call(context),
