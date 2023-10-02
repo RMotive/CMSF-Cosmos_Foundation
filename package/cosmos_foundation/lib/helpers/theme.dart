@@ -17,9 +17,8 @@ void initTheme<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase>(TT
   _Theme.loadTheme(defaultTheme, themes);
 }
 
-class _Theme<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase> {
+final class _Theme<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase> {
   static _Theme? ins;
-  static ValueNotifier? listener;
 
   late final TTheme? _defaultTheme;
   TTheme get defaultTheme {
