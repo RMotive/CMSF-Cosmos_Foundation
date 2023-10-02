@@ -26,12 +26,6 @@ final class _Theme<TThemeBase extends CosmosThemeBase> {
     return _defaultTheme as TThemeBase;
   }
 
-  late final List<TThemeBase>? _themes;
-  List<TThemeBase> get themes {
-    if (_themes == null || _themes!.isEmpty) throw Exception("The theme is not configured");
-    return _themes as List<TThemeBase>;
-  }
-
   _Theme._(TThemeBase? defaultTheme) {
     if (defaultTheme == null) return;
     _defaultTheme = defaultTheme;
