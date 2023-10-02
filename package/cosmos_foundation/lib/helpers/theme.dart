@@ -13,34 +13,32 @@ TTheme getTheme<TTheme extends CosmosThemeBase>() => _validNotifier.value as TTh
 
 ValueNotifier<TThemeBase> listenTheme<TThemeBase extends CosmosThemeBase>() => _validNotifier as ValueNotifier<TThemeBase>;
 
-void initTheme<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase>(TTheme? defaultTheme, List<TTheme>? themes) {
-  _Theme.loadTheme(defaultTheme, themes);
+void initTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme) {
+  _Theme.loadTheme(defaultTheme);
 }
 
-final class _Theme<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase> {
+final class _Theme<TThemeBase extends CosmosThemeBase> {
   static _Theme? ins;
 
-  late final TTheme? _defaultTheme;
-  TTheme get defaultTheme {
+  late final TThemeBase? _defaultTheme;
+  TThemeBase get defaultTheme {
     if (_defaultTheme == null) throw Exception("The theme is not configured");
-    return _defaultTheme as TTheme;
+    return _defaultTheme as TThemeBase;
   }
 
-  late final List<TTheme>? _themes;
-  List<TTheme> get themes {
+  late final List<TThemeBase>? _themes;
+  List<TThemeBase> get themes {
     if (_themes == null || _themes!.isEmpty) throw Exception("The theme is not configured");
-    return _themes as List<TTheme>;
+    return _themes as List<TThemeBase>;
   }
 
-  _Theme._(TTheme? defaultTheme, List<TTheme>? themes) {
-    if (defaultTheme == null && themes != null) return;
-    if (defaultTheme != null) _defaultTheme = defaultTheme;
-    if (defaultTheme == null && (themes != null && themes.isNotEmpty)) _defaultTheme = themes[0];
-    return;
+  _Theme._(TThemeBase? defaultTheme) {
+    if (defaultTheme == null) return;
+    _defaultTheme = defaultTheme;
   }
 
-  static loadTheme<TThemeBase extends CosmosThemeBase, TTheme extends TThemeBase>(TTheme? defaultTheme, List<TTheme>? themes) {
-    _Theme manager = ins ?? _Theme._(defaultTheme, themes);
+  static loadTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme) {
+    _Theme manager = ins ?? _Theme._(defaultTheme);
     ins = manager;
     _notifier = ValueNotifier(manager.defaultTheme);
   }

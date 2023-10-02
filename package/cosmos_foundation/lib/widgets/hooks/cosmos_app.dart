@@ -5,13 +5,11 @@ import 'package:flutter/material.dart' hide Theme;
 
 class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
   final TThemeBase? defaultTheme;
-  final List<TThemeBase>? themes;
   final Widget Function(BuildContext context)? homeBuilder;
 
   const CosmosApp({
     super.key,
     this.defaultTheme,
-    this.themes,
     this.homeBuilder,
   });
 
@@ -25,7 +23,7 @@ class _CosmosAppState<TThemeBase extends CosmosThemeBase> extends State<CosmosAp
   @override
   void initState() {
     super.initState();
-    initTheme(widget.defaultTheme, widget.themes);
+    initTheme(widget.defaultTheme);
     listener = listenTheme();
   }
 
