@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
   final TThemeBase? defaultTheme;
   final Widget? homeWidget;
-  final Widget Function(BuildContext context, TThemeBase theme)? homeBuilder;
-  final Widget Function(BuildContext context, TThemeBase theme, Widget? home)? generalBuilder;
+  final Widget Function(BuildContext context)? homeBuilder;
+  final Widget Function(BuildContext context, Widget? home)? generalBuilder;
   final RouterDelegate<Object>? routerDelegate;
   final RouterConfig<Object>? routerConfig;
   final bool listenFrameSize;
@@ -51,7 +51,7 @@ class _CosmosAppState extends State<CosmosApp> {
     super.initState();
     initTheme(widget.defaultTheme);
     if (widget.homeWidget != null) byHome = widget.homeWidget;
-    if (widget.homeBuilder != null) byHome = widget.homeBuilder?.call(context, getTheme());
+    if (widget.homeBuilder != null) byHome = widget.homeBuilder?.call(context);
   }
 
   @override
@@ -90,13 +90,13 @@ class _CosmosAppState extends State<CosmosApp> {
   Widget _build() {
     return MaterialApp(
       home: byHome,
-      builder: widget.generalBuilder == null ? null : (context, child) => widget.generalBuilder!(context, getTheme(), child),
+      builder: widget.generalBuilder,
     );
   }
 
   Widget _buildFromRouter() {
     return MaterialApp.router(
-      builder: widget.generalBuilder == null ? null : (context, child) => widget.generalBuilder!(context, getTheme(), child),
+      builder: widget.generalBuilder,
       routerConfig: widget.routerConfig,
       routerDelegate: widget.routerDelegate,
     );
