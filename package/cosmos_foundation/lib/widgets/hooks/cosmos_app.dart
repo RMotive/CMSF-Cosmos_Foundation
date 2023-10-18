@@ -55,6 +55,11 @@ class _CosmosAppState extends State<CosmosApp> {
   }
 
   @override
+  void didUpdateWidget(covariant CosmosApp<CosmosThemeBase> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget wgt = _usesRouter ? _buildFromRouter() : _build();
     if (!widget.listenFrameSize) return wgt;
