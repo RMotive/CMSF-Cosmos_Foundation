@@ -8,7 +8,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
   final TThemeBase? defaultTheme;
   final Widget? homeWidget;
   final Widget Function(BuildContext context, TThemeBase theme)? homeBuilder;
-  final Widget Function(BuildContext, Widget?)? generalBuilder;
+  final Widget Function(BuildContext context, TThemeBase theme, Widget? home)? generalBuilder;
   final RouterDelegate<Object>? routerDelegate;
   final RouterConfig<Object>? routerConfig;
   final bool listenFrameSize;
@@ -90,13 +90,13 @@ class _CosmosAppState extends State<CosmosApp> {
   Widget _build() {
     return MaterialApp(
       home: byHome,
-      builder: widget.generalBuilder,
+      builder: widget.generalBuilder == null ? null : (context, child) => widget.generalBuilder!(context, getTheme(), child),
     );
   }
 
   Widget _buildFromRouter() {
     return MaterialApp.router(
-      builder: widget.generalBuilder,
+      builder: widget.generalBuilder == null ? null : (context, child) => widget.generalBuilder!(context, getTheme(), child),
       routerConfig: widget.routerConfig,
       routerDelegate: widget.routerDelegate,
     );
