@@ -2,10 +2,11 @@ import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/widgets/hooks/themed_widget.dart';
 import 'package:flutter/material.dart';
 
-class FutureWidget<T> extends StatelessWidget {
+class FutureWidget<T> extends StatefulWidget {
   final Future<T> future;
   final Duration? delay;
   final bool emptyAsError;
+  final bool enableRecall;
   final Widget Function(BuildContext ctx, BoxConstraints boxSurface)? loadingBuilder;
   final Widget Function(
     BuildContext ctx,
@@ -21,40 +22,51 @@ class FutureWidget<T> extends StatelessWidget {
     this.errorBuilder,
     this.delay,
     this.emptyAsError = false,
+    this.enableRecall = false,
     required this.future,
     required this.successBuilder,
   });
 
+  @override
+  State<FutureWidget<T>> createState() => _FutureWidgetState<T>();
+}
+
+class _FutureWidgetState<T> extends State<FutureWidget<T>> {
+  // --> Init resources
+  Widget? storedResult;
+
   Future<T> futureWrapper() async {
-    if (delay != null) await Future.delayed(delay as Duration);
-    return future;
+    if (widget.delay != null) await Future.delayed(widget.delay as Duration);
+    return widget.future;
   }
 
   Widget builderWrapper(BuildContext ctx, BoxConstraints boxSurface, AsyncSnapshot<T> snapshot) {
     if (snapshot.connectionState != ConnectionState.done) {
-      if (loadingBuilder == null) return const _DefaultLoadingView();
-      return loadingBuilder!(ctx, boxSurface);
+      if (widget.loadingBuilder == null) return const _DefaultLoadingView();
+      return widget.loadingBuilder!(ctx, boxSurface);
     }
-    if (snapshot.hasError || (emptyAsError && snapshot.data == null)) {
-      if (errorBuilder == null) return const _DefaultErrorView();
-      return errorBuilder!(ctx, boxSurface, snapshot.error, snapshot.data);
+    if (snapshot.hasError || (widget.emptyAsError && snapshot.data == null)) {
+      if (widget.errorBuilder == null) return const _DefaultErrorView();
+      return widget.errorBuilder!(ctx, boxSurface, snapshot.error, snapshot.data);
     }
 
     T data = snapshot.data as T;
-    return successBuilder(ctx, boxSurface, data);
+    return widget.successBuilder(ctx, boxSurface, data);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (storedResult != null && !widget.enableRecall) return storedResult!;
     return FutureBuilder(
         future: futureWrapper(),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<T> snapshot) {
           return AnimatedSwitcher(
             duration: 2.seconds,
             switchInCurve: Curves.decelerate,
             child: LayoutBuilder(
-              builder: (context, boxConstraints) {
-                return builderWrapper(context, boxConstraints, snapshot);
+              builder: (BuildContext context, BoxConstraints constraints) {
+                storedResult = builderWrapper(context, constraints, snapshot);
+                return storedResult!;
               },
             ),
           );
