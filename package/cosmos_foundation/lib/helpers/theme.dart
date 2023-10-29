@@ -31,8 +31,8 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(String storeKe
   await store.ready.then(
     (value) {
       if (value) {
-        Map<String, dynamic> map = store.getItem(storeKey);
-        if (map.containsKey(storeKey)) {
+        Map<String, dynamic>? map = store.getItem(storeKey);
+        if (map != null && map.containsKey(storeKey)) {
           CosmosThemeBase? expected = _themes.where((element) => element.themeIdentifier == map[storeKey]).firstOrNull;
           if (expected != null) isThere = expected as TTheme;
         }
