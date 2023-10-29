@@ -1,3 +1,4 @@
 abstract class CosmosThemeBase {
-  const CosmosThemeBase();
+  final String themeIdentifier;
+  const CosmosThemeBase(this.themeIdentifier);
 }

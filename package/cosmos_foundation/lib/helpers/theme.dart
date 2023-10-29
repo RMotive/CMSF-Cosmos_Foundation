@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
 ValueNotifier<CosmosThemeBase>? _notifier;
+List<CosmosThemeBase> _themes = [];
+
 ValueNotifier<CosmosThemeBase> get _validNotifier {
   if (_notifier == null) throw Exception("Theme is not initialized yet");
   return _notifier as ValueNotifier<CosmosThemeBase>;
 }
 
 void updateTheme<TTheme extends CosmosThemeBase>(
-  TTheme updateTheme, {
+  String themeIdentifier, {
   String? saveLocalKey,
 }) {
   if (saveLocalKey != null) {
@@ -18,7 +20,9 @@ void updateTheme<TTheme extends CosmosThemeBase>(
       if (value) store.setItem(saveLocalKey, updateTheme);
     });
   }
-  _validNotifier.value = updateTheme;
+  CosmosThemeBase? base = _themes.where((element) => element.themeIdentifier == themeIdentifier).firstOrNull;
+  if (base == null) throw Exception('The identifier wasn\'t found in the themes subscribed');
+  _validNotifier.value = base;
 }
 
 Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(String storeKey) async {
@@ -37,7 +41,8 @@ TTheme getTheme<TTheme extends CosmosThemeBase>() => _validNotifier.value as TTh
 
 ValueNotifier<TThemeBase> listenTheme<TThemeBase extends CosmosThemeBase>() => _validNotifier as ValueNotifier<TThemeBase>;
 
-void initTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme) {
+void initTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme, List<TThemeBase> themes) {
+  _themes = themes;
   _Theme.loadTheme(defaultTheme);
 }
 

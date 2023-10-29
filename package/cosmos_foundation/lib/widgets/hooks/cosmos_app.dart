@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
   final TThemeBase? defaultTheme;
+  final List<TThemeBase> themes;
   final Widget? homeWidget;
   final Widget Function(BuildContext context)? homeBuilder;
   final Widget Function(BuildContext context, Widget? home)? generalBuilder;
@@ -23,6 +24,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
     this.generalBuilder,
     this.routerConfig,
     this.routerDelegate,
+    this.themes = const [],
     this.listenFrameSize = false,
     this.useLegacyDebugBanner = false,
   }) : assert(((homeWidget != null) != (homeBuilder != null)) || (homeWidget == null && homeBuilder == null), "The home widget and builder cannot be at the same time, must be just one or no one");
@@ -33,6 +35,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
     this.generalBuilder,
     this.routerConfig,
     this.routerDelegate,
+    this.themes = const [],
     this.listenFrameSize = false,
     this.useLegacyDebugBanner = false,
   })  : assert(routerConfig != null || routerDelegate != null, "Router config or Router delegate must be defined to use a router based Cosmos App"),
@@ -52,7 +55,7 @@ class _CosmosAppState extends State<CosmosApp> {
   @override
   void initState() {
     super.initState();
-    initTheme(widget.defaultTheme);
+    initTheme(widget.defaultTheme, widget.themes);
     if (widget.homeWidget != null) byHome = widget.homeWidget;
     if (widget.homeBuilder != null) byHome = widget.homeBuilder?.call(context);
   }
