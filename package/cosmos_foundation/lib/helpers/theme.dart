@@ -17,7 +17,13 @@ void updateTheme<TTheme extends CosmosThemeBase>(
   if (saveLocalKey != null) {
     final LocalStorage store = LocalStorage(saveLocalKey);
     store.ready.then((value) {
-      if (value) store.setItem(saveLocalKey, {saveLocalKey: themeIdentifier});
+      if (value) {
+        store.setItem(
+          saveLocalKey,
+          themeIdentifier,
+          (nonEncodable) => {saveLocalKey: nonEncodable},
+        );
+      }
     });
   }
   CosmosThemeBase? base = _themes.where((element) => element.themeIdentifier == themeIdentifier).firstOrNull;
