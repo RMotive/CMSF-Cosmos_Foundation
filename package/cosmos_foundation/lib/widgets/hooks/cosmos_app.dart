@@ -75,7 +75,12 @@ class _CosmosAppState extends State<CosmosApp> {
 
           return Stack(
             children: <Widget>[
-              wgt,
+              ValueListenableBuilder(
+                valueListenable: listenTheme(),
+                builder: (context, value, child) {
+                  return wgt;
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Align(
