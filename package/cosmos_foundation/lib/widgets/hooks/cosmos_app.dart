@@ -12,6 +12,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
   final RouterDelegate<Object>? routerDelegate;
   final RouterConfig<Object>? routerConfig;
   final bool listenFrameSize;
+  final bool useLegacyDebugBanner;
   
 
   const CosmosApp({
@@ -23,6 +24,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
     this.routerConfig,
     this.routerDelegate,
     this.listenFrameSize = false,
+    this.useLegacyDebugBanner = false,
   }) : assert(((homeWidget != null) != (homeBuilder != null)) || (homeWidget == null && homeBuilder == null), "The home widget and builder cannot be at the same time, must be just one or no one");
 
   const CosmosApp.router({
@@ -32,6 +34,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
     this.routerConfig,
     this.routerDelegate,
     this.listenFrameSize = false,
+    this.useLegacyDebugBanner = false,
   })  : assert(routerConfig != null || routerDelegate != null, "Router config or Router delegate must be defined to use a router based Cosmos App"),
         homeBuilder = null,
         homeWidget = null;
@@ -91,6 +94,7 @@ class _CosmosAppState extends State<CosmosApp> {
     return MaterialApp(
       home: byHome,
       builder: widget.generalBuilder,
+      debugShowCheckedModeBanner: widget.useLegacyDebugBanner,
     );
   }
 
@@ -99,6 +103,7 @@ class _CosmosAppState extends State<CosmosApp> {
       builder: widget.generalBuilder,
       routerConfig: widget.routerConfig,
       routerDelegate: widget.routerDelegate,
+      debugShowCheckedModeBanner: widget.useLegacyDebugBanner,
     );
   }
 }
