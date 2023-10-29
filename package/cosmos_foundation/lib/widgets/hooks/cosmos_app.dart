@@ -64,34 +64,35 @@ class _CosmosAppState extends State<CosmosApp> {
 
   @override
   Widget build(BuildContext context) {
-    Widget wgt = _usesRouter ? _buildFromRouter() : _build();
+    Widget wgt = _usesRouter ? _buildFromRouter() : _build(); 
+    ValueNotifier<CosmosThemeBase> notifier = listenTheme();
     if (!widget.listenFrameSize) return wgt;
 
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          Size frameSize = constraints.smallest;
-
-          return Stack(
-            children: <Widget>[
-              ValueListenableBuilder(
-                valueListenable: listenTheme(),
-                builder: (context, value, child) {
-                  return wgt;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(frameSize.toString()),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+    return ValueListenableBuilder(
+      valueListenable: notifier,
+      builder: (_, value, child) {
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              Size frameSize = constraints.smallest;
+    
+              return Stack(
+                children: <Widget>[
+                  wgt,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(frameSize.toString()),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
