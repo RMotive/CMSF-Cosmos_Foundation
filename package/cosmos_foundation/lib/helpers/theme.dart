@@ -26,7 +26,7 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(String storeKe
   TTheme? isThere;
   await store.ready.then(
     (value) {
-      if (value) isThere = store.getItem(storeKey) as TTheme;
+      if (value) isThere = store.getItem(storeKey) as TTheme?;
     },
   );
   return isThere;
