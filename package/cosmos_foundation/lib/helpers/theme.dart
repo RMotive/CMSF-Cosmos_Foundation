@@ -1,5 +1,6 @@
 import 'package:cosmos_foundation/contracts/cosmos_theme_base.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 ValueNotifier<CosmosThemeBase>? _notifier;
 ValueNotifier<CosmosThemeBase> get _validNotifier {
@@ -7,7 +8,18 @@ ValueNotifier<CosmosThemeBase> get _validNotifier {
   return _notifier as ValueNotifier<CosmosThemeBase>;
 }
 
-void updateTheme<TTheme extends CosmosThemeBase>(TTheme updateTheme) => _validNotifier.value = updateTheme;
+void updateTheme<TTheme extends CosmosThemeBase>(
+  TTheme updateTheme, {
+  String? saveLocalKey,
+}) {
+  if (saveLocalKey != null) {
+    final LocalStorage store = LocalStorage(saveLocalKey);
+    store.ready.then((value) {
+      if (value) store.setItem(saveLocalKey, updateTheme);
+    });
+  }
+  _validNotifier.value = updateTheme;
+}
 
 TTheme getTheme<TTheme extends CosmosThemeBase>() => _validNotifier.value as TTheme;
 
