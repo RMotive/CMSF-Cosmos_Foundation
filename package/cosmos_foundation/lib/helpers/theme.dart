@@ -21,7 +21,15 @@ void updateTheme<TTheme extends CosmosThemeBase>(
   _validNotifier.value = updateTheme;
 }
 
-TTheme getTheme<TTheme extends CosmosThemeBase>() => _validNotifier.value as TTheme;
+TTheme getTheme<TTheme extends CosmosThemeBase>({String? getFromStore}) {
+  if (getFromStore != null) {
+    final LocalStorage store = LocalStorage(getFromStore);
+    store.ready.then((value) {
+      if (value) return store.getItem(getFromStore) as TTheme;
+    });
+  }
+  return _validNotifier.value as TTheme;
+}
 
 ValueNotifier<TThemeBase> listenTheme<TThemeBase extends CosmosThemeBase>() => _validNotifier as ValueNotifier<TThemeBase>;
 
