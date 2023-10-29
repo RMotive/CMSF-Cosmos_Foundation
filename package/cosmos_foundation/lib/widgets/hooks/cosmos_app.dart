@@ -62,11 +62,15 @@ class _CosmosAppState extends State<CosmosApp> {
     super.didUpdateWidget(oldWidget);
   }
 
+  Widget rebuildApp() {
+    return _usesRouter ? _buildFromRouter() : _build();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget wgt = _usesRouter ? _buildFromRouter() : _build(); 
+    
     ValueNotifier<CosmosThemeBase> notifier = listenTheme();
-    if (!widget.listenFrameSize) return wgt;
+    if (!widget.listenFrameSize) return rebuildApp();
 
     return ValueListenableBuilder(
       valueListenable: notifier,
@@ -79,7 +83,7 @@ class _CosmosAppState extends State<CosmosApp> {
     
               return Stack(
                 children: <Widget>[
-                  wgt,
+                  rebuildApp(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Align(
