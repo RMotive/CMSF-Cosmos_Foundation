@@ -17,7 +17,7 @@ void updateTheme<TTheme extends CosmosThemeBase>(
   if (saveLocalKey != null) {
     final LocalStorage store = LocalStorage(saveLocalKey);
     store.ready.then((value) {
-      if (value) store.setItem(saveLocalKey, themeIdentifier);
+      if (value) store.setItem(saveLocalKey, {saveLocalKey: themeIdentifier});
     });
   }
   CosmosThemeBase? base = _themes.where((element) => element.themeIdentifier == themeIdentifier).firstOrNull;
@@ -30,7 +30,13 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(String storeKe
   TTheme? isThere;
   await store.ready.then(
     (value) {
-      if (value) isThere = store.getItem(storeKey) as TTheme?;
+      if (value) {
+        Map<String, dynamic> map = store.getItem(storeKey);
+        if (map.containsKey(storeKey)) {
+          CosmosThemeBase? expected = _themes.where((element) => element.themeIdentifier == map[storeKey]).firstOrNull;
+          if (expected != null) isThere = expected as TTheme;
+        }
+      }
     },
   );
   return isThere;
