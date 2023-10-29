@@ -7,7 +7,7 @@ class Advisor {
   static Advisor get instance => _instance ??= Advisor._();
 
   void adviseSuccess(String message) {
-    debugPrint('[Cosmos-Foundation] \x1B[${_DefaultAdvisorColors.successColor.value}m\t$message\x1B[0m');
+    debugPrint('\x1B[${_DefaultAdvisorColors.successColor.value}m [Cosmos-Foundation] \t$message\x1B[0m');
   }
 }
 
