@@ -21,15 +21,19 @@ void updateTheme<TTheme extends CosmosThemeBase>(
   _validNotifier.value = updateTheme;
 }
 
-TTheme getTheme<TTheme extends CosmosThemeBase>({String? getFromStore}) {
-  if (getFromStore != null) {
-    final LocalStorage store = LocalStorage(getFromStore);
-    store.ready.then((value) {
-      if (value) return store.getItem(getFromStore) as TTheme;
-    });
-  }
-  return _validNotifier.value as TTheme;
+Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(String storeKey) async {
+  final LocalStorage store = LocalStorage(storeKey);
+  TTheme? isThere;
+  await store.ready.then(
+    (value) {
+      if (value) isThere = store.getItem(storeKey) as TTheme;
+    },
+  );
+  return isThere;
 }
+
+TTheme getTheme<TTheme extends CosmosThemeBase>() => _validNotifier.value as TTheme;
+
 
 ValueNotifier<TThemeBase> listenTheme<TThemeBase extends CosmosThemeBase>() => _validNotifier as ValueNotifier<TThemeBase>;
 
