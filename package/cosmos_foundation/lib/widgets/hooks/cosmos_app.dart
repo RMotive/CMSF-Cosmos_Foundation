@@ -71,8 +71,7 @@ class _CosmosAppState extends State<CosmosApp> {
 
   @override
   Widget build(BuildContext context) {
-    
-    ValueNotifier<CosmosThemeBase> notifier = listenTheme();
+    ValueNotifier<CosmosThemeBase> notifier = listenTheme;
     if (!widget.listenFrameSize) return rebuildApp();
     final Size frameSize = MediaQuery.sizeOf(context);
 

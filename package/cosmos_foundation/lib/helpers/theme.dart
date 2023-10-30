@@ -52,7 +52,7 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
 TTheme getTheme<TTheme extends CosmosThemeBase>() => _validNotifier.value as TTheme;
 
 
-ValueNotifier<TThemeBase> listenTheme<TThemeBase extends CosmosThemeBase>() => _validNotifier as ValueNotifier<TThemeBase>;
+ValueNotifier<CosmosThemeBase> get listenTheme => _validNotifier;
 
 void initTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme, List<TThemeBase> themes) {
   _themes = themes;
