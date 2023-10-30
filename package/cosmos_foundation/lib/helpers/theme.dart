@@ -33,19 +33,15 @@ void updateTheme<TTheme extends CosmosThemeBase>(
 
 Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(String storeKey) async {
   final LocalStorage store = LocalStorage(storeKey);
-  TTheme? isThere;
-  await store.ready.then(
-    (value) {
-      if (value) {
-        Map<String, dynamic>? map = store.getItem(storeKey);
-        if (map != null && map.containsKey(storeKey)) {
-          CosmosThemeBase? expected = _themes.where((element) => element.themeIdentifier == map[storeKey]).firstOrNull;
-          if (expected != null) isThere = expected as TTheme;
-        }
-      }
-    },
-  );
-  return isThere;
+  await store.ready;
+  Map<String, dynamic>? isMapped = store.getItem(storeKey);
+  if (isMapped == null || !isMapped.containsKey(storeKey)) return null;
+  String themeStoredIdentifier = isMapped[storeKey];
+  for (CosmosThemeBase theme in _themes) {
+    if (theme.themeIdentifier == themeStoredIdentifier) return theme as TTheme;
+  }
+
+  return null;
 }
 
 TTheme getTheme<TTheme extends CosmosThemeBase>() => _validNotifier.value as TTheme;
