@@ -31,7 +31,12 @@ void updateTheme<TTheme extends CosmosThemeBase>(
   _validNotifier.value = base;
 }
 
-Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(String storeKey) async {
+Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
+  String storeKey, {
+  List<TTheme>? forcedThemes,
+}) async {
+  if (forcedThemes != null && forcedThemes.isNotEmpty) _themes = forcedThemes;
+  if (_themes.isEmpty) throw Exception('No theme collection initialized, use property forcedThemes to subscribe the collection');
   final LocalStorage store = LocalStorage(storeKey);
   await store.ready;
   Map<String, dynamic>? isMapped = store.getItem(storeKey);
