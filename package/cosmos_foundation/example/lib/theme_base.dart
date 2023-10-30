@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class ThemeBase extends CosmosThemeBase {
   final Color primaryColor;
   final Color secondaryColor;
-  const ThemeBase({
+  const ThemeBase(
+    super.themeIdentifier, {
     required this.primaryColor,
     required this.secondaryColor,
   });
