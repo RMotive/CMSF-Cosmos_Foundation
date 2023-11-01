@@ -1,3 +1,4 @@
+
 import 'package:cosmos_foundation/contracts/cosmos_theme_base.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart' hide Theme;
@@ -24,7 +25,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
     this.generalBuilder,
     this.routerConfig,
     this.routerDelegate,
-    this.themes = const [],
+    this.themes = const <Never>[],
     this.listenFrameSize = false,
     this.useLegacyDebugBanner = false,
   }) : assert(((homeWidget != null) != (homeBuilder != null)) || (homeWidget == null && homeBuilder == null), "The home widget and builder cannot be at the same time, must be just one or no one");
@@ -35,7 +36,7 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
     this.generalBuilder,
     this.routerConfig,
     this.routerDelegate,
-    this.themes = const [],
+    this.themes = const <Never>[],
     this.listenFrameSize = false,
     this.useLegacyDebugBanner = false,
   })  : assert(routerConfig != null || routerDelegate != null, "Router config or Router delegate must be defined to use a router based Cosmos App"),
@@ -51,11 +52,13 @@ class _CosmosAppState extends State<CosmosApp> {
   late final Widget? byHome;
   bool get _usesRouter => widget.routerDelegate != null || widget.routerConfig != null;
 
+  late ValueNotifier<CosmosThemeBase> listener;
 
   @override
   void initState() {
     super.initState();
     initTheme(widget.defaultTheme, widget.themes);
+    listener = listenTheme;
     if (widget.homeWidget != null) byHome = widget.homeWidget;
     if (widget.homeBuilder != null) byHome = widget.homeBuilder?.call(context);
   }
@@ -71,13 +74,12 @@ class _CosmosAppState extends State<CosmosApp> {
 
   @override
   Widget build(BuildContext context) {
-    ValueNotifier<CosmosThemeBase> notifier = listenTheme;
     if (!widget.listenFrameSize) return rebuildApp();
     final Size frameSize = MediaQuery.sizeOf(context);
 
-    return ValueListenableBuilder(
-      valueListenable: notifier,
-      builder: (_, value, child) {
+    return ValueListenableBuilder<CosmosThemeBase>(
+      valueListenable: listener,
+      builder: (_, CosmosThemeBase value, Widget? child) {
         return Directionality(
           textDirection: TextDirection.ltr,
           child: Stack(

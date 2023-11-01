@@ -48,12 +48,12 @@ class FutureWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: futureWrapper(),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<T> snapshot) {
           return AnimatedSwitcher(
             duration: 2.seconds,
             switchInCurve: Curves.decelerate,
             child: LayoutBuilder(
-              builder: (context, boxConstraints) {
+              builder: (BuildContext context, BoxConstraints boxConstraints) {
                 return builderWrapper(context, boxConstraints, snapshot);
               },
             ),
@@ -95,7 +95,7 @@ class _DefaultErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemedWidget(
-      builder: (context, theme) {
+      builder: (BuildContext context, ThemeData theme) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

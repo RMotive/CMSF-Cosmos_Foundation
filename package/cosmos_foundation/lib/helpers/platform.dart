@@ -11,8 +11,8 @@ class Platform {
   static Platform get i => _instance ??= Platform._();
 
   bool get isWeb => kIsWeb;
-  bool get isMobile => _cdt.isSomeone(defaultTargetPlatform, [TargetPlatform.android, TargetPlatform.fuchsia, TargetPlatform.iOS]);
-  bool get isDesktop => _cdt.isSomeone(defaultTargetPlatform, [TargetPlatform.linux, TargetPlatform.macOS, TargetPlatform.windows]);
+  bool get isMobile => _cdt.isSomeone(defaultTargetPlatform, <TargetPlatform>[TargetPlatform.android, TargetPlatform.fuchsia, TargetPlatform.iOS]);
+  bool get isDesktop => _cdt.isSomeone(defaultTargetPlatform, <TargetPlatform>[TargetPlatform.linux, TargetPlatform.macOS, TargetPlatform.windows]);
   PlatformContexts get context => isWeb
       ? PlatformContexts.web
       : isMobile

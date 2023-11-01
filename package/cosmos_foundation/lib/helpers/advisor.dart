@@ -11,6 +11,6 @@ class Advisor {
   }
 }
 
-class _DefaultAdvisorColors {
-  static const Color successColor = Colors.green;
-}
+// class _DefaultAdvisorColors {
+//   static const Color successColor = Colors.green;
+// }

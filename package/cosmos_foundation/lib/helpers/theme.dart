@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
 ValueNotifier<CosmosThemeBase>? _notifier;
-List<CosmosThemeBase> _themes = [];
+List<CosmosThemeBase> _themes = <CosmosThemeBase>[];
 
 ValueNotifier<CosmosThemeBase> get _validNotifier {
   if (_notifier == null) throw Exception("Theme is not initialized yet");
@@ -16,17 +16,17 @@ void updateTheme<TTheme extends CosmosThemeBase>(
 }) {
   if (saveLocalKey != null) {
     final LocalStorage store = LocalStorage(saveLocalKey);
-    store.ready.then((value) {
+    store.ready.then((bool value) {
       if (value) {
         store.setItem(
           saveLocalKey,
           themeIdentifier,
-          (nonEncodable) => {saveLocalKey: nonEncodable},
+          (Object nonEncodable) => <String, Object>{saveLocalKey: nonEncodable},
         );
       }
     });
   }
-  CosmosThemeBase? base = _themes.where((element) => element.themeIdentifier == themeIdentifier).firstOrNull;
+  CosmosThemeBase? base = _themes.where((CosmosThemeBase element) => element.themeIdentifier == themeIdentifier).firstOrNull;
   if (base == null) throw Exception('The identifier wasn\'t found in the themes subscribed');
   _validNotifier.value = base;
 }

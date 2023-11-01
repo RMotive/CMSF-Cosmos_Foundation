@@ -34,12 +34,12 @@ class SeparatorRow extends StatelessWidget {
       textBaseline: textBaseline,
       textDirection: textDirection,
       verticalDirection: verticalDirection,
-      children: [
+      children: <Widget>[
         if (includeStart)
           SizedBox.square(
             dimension: spacing,
           ),
-        for (Widget item in children) ...{
+        for (Widget item in children) ...<Widget>{
           if (!(children.indexOf(item) == 0))
             SizedBox.square(
               dimension: spacing,

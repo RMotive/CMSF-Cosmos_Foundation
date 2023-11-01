@@ -1,5 +1,7 @@
 include: package:flutter_lints/flutter.yaml
-rules:
-    - always_specify_types
+
+linter:
+    rules:
+        - always_specify_types
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

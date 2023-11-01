@@ -8,7 +8,7 @@ class ThemedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(
-      builder: (newestContext) {
+      builder: (BuildContext newestContext) {
         return builder(
           context,
           Theme.of(newestContext),
