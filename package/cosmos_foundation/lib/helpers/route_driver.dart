@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 /// This helper provides several functionallities for Cosmos Foundation routing.
-class Router {
+class RouteDriver {
   static NavigatorState? _navigator;
   static NavigatorState get _nav {
     if (_navigator != null) return _navigator as NavigatorState;
     throw Exception('Router helper navigator not initialized, you cannot use this helper yet.');
   }
 
-  static Router? _instance;
+  static RouteDriver? _instance;
   // Avoid self instance
-  Router._();
-  static Router get i => _instance ??= Router._();
+  RouteDriver._();
+  static RouteDriver get i => _instance ??= RouteDriver._();
   static void init(GlobalKey<NavigatorState> nav) => _navigator = nav.currentState;
 
   void routeTo(CosmosPage view, {bool push = false}) {

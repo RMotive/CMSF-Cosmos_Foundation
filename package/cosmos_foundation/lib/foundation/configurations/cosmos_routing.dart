@@ -3,7 +3,7 @@ import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cosmos_foundation/helpers/router.dart' as rh;
+import 'package:cosmos_foundation/helpers/route_driver.dart' as rh;
 
 /// This hook provides an abstracted interface for routing between GoRouter and Cosmos Foundation internal utilities initializations, by that, this
 /// interfaced hook should be forced.
@@ -23,7 +23,7 @@ class CosmosRouting extends GoRouter {
         ) {
     Future<void>.delayed(
       120.miliseconds,
-      () => rh.Router.init(super.configuration.navigatorKey),
+      () => rh.RouteDriver.init(super.configuration.navigatorKey),
     );
   }
 }
