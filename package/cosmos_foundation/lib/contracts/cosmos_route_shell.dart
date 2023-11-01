@@ -20,7 +20,10 @@ class CosmosRouteShell extends CosmosRouteBase {
     this.restorationScopeId,
     this.screenBuild,
     this.pagerBuild,
-  });
+  }) : assert(
+          screenBuild != null || pagerBuild != null,
+          'You must provide at least one UI Build (screenBuild or pagerBuild) function',
+        );
 
   @override
   RouteBase compose({bool isSub = false}) => ShellRoute(
