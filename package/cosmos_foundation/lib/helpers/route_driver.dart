@@ -16,7 +16,7 @@ class RouteDriver {
   static RouteDriver get i => _instance ??= RouteDriver._();
   static void init(GlobalKey<NavigatorState> nav) => _navigator = nav.currentState;
 
-  void routeTo(RouteOptions options, {bool push = false}) {
+  void driveTo(RouteOptions options, {bool push = false}) {
     push ? _nav.context.pushNamed(options.name) : _nav.context.goNamed(options.name);
   }
 }
