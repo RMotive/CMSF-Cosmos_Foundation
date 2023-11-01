@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/contracts/cosmos_page.dart';
+import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +16,7 @@ class RouteDriver {
   static RouteDriver get i => _instance ??= RouteDriver._();
   static void init(GlobalKey<NavigatorState> nav) => _navigator = nav.currentState;
 
-  void routeTo(CosmosPage view, {bool push = false}) {
-    push ? _nav.context.pushNamed(view.routeOptions.name) : _nav.context.goNamed(view.routeOptions.name);
+  void routeTo(RouteOptions options, {bool push = false}) {
+    push ? _nav.context.pushNamed(options.name) : _nav.context.goNamed(options.name);
   }
 }
