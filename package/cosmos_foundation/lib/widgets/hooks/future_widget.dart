@@ -26,7 +26,7 @@ class FutureWidget<T> extends StatelessWidget {
   });
 
   Future<T> futureWrapper() async {
-    if (delay != null) await Future.delayed(delay as Duration);
+    if (delay != null) await Future<void>.delayed(delay as Duration);
     return future;
   }
 
@@ -46,7 +46,7 @@ class FutureWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<T>(
         future: futureWrapper(),
         builder: (BuildContext context, AsyncSnapshot<T> snapshot) {
           return AnimatedSwitcher(

@@ -60,7 +60,7 @@ void initTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme, Lis
 }
 
 final class _Theme<TThemeBase extends CosmosThemeBase> {
-  static _Theme? ins;
+  static _Theme<CosmosThemeBase>? ins;
 
   late final TThemeBase? _defaultTheme;
   TThemeBase get defaultTheme {
@@ -74,8 +74,8 @@ final class _Theme<TThemeBase extends CosmosThemeBase> {
   }
 
   static loadTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme) {
-    _Theme manager = ins ?? _Theme._(defaultTheme);
+    _Theme<CosmosThemeBase> manager = ins ?? _Theme<TThemeBase>._(defaultTheme);
     ins = manager;
-    _notifier = ValueNotifier(manager.defaultTheme);
+    _notifier = ValueNotifier<CosmosThemeBase>(manager.defaultTheme);
   }
 }

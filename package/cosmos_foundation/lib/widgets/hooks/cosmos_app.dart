@@ -45,10 +45,10 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
 
 
   @override
-  State<CosmosApp> createState() => _CosmosAppState();
+  State<CosmosApp<CosmosThemeBase>> createState() => _CosmosAppState();
 }
 
-class _CosmosAppState extends State<CosmosApp> {
+class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
   late final Widget? byHome;
   bool get _usesRouter => widget.routerDelegate != null || widget.routerConfig != null;
 
