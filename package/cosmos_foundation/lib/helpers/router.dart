@@ -17,6 +17,6 @@ class Router {
   static void init(GlobalKey<NavigatorState> nav) => _navigator = nav.currentState;
 
   void routeTo(CosmosPage view, {bool push = false}) {
-    push ? _nav.context.push(view.routeOptions.path) : _nav.context.go(view.routeOptions.path);
+    push ? _nav.context.pushNamed(view.routeOptions.name) : _nav.context.goNamed(view.routeOptions.name);
   }
 }

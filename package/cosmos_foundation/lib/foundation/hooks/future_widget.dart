@@ -1,5 +1,4 @@
 import 'package:cosmos_foundation/extensions/int_extension.dart';
-import 'package:cosmos_foundation/widgets/hooks/themed_widget.dart';
 import 'package:flutter/material.dart';
 
 class FutureWidget<T> extends StatelessWidget {
@@ -58,8 +57,7 @@ class FutureWidget<T> extends StatelessWidget {
               },
             ),
           );
-        }
-    );
+        });
   }
 }
 
@@ -94,30 +92,28 @@ class _DefaultErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedWidget(
-      builder: (BuildContext context, ThemeData theme) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.error,
-              size: theme.primaryIconTheme.size,
+    ThemeData theme = Theme.of(context);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Icon(
+          Icons.error,
+          size: theme.primaryIconTheme.size,
+          color: theme.colorScheme.error,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            "Error cacthed",
+            style: theme.textTheme.labelLarge?.copyWith(
               color: theme.colorScheme.error,
+              fontStyle: FontStyle.italic,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "Error cacthed",
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: theme.colorScheme.error,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 }

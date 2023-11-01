@@ -1,12 +1,14 @@
+import 'package:cosmos_foundation/contracts/cosmos_route.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
-import 'package:cosmos_foundation/models/options/route_options.dart';
-import 'package:cosmos_foundation/widgets/hooks/cosmos_app.dart';
-import 'package:cosmos_foundation/widgets/hooks/cosmos_route.dart';
-import 'package:cosmos_foundation/widgets/hooks/cosmos_routing.dart';
+import 'package:cosmos_foundation/foundation/configurations/cosmos_routing.dart';
+import 'package:cosmos_foundation/foundation/hooks/cosmos_app.dart';
+import 'package:cosmos_foundation/models/outputs/route_output.dart';
+import 'package:example/config/routes/routes.dart';
 import 'package:example/config/theme/light_theme.dart';
 import 'package:example/config/theme/theme_base.dart';
-import 'package:example/screens/package_home_screen.dart';
-import 'package:example/screens/routing_testing_buttons.dart';
+import 'package:example/screens/init_page.dart';
+import 'package:example/screens/bluegrey_page.dart';
+import 'package:example/screens/teal_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -28,12 +30,18 @@ class MainApp extends StatelessWidget {
       routerConfig: CosmosRouting(
         routes: <CosmosRouteBase>[
           CosmosRoute(
-            const RouteOptions('/'),
-            build: (BuildContext ctx) => const PackageHomeScreen(),
+            initRoute,
+            build: (BuildContext ctx, _) => const InitPage(),
           ),
           CosmosRoute(
-            const RouteOptions('/hello'),
-            build: (BuildContext ctx) => const RoutingTestingButtons(),
+            yellowRoute,
+            subRoutes: <CosmosRoute>[
+              CosmosRoute(
+                tealRoute,
+                build: (BuildContext ctx, RouteOutput output) => const TealPage(),
+              )
+            ],
+            build: (BuildContext ctx, _) => const BluegreyPage(),
           ),
         ],
       ),

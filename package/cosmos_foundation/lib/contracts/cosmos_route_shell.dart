@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CosmosRouteShell extends CosmosRouteBase {
-  final GlobalKey<NavigatorState>? parentNavigator;
   final GlobalKey<NavigatorState>? innerNavigator;
   final List<NavigatorObserver>? observers;
   final String? restorationScopeId;
@@ -14,17 +13,17 @@ class CosmosRouteShell extends CosmosRouteBase {
   final List<CosmosRouteBase> routes;
 
   const CosmosRouteShell({
+    super.parentNavigator,
     required this.routes,
     this.innerNavigator,
     this.observers,
     this.restorationScopeId,
-    this.parentNavigator,
     this.screenBuild,
     this.pagerBuild,
   });
 
   @override
-  RouteBase compose() => ShellRoute(
+  RouteBase compose({bool isSub = false}) => ShellRoute(
         navigatorKey: innerNavigator,
         observers: observers,
         parentNavigatorKey: parentNavigator,
@@ -32,7 +31,7 @@ class CosmosRouteShell extends CosmosRouteBase {
         pageBuilder: pagerBuild != null ? (BuildContext context, GoRouterState state, Widget child) => pagerBuild!(context, RouteOutput.fromGo(state), child) : null,
         builder: screenBuild != null ? (BuildContext context, GoRouterState state, Widget child) => screenBuild!(context, RouteOutput.fromGo(state), child) : null,
         routes: <RouteBase>[
-          for (CosmosRouteBase route in routes) route.compose(),
+          for (CosmosRouteBase route in routes) route.compose(isSub: isSub),
         ],
       );
 }
