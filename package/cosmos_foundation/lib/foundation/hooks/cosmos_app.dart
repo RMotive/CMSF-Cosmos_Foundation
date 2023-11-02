@@ -143,6 +143,7 @@ class _FrameListener extends StatelessWidget {
           frameSize.toString(),
           style: const TextStyle(
             fontSize: 12,
+            backgroundColor: Colors.transparent,
           ),
         );
       },
