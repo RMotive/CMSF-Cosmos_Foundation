@@ -137,8 +137,15 @@ class _FrameListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size frameSize = MediaQuery.sizeOf(context);
-    return Text(
-      frameSize.toString(),
+    return Builder(
+      builder: (BuildContext context) {
+        return Text(
+          frameSize.toString(),
+          style: const TextStyle(
+            fontSize: 12,
+          ),
+        );
+      },
     );
   }
 }
