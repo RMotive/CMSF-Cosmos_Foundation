@@ -95,22 +95,20 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
   }
 
   Widget frameListener(BuildContext ctx, Widget? child) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: ValueListenableBuilder<CosmosThemeBase>(
-        valueListenable: listener,
-        builder: (BuildContext context, _, Widget? child) {
-          return Stack(
-            children: <Widget>[
-              const Align(
-                alignment: Alignment.topLeft,
-                child: SizedBox(),
-              ),
-              widget.generalBuilder!.call(context, child),
-            ],
-          );
-        },
-      ),
+    return ValueListenableBuilder<CosmosThemeBase>(
+      valueListenable: listener,
+      builder: (BuildContext context, _, Widget? child) {
+        return Stack(
+          textDirection: TextDirection.ltr,
+          children: <Widget>[
+            widget.generalBuilder!(context, child),
+            const Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(),
+            ),
+          ],
+        );
+      },
     );
   }
 }
