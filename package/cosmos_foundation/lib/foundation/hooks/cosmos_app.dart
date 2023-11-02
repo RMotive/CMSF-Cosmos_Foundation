@@ -104,7 +104,7 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
             widget.generalBuilder!(context, child),
             const Align(
               alignment: Alignment.topLeft,
-              child: SizedBox(),
+              child: _FrameListener(),
             ),
           ],
         );
