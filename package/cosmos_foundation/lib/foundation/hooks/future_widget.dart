@@ -5,14 +5,9 @@ class FutureWidget<T> extends StatelessWidget {
   final Future<T> future;
   final Duration? delay;
   final bool emptyAsError;
-  final Widget Function(BuildContext ctx, BoxConstraints boxSurface)? loadingBuilder;
-  final Widget Function(
-    BuildContext ctx,
-    BoxConstraints boxSurface,
-    Object? error,
-    T? data,
-  )? errorBuilder;
-  final Widget Function(BuildContext ctx, BoxConstraints boxSurface, T data) successBuilder;
+  final Widget Function(BuildContext ctx)? loadingBuilder;
+  final Widget Function(BuildContext ctx, Object? error, T? data)? errorBuilder;
+  final Widget Function(BuildContext ctx, T data) successBuilder;
 
   const FutureWidget({
     super.key,
@@ -29,18 +24,18 @@ class FutureWidget<T> extends StatelessWidget {
     return future;
   }
 
-  Widget builderWrapper(BuildContext ctx, BoxConstraints boxSurface, AsyncSnapshot<T> snapshot) {
+  Widget builderWrapper(BuildContext ctx, AsyncSnapshot<T> snapshot) {
     if (snapshot.connectionState != ConnectionState.done) {
       if (loadingBuilder == null) return const _DefaultLoadingView();
-      return loadingBuilder!(ctx, boxSurface);
+      return loadingBuilder!(ctx);
     }
     if (snapshot.hasError || (emptyAsError && snapshot.data == null)) {
       if (errorBuilder == null) return const _DefaultErrorView();
-      return errorBuilder!(ctx, boxSurface, snapshot.error, snapshot.data);
+      return errorBuilder!(ctx, snapshot.error, snapshot.data);
     }
 
     T data = snapshot.data as T;
-    return successBuilder(ctx, boxSurface, data);
+    return successBuilder(ctx, data);
   }
 
   @override
@@ -48,16 +43,13 @@ class FutureWidget<T> extends StatelessWidget {
     return FutureBuilder<T>(
         future: futureWrapper(),
         builder: (BuildContext context, AsyncSnapshot<T> snapshot) {
-          return AnimatedSwitcher(
-            duration: 2.seconds,
-            switchInCurve: Curves.decelerate,
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints boxConstraints) {
-                return builderWrapper(context, boxConstraints, snapshot);
-              },
-            ),
-          );
-        });
+        return AnimatedSwitcher(
+          duration: 2.seconds,
+          switchInCurve: Curves.decelerate,
+          child: builderWrapper(context, snapshot),
+        );
+      },
+    );
   }
 }
 
