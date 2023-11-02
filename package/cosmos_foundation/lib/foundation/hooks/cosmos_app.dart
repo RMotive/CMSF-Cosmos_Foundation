@@ -97,7 +97,7 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
   Widget frameListener(BuildContext ctx, Widget? child) {
     return ValueListenableBuilder<CosmosThemeBase>(
       valueListenable: listener,
-      builder: (BuildContext context, _, Widget? child) {
+      builder: (BuildContext context, _, __) {
         return Stack(
           textDirection: TextDirection.ltr,
           children: <Widget>[
