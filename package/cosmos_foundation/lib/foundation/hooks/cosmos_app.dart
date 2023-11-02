@@ -78,7 +78,20 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
   Widget _build() {
     return MaterialApp(
       home: byHome,
-      builder: widget.generalBuilder,
+      builder: (BuildContext context, Widget? child) {
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            children: <Widget>[
+              const Align(
+                alignment: Alignment.topLeft,
+                child: _FrameListener(),
+              ),
+              widget.generalBuilder!.call(context, child),
+            ],
+          ),
+        );
+      },
       restorationScopeId: 'scope-main',
       debugShowCheckedModeBanner: widget.useLegacyDebugBanner,
     );
@@ -86,11 +99,33 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
 
   Widget _buildFromRouter() {
     return MaterialApp.router(
-      builder: widget.generalBuilder,
+      builder: (BuildContext context, Widget? child) {
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            children: <Widget>[
+              const _FrameListener(),
+              widget.generalBuilder!.call(context, child),
+            ],
+          ),
+        );
+      },
       routerConfig: widget.routerConfig,
       routerDelegate: widget.routerDelegate,
       restorationScopeId: 'scope-main-router',
       debugShowCheckedModeBanner: widget.useLegacyDebugBanner,
+    );
+  }
+}
+
+class _FrameListener extends StatelessWidget {
+  const _FrameListener();
+
+  @override
+  Widget build(BuildContext context) {
+    final Size frameSize = MediaQuery.sizeOf(context);
+    return Text(
+      frameSize.toString(),
     );
   }
 }
