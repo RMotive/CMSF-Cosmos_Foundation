@@ -1,4 +1,10 @@
+import 'package:flutter/material.dart';
+
 abstract class CosmosThemeBase {
   final String themeIdentifier;
-  const CosmosThemeBase(this.themeIdentifier);
+  final Color? frameListenerColor;
+  const CosmosThemeBase(
+    this.themeIdentifier, {
+    this.frameListenerColor,
+  });
 }

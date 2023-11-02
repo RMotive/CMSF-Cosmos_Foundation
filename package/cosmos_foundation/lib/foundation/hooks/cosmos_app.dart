@@ -102,9 +102,15 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
           textDirection: TextDirection.ltr,
           children: <Widget>[
             widget.generalBuilder!(context, child),
-            const Align(
-              alignment: Alignment.topLeft,
-              child: _FrameListener(),
+            const Padding(
+              padding: EdgeInsets.only(
+                top: 16,
+                left: 16,
+              ),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: _FrameListener(),
+              ),
             ),
           ],
         );
@@ -119,16 +125,17 @@ class _FrameListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size frameSize = MediaQuery.sizeOf(context);
-    return Builder(
-      builder: (BuildContext context) {
-        return Text(
-          frameSize.toString(),
-          style: const TextStyle(
-            fontSize: 12,
-            backgroundColor: Colors.transparent,
-          ),
-        );
-      },
+    final CosmosThemeBase theme = getTheme();
+
+    return Text(
+      frameSize.toString(),
+      style: TextStyle(
+        fontSize: 16,
+        backgroundColor: Colors.transparent,
+        decoration: TextDecoration.none,
+        color: theme.frameListenerColor,
+        fontStyle: FontStyle.italic,
+      ),
     );
   }
 }
