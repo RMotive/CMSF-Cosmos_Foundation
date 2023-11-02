@@ -68,36 +68,12 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
     super.didUpdateWidget(oldWidget);
   }
 
-  Widget rebuildApp() {
+  Widget buildApp() {
     return _usesRouter ? _buildFromRouter() : _build();
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (!widget.listenFrameSize) return rebuildApp();
-    final Size frameSize = MediaQuery.sizeOf(context);
-
-    return ValueListenableBuilder<CosmosThemeBase>(
-      valueListenable: listener,
-      builder: (_, CosmosThemeBase value, Widget? child) {
-        return Directionality(
-          textDirection: TextDirection.ltr,
-          child: Stack(
-            children: <Widget>[
-              rebuildApp(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(frameSize.toString()),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  Widget build(BuildContext context) => buildApp();
 
   Widget _build() {
     return MaterialApp(
