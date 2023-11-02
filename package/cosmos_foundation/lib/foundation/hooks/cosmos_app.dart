@@ -81,14 +81,19 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
       builder: (BuildContext context, Widget? child) {
         return Directionality(
           textDirection: TextDirection.ltr,
-          child: Stack(
-            children: <Widget>[
-              const Align(
-                alignment: Alignment.topLeft,
-                child: _FrameListener(),
-              ),
-              widget.generalBuilder!.call(context, child),
-            ],
+          child: ValueListenableBuilder<CosmosThemeBase>(
+            valueListenable: listener,
+            builder: (BuildContext context, _, Widget? child) {
+              return Stack(
+                children: <Widget>[
+                  const Align(
+                    alignment: Alignment.topLeft,
+                    child: _FrameListener(),
+                  ),
+                  widget.generalBuilder!.call(context, child),
+                ],
+              );
+            },
           ),
         );
       },
@@ -102,11 +107,19 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
       builder: (BuildContext context, Widget? child) {
         return Directionality(
           textDirection: TextDirection.ltr,
-          child: Stack(
-            children: <Widget>[
-              const _FrameListener(),
-              widget.generalBuilder!.call(context, child),
-            ],
+          child: ValueListenableBuilder<CosmosThemeBase>(
+            valueListenable: listener,
+            builder: (BuildContext context, _, Widget? child) {
+              return Stack(
+                children: <Widget>[
+                  const Align(
+                    alignment: Alignment.topLeft,
+                    child: _FrameListener(),
+                  ),
+                  widget.generalBuilder!.call(context, child),
+                ],
+              );
+            },
           ),
         );
       },
