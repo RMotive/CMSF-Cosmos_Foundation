@@ -103,6 +103,7 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
     return MaterialApp(
       home: byHome,
       builder: widget.generalBuilder,
+      restorationScopeId: 'scope-main',
       debugShowCheckedModeBanner: widget.useLegacyDebugBanner,
     );
   }
@@ -112,6 +113,7 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
       builder: widget.generalBuilder,
       routerConfig: widget.routerConfig,
       routerDelegate: widget.routerDelegate,
+      restorationScopeId: 'scope-main-router',
       debugShowCheckedModeBanner: widget.useLegacyDebugBanner,
     );
   }
