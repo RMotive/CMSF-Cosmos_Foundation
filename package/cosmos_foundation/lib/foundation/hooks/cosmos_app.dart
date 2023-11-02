@@ -78,25 +78,7 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
   Widget _build() {
     return MaterialApp(
       home: byHome,
-      builder: (BuildContext context, Widget? child) {
-        return Directionality(
-          textDirection: TextDirection.ltr,
-          child: ValueListenableBuilder<CosmosThemeBase>(
-            valueListenable: listener,
-            builder: (BuildContext context, _, Widget? child) {
-              return Stack(
-                children: <Widget>[
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: SizedBox(),
-                  ),
-                  widget.generalBuilder!.call(context, child),
-                ],
-              );
-            },
-          ),
-        );
-      },
+      builder: frameListener,
       restorationScopeId: 'scope-main',
       debugShowCheckedModeBanner: widget.useLegacyDebugBanner,
     );
@@ -104,29 +86,31 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
 
   Widget _buildFromRouter() {
     return MaterialApp.router(
-      builder: (BuildContext context, Widget? child) {
-        return Directionality(
-          textDirection: TextDirection.ltr,
-          child: ValueListenableBuilder<CosmosThemeBase>(
-            valueListenable: listener,
-            builder: (BuildContext context, _, Widget? child) {
-              return Stack(
-                children: <Widget>[
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: SizedBox(),
-                  ),
-                  widget.generalBuilder!.call(context, child),
-                ],
-              );
-            },
-          ),
-        );
-      },
+      builder: frameListener,
       routerConfig: widget.routerConfig,
       routerDelegate: widget.routerDelegate,
       restorationScopeId: 'scope-main-router',
       debugShowCheckedModeBanner: widget.useLegacyDebugBanner,
+    );
+  }
+
+  Widget frameListener(BuildContext ctx, Widget? child) {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: ValueListenableBuilder<CosmosThemeBase>(
+        valueListenable: listener,
+        builder: (BuildContext context, _, Widget? child) {
+          return Stack(
+            children: <Widget>[
+              const Align(
+                alignment: Alignment.topLeft,
+                child: SizedBox(),
+              ),
+              widget.generalBuilder!.call(context, child),
+            ],
+          );
+        },
+      ),
     );
   }
 }
