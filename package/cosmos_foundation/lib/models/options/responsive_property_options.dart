@@ -1,5 +1,3 @@
-import 'package:cosmos_foundation/models/options/responsive_property_breakpoint_options.dart';
-
 /// Options class.
 /// This class defines options for a specific use-case.
 ///

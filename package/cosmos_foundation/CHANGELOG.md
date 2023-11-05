@@ -12,3 +12,10 @@
 
 * Changed the ResponsiveView widget to conditionals pack.
 * Added the ResponsiveProperty.
+
+### Helpers
+
+* Improved the API and logical calcaultions for Advisor (NO MORE SINGLETON).
+  * Added the option to set additional information.
+  * Added the startWithUpper property and management to decide if the header message should start with upper-case or not.
+  * Added the colorization as properties when the object is created.
