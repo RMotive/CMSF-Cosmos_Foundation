@@ -11,7 +11,6 @@
 ### Conditionals
 
 * Changed the ResponsiveView widget to conditionals pack.
-* Added the ResponsiveProperty.
 
 ### Helpers
 
@@ -19,3 +18,6 @@
   * Added the option to set additional information.
   * Added the startWithUpper property and management to decide if the header message should start with upper-case or not.
   * Added the colorization as properties when the object is created.
+* Added the Responsive helper that provides powerful methods to calculate dynamic response properties.
+  * With a method to calculate traditional breakpoints as small, medium, and large devices.
+  * With a mehtod to calculate powerful dynamic breakpoints and values during runtime.  
