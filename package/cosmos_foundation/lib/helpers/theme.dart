@@ -83,7 +83,7 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
 ///   @override
 ///   void initState() {
 ///     super.initState();
-///     theme = getTheme(
+///     theme = getTheme<ThemeBase>(
 ///       updateEffect: updateThemeEffect
 ///     );
 ///   }
@@ -93,11 +93,11 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
 ///     disposeGetTheme(updateThemeEffect);
 ///     super.dispose();
 ///   }
-///   void updateThemeEffect() => setState(() {});
+///   void updateThemeEffect(ThemeBase effect) => setState(() {});
 /// '''
-TTheme getTheme<TTheme extends CosmosThemeBase>({void Function()? updateEfect}) {
+TTheme getTheme<TTheme extends CosmosThemeBase>({void Function(TTheme effect)? updateEfect}) {
   if (updateEfect != null) {
-    _validNotifier.addListener(updateEfect);
+    _validNotifier.addListener(() => updateEfect(_validNotifier.value as TTheme));
   }
   return _validNotifier.value as TTheme;
 }
@@ -107,7 +107,7 @@ TTheme getTheme<TTheme extends CosmosThemeBase>({void Function()? updateEfect}) 
 ///
 /// [disposeEffect] the subscribed function to be removed from the notifier manager stack.
 ///
-/// RECOMMENDED USE:
+/// RECOMMENDED USE (For [StatefulWidget]):
 /// '''dart
 ///   "State"
 ///   late CosmosThemeBase theme;
@@ -115,7 +115,7 @@ TTheme getTheme<TTheme extends CosmosThemeBase>({void Function()? updateEfect}) 
 ///   @override
 ///   void initState() {
 ///     super.initState();
-///     theme = getTheme(
+///     theme = getTheme<ThemeBase>(
 ///       updateEffect: updateThemeEffect
 ///     );
 ///   }
@@ -125,7 +125,7 @@ TTheme getTheme<TTheme extends CosmosThemeBase>({void Function()? updateEfect}) 
 ///     disposeGetTheme(updateThemeEffect);
 ///     super.dispose();
 ///   }
-///   void updateThemeEffect() => setState(() {});
+///   void updateThemeEffect(ThemeBase effect) => setState(() {});
 /// '''
 void disposeGetTheme(void Function() disposeEffect) {
   _validNotifier.removeListener(disposeEffect);
@@ -143,7 +143,7 @@ void disposeGetTheme(void Function() disposeEffect) {
 /// ```
 ///
 ///
-/// RECOMMENDED USE (for [StatefulWidget]):
+/// RECOMMENDED USE (For [StatefulWidget]):
 /// '''dart
 ///   "State"
 ///   late CosmosThemeBase theme;
@@ -151,7 +151,7 @@ void disposeGetTheme(void Function() disposeEffect) {
 ///   @override
 ///   void initState() {
 ///     super.initState();
-///     theme = getTheme(
+///     theme = getTheme<ThemeBase>(
 ///       updateEffect: updateThemeEffect
 ///     );
 ///   }
@@ -161,7 +161,7 @@ void disposeGetTheme(void Function() disposeEffect) {
 ///     disposeGetTheme(updateThemeEffect);
 ///     super.dispose();
 ///   }
-///   void updateThemeEffect() => setState(() {});
+///   void updateThemeEffect(ThemeBase effect) => setState(() {});
 /// '''
 ValueNotifier<CosmosThemeBase> get listenTheme => _validNotifier;
 
