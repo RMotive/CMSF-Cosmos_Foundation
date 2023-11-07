@@ -2,14 +2,23 @@ import 'package:cosmos_foundation/contracts/cosmos_theme_base.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
+/// Stores the provate reference for the static change notifier for the Theming handling.
+///
+/// NOTE: DONT USE DIRECTLY THIS TO NOTIFY ALL LISTENERS ABOUT A CHANGE.
 ValueNotifier<CosmosThemeBase>? _notifier;
+
+/// Stores the private reference for the static theme collections provided by the configuration.
 List<CosmosThemeBase> _themes = <CosmosThemeBase>[];
 
+/// Validates and returns the correct object to handle listeners notifications when the
+/// theme has changed.
 ValueNotifier<CosmosThemeBase> get _validNotifier {
   if (_notifier == null) throw Exception("Theme is not initialized yet");
   return _notifier as ValueNotifier<CosmosThemeBase>;
 }
 
+/// Indicates to the global theme manager change and update all listeners
+/// about the update of the current theme to use.
 void updateTheme<TTheme extends CosmosThemeBase>(
   String themeIdentifier, {
   String? saveLocalKey,
@@ -31,6 +40,10 @@ void updateTheme<TTheme extends CosmosThemeBase>(
   _validNotifier.value = base;
 }
 
+/// Looks for local storaged references about the theme selected by the user
+/// to use it.
+///
+/// If the theme reference is found will return a Theme Base reference.
 Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
   String storeKey, {
   List<TTheme>? forcedThemes,
@@ -49,9 +62,33 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
   return null;
 }
 
-TTheme getTheme<TTheme extends CosmosThemeBase>() => _validNotifier.value as TTheme;
+/// Looks for the current theme subscribed and being handled for the global theme notifier manager.
+/// This doesn't look for the [CosmosThemeBase] reference from a persistive way, this just will return
+/// the theme reference previously init by application initialization.
+///
+/// [updateEffect] Will subscribe a listener to the theme changer manager and will trigger your setState function
+/// provided to update your [StatefulWidget] state after the widget state was did setup and the theme as well.
+///
+/// IMPORTANT NOTE: Avoid the use of [updateEffect] on [StatelessWidget]. This subscription is only
+/// considered to notify the current theme change to [StatefulWidget] that doesn't update its state after the application
+/// gets restarted by the theme notifier handler.
+TTheme getTheme<TTheme extends CosmosThemeBase>({void Function()? updateEfect}) {
+  if (updateEfect != null) {
+    _validNotifier.addListener(updateEfect);
+  }
+  return _validNotifier.value as TTheme;
+}
 
-
+/// Provides a global reference for the theme change manager.
+///
+/// NOTE: Preferrely avoid use it, use it just in specific complex cases, if you have
+/// a [StatefulWidget] that needs update the theme after a change and after its state is setup.
+/// you can subscribe an [updateEffect] to the method [getTheme] as the next example:
+/// ```dart
+///   CosmosThemeBase? theme = getTheme(
+///     updateEffect: setState(() => {{ `your state update` }}),
+///   );
+/// ```
 ValueNotifier<CosmosThemeBase> get listenTheme => _validNotifier;
 
 void initTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme, List<TThemeBase> themes) {
