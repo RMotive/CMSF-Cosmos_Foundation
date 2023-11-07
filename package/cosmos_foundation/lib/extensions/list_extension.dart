@@ -13,7 +13,9 @@ extension BreakpointsList<T> on List<ResponsivePropertyBreakpointOptions<T>> {
   /// ilogical breakpoints detected.
   ///
   /// Returns the ordered [List] of [ResponsivePropertyBreakpointOptions].
-  List<ResponsivePropertyBreakpointOptions<T>> orderBreakpoints() {
+  ///
+  /// Note: Know as ilogical breakpoints, all repeated breakpoint value after the first one found will be removed.
+  List<ResponsivePropertyBreakpointOptions<T>> sortBreakpoints() {
     List<ResponsivePropertyBreakpointOptions<T>> orderedList = this;
     orderedList.sort((ResponsivePropertyBreakpointOptions<T> a, ResponsivePropertyBreakpointOptions<T> b) => a.breakpoint.compareTo(b.breakpoint));
     int point = 0;

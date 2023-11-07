@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cosmos_foundation/extensions/list_extension.dart';
 import 'package:cosmos_foundation/models/options/responsive_property_breakpoint_options.dart';
 import 'package:cosmos_foundation/models/options/responsive_property_options.dart';
 
@@ -47,7 +48,19 @@ class Responsive {
   /// in [breakpints].
   ///
   /// The breakpoints are calculated from the lowest breakpoint value to the highest one.
+  /// While the screen surface width is lower than the given breakpoint will return the breakpoint options value.
+  /// ```dart
+  ///   if (screenWidth < breakPointOption.breakpoint) return breakpointOption.value;
+  /// ```
+  ///
+  /// NOTE: This responsive calculation methods are quite expensive, recommended use it with the lower amount of breakpoint possible.
   T propertyFromBreakpoints<T>(List<ResponsivePropertyBreakpointOptions<T>> breakpoints) {
-    return '' as T;
+    final double screenSurface = PlatformDispatcher.instance.displays.first.size.width;
+    List<ResponsivePropertyBreakpointOptions<T>> sortedBreaks = breakpoints.sortBreakpoints();
+    for (ResponsivePropertyBreakpointOptions<T> breakPoint in sortedBreaks) {
+      if (screenSurface < breakPoint.breakpoint) return breakPoint.value;
+    }
+    // --> Means that the current screen size is higher than the last one breakpoint, so ->
+    return sortedBreaks.last.value;
   }
 }
