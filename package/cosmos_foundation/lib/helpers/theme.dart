@@ -68,15 +68,67 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
 ///
 /// [updateEffect] Will subscribe a listener to the theme changer manager and will trigger your setState function
 /// provided to update your [StatefulWidget] state after the widget state was did setup and the theme as well.
+/// after the subscription of the [updateEffect] ensure add the [disposeGetTheme] on your [dispose] method to remove the
+/// listener and ensure the application performance and avoid any ilogical behavior from the framework work pipeline.
 ///
 /// IMPORTANT NOTE: Avoid the use of [updateEffect] on [StatelessWidget]. This subscription is only
 /// considered to notify the current theme change to [StatefulWidget] that doesn't update its state after the application
 /// gets restarted by the theme notifier handler.
+///
+/// RECOMMENDED USE (For [StatefulWidget]):
+/// '''dart
+///   "State"
+///   late CosmosThemeBase theme;
+///
+///   @override
+///   void initState() {
+///     super.initState();
+///     theme = getTheme(
+///       updateEffect: updateThemeEffect
+///     );
+///   }
+///
+///   @override
+///   void dispose() {
+///     disposeGetTheme(updateThemeEffect);
+///     super.dispose();
+///   }
+///   void updateThemeEffect() => setState(() {});
+/// '''
 TTheme getTheme<TTheme extends CosmosThemeBase>({void Function()? updateEfect}) {
   if (updateEfect != null) {
     _validNotifier.addListener(updateEfect);
   }
   return _validNotifier.value as TTheme;
+}
+
+/// Will remove the [updateEffect] subscribed on [getTheme] for [StatefulWidget] that
+/// use the theme listening functions.
+///
+/// [disposeEffect] the subscribed function to be removed from the notifier manager stack.
+///
+/// RECOMMENDED USE:
+/// '''dart
+///   "State"
+///   late CosmosThemeBase theme;
+///
+///   @override
+///   void initState() {
+///     super.initState();
+///     theme = getTheme(
+///       updateEffect: updateThemeEffect
+///     );
+///   }
+///
+///   @override
+///   void dispose() {
+///     disposeGetTheme(updateThemeEffect);
+///     super.dispose();
+///   }
+///   void updateThemeEffect() => setState(() {});
+/// '''
+void disposeGetTheme(void Function() disposeEffect) {
+  _validNotifier.removeListener(disposeEffect);
 }
 
 /// Provides a global reference for the theme change manager.
@@ -89,6 +141,28 @@ TTheme getTheme<TTheme extends CosmosThemeBase>({void Function()? updateEfect}) 
 ///     updateEffect: setState(() => {{ `your state update` }}),
 ///   );
 /// ```
+///
+///
+/// RECOMMENDED USE (for [StatefulWidget]):
+/// '''dart
+///   "State"
+///   late CosmosThemeBase theme;
+///
+///   @override
+///   void initState() {
+///     super.initState();
+///     theme = getTheme(
+///       updateEffect: updateThemeEffect
+///     );
+///   }
+///
+///   @override
+///   void dispose() {
+///     disposeGetTheme(updateThemeEffect);
+///     super.dispose();
+///   }
+///   void updateThemeEffect() => setState(() {});
+/// '''
 ValueNotifier<CosmosThemeBase> get listenTheme => _validNotifier;
 
 void initTheme<TThemeBase extends CosmosThemeBase>(TThemeBase? defaultTheme, List<TThemeBase> themes) {
