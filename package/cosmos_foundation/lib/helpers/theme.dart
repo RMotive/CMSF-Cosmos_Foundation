@@ -127,8 +127,8 @@ TTheme getTheme<TTheme extends CosmosThemeBase>({void Function(TTheme effect)? u
 ///   }
 ///   void updateThemeEffect(ThemeBase effect) => setState(() {});
 /// '''
-void disposeGetTheme<TTheme extends CosmosThemeBase>(void Function(TTheme effect) disposeEffect) {
-  _validNotifier.removeListener(() => disposeEffect(_validNotifier.value as TTheme));
+void disposeGetTheme<TTheme extends CosmosThemeBase>(void Function(TTheme effect) updateEffect) {
+  _validNotifier.removeListener(() => updateEffect(_validNotifier.value as TTheme));
 }
 
 /// Provides a global reference for the theme change manager.
