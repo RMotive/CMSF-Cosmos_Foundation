@@ -90,7 +90,7 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
 ///
 ///   @override
 ///   void dispose() {
-///     disposeGetTheme(updateThemeEffect);
+///     disposeGetTheme<ThemeBase>(updateThemeEffect);
 ///     super.dispose();
 ///   }
 ///   void updateThemeEffect(ThemeBase effect) => setState(() {});
@@ -122,7 +122,7 @@ TTheme getTheme<TTheme extends CosmosThemeBase>({void Function(TTheme effect)? u
 ///
 ///   @override
 ///   void dispose() {
-///     disposeGetTheme(updateThemeEffect);
+///     disposeGetTheme<ThemeBase>(updateThemeEffect);
 ///     super.dispose();
 ///   }
 ///   void updateThemeEffect(ThemeBase effect) => setState(() {});
@@ -158,7 +158,7 @@ void disposeGetTheme<TTheme extends CosmosThemeBase>(void Function(TTheme effect
 ///
 ///   @override
 ///   void dispose() {
-///     disposeGetTheme(updateThemeEffect);
+///     disposeGetTheme<ThemeBase>(updateThemeEffect);
 ///     super.dispose();
 ///   }
 ///   void updateThemeEffect(ThemeBase effect) => setState(() {});
