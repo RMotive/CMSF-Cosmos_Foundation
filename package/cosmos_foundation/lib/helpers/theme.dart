@@ -95,9 +95,9 @@ Future<TTheme?> getThemeFromStore<TTheme extends CosmosThemeBase>(
 ///   }
 ///   void updateThemeEffect(ThemeBase effect) => setState(() {});
 /// '''
-TTheme getTheme<TTheme extends CosmosThemeBase>({void Function(TTheme effect)? updateEfect}) {
+TTheme getTheme<TTheme extends CosmosThemeBase>({VoidCallback? updateEfect}) {
   if (updateEfect != null) {
-    _validNotifier.addListener(() => updateEfect(_validNotifier.value as TTheme));
+    _validNotifier.addListener(updateEfect);
   }
   return _validNotifier.value as TTheme;
 }
@@ -127,8 +127,8 @@ TTheme getTheme<TTheme extends CosmosThemeBase>({void Function(TTheme effect)? u
 ///   }
 ///   void updateThemeEffect(ThemeBase effect) => setState(() {});
 /// '''
-void disposeGetTheme<TTheme extends CosmosThemeBase>(void Function(TTheme effect) updateEffect) {
-  _validNotifier.removeListener(() => updateEffect);
+void disposeGetTheme<TTheme extends CosmosThemeBase>(VoidCallback updateEffect) {
+  _validNotifier.removeListener(updateEffect);
 }
 
 /// Provides a global reference for the theme change manager.
