@@ -106,7 +106,7 @@ class Advisor {
       standarized = standarized.toStartUpperCase();
     }
 
-    final String colorizedTag = _colorizeStringAndReset(tagColor, '[$_tag]');
+    final String colorizedTag = _colorizeStringAndReset(tagColor, '[(*)$_tag]');
     final String colorizedHeader = _colorizeStringAndReset(color, standarized);
     return '$colorizedTag $colorizedHeader';
   }
