@@ -30,6 +30,9 @@ class Advisor {
   /// Color for waning messages;
   final Color warningColor;
 
+  /// Color for advise messages;
+  final Color messageColor;
+
   /// Gets the advisor tag in a to-display format.
   String get _tag => _advisorTag.toUpperCase().substring(0, min(30, _advisorTag.length));
 
@@ -43,6 +46,7 @@ class Advisor {
     this.tagColor = Colors.orangeAccent,
     this.successColor = Colors.tealAccent,
     this.warningColor = Colors.amberAccent,
+    this.messageColor = Colors.indigo,
   }) : _advisorTag = advisorTag;
 
   /// Writes a sucess advise in console.
@@ -56,7 +60,24 @@ class Advisor {
   void adviseSuccess(String message, {Map<String, dynamic>? info, bool? startWithUpper}) => _advise(message, successColor, info: info, startWithUpper: startWithUpper);
 
   /// Writes a warning advise in console.
+  ///
+  /// [message] message header that will be displayed.
+  ///
+  /// [info]? if is set, additional information that will be displayed by each entry as a new row.
+  ///
+  /// [startWithUpper]? if is set, overrides the object instance property [startMessageUpper] to
+  /// calculate if the header message should start with upper-case or not.
   void adviseWarning(String message, {Map<String, dynamic>? info, bool? startWithUpper}) => _advise(message, warningColor, info: info, startWithUpper: startWithUpper);
+
+  /// Writes a message advise in console.
+  ///
+  /// [message] message header that will be displayed.
+  ///
+  /// [info]? if is set, additional information that will be displayed by each entry as a new row.
+  ///
+  /// [startWithUpper]? if is set, overrides the object instance property [startMessageUpper] to
+  /// calculate if the header message should start with upper-case or not.
+  void adviseMessage(String message, {Map<String, dynamic>? info, bool? startWithUpper}) => _advise(message, messageColor, info: info, startWithUpper: startWithUpper);
 
   /// Main advisor encapsuled method, each method that represents a new advise action depends on call this one,
   /// this method takes the relevant data to write and advise colorized console messages based on the provided inputs.
