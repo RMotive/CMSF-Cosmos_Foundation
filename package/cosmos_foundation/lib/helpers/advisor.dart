@@ -87,6 +87,8 @@ class Advisor {
   void _advise(String message, Color color, {Map<String, dynamic>? info, bool? startWithUpper}) {
     String formatted = _buildBasicFormattedMessage(message, color, startWithUpper: startMessageUpper);
     debugPrint(formatted);
+    final String timeMarkLine = DateTime.now().toIso8601String();
+    debugPrint(_buildBasicFormattedMessage('timeMark: $timeMarkLine', color, startWithUpper: startWithUpper));
     if (info == null) return;
     debugPrint(_buildBasicFormattedMessage('\tinfo:', color, startWithUpper: startWithUpper));
     for (MapEntry<String, dynamic> infoEntry in info.entries) {
