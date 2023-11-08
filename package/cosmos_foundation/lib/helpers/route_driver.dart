@@ -19,4 +19,10 @@ class RouteDriver {
   void driveTo(RouteOptions options, {bool push = false}) {
     push ? _nav.context.pushNamed(options.name) : _nav.context.goNamed(options.name);
   }
+
+  void removeAll() {
+    _nav.popUntil(
+      (Route<dynamic> route) => route.isActive,
+    );
+  }
 }
