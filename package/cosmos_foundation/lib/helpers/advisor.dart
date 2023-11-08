@@ -46,7 +46,7 @@ class Advisor {
     this.tagColor = Colors.orangeAccent,
     this.successColor = Colors.tealAccent,
     this.warningColor = Colors.amberAccent,
-    this.messageColor = Colors.indigo,
+    this.messageColor = Colors.lightBlue,
   }) : _advisorTag = advisorTag;
 
   /// Writes a sucess advise in console.
@@ -88,10 +88,10 @@ class Advisor {
     String formatted = _buildBasicFormattedMessage(message, color, startWithUpper: startMessageUpper);
     debugPrint(formatted);
     if (info == null) return;
-    debugPrint(_colorizeStringAndReset(color, '\tinfo:'));
+    debugPrint(_buildBasicFormattedMessage('\tinfo:', color, startWithUpper: startWithUpper));
     for (MapEntry<String, dynamic> infoEntry in info.entries) {
       final String textLine = '\t[${infoEntry.key}]: ${infoEntry.value}';
-      debugPrint(_colorizeStringAndReset(color, textLine));
+      debugPrint(_buildBasicFormattedMessage(textLine, color, startWithUpper: startWithUpper));
     }
   }
 
