@@ -29,6 +29,22 @@ class Responsive {
   /// Breakpoint value for medium devices.
   final double _bpMedium = 1200;
 
+  /// Internal reference shortcut to get the default subscribed [FlutterView].
+  /// This has pyhiscal view devices, app window related properties.
+  FlutterView get _defaultViewReference {
+    return PlatformDispatcher.instance.views.first;
+  }
+
+  /// Gives a shortcut to indicate if the current window surface context is considered as a
+  /// large device.
+  ///
+  /// Consider that by default is a large device when:
+  ///   windowSurface >= [1200]
+  bool get isLargeDevice {
+    final double windowSurface = _defaultViewReference.physicalSize.width;
+    return windowSurface >= _bpMedium;
+  }
+
   /// Calculates the resolved value based on the default breakpoints values and the provided
   /// values provided in [options].
   ///
@@ -38,7 +54,7 @@ class Responsive {
   ///   For medium devices 600 >= breakpoint < 1200
   ///   For large devices  1200 => breakpoint
   T propertyFromDefault<T>(ResponsivePropertyOptions<T> options) {
-    final double screenSurface = PlatformDispatcher.instance.views.first.physicalSize.width;
+    final double screenSurface = _defaultViewReference.physicalSize.width;
     if (screenSurface < _bpSmall) return options.small;
     if (screenSurface < _bpMedium) return options.medium;
     return options.large;
