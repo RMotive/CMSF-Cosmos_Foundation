@@ -20,8 +20,8 @@ class Responsive {
   // Avoid self instance
   Responsive._();
 
-  /// Helper intance.
-  static Responsive get instance => _instance ??= Responsive._();
+  /// Helper intance reference.
+  static Responsive get i => _instance ??= Responsive._();
 
   /// Breakpoint value for small devices.
   final double _bpSmall = 600;
@@ -38,7 +38,7 @@ class Responsive {
   ///   For medium devices 600 >= breakpoint < 1200
   ///   For large devices  1200 => breakpoint
   T propertyFromDefault<T>(ResponsivePropertyOptions<T> options) {
-    final double screenSurface = PlatformDispatcher.instance.displays.first.size.width;
+    final double screenSurface = PlatformDispatcher.instance.views.first.physicalSize.width;
     if (screenSurface < _bpSmall) return options.small;
     if (screenSurface < _bpMedium) return options.medium;
     return options.large;
