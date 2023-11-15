@@ -8,8 +8,8 @@ class CosmosRouteShell extends CosmosRouteBase {
   final GlobalKey<NavigatorState>? innerNavigator;
   final List<NavigatorObserver>? observers;
   final String? restorationScopeId;
-  final Page<dynamic> Function(BuildContext ctx, RouteOutput output, Widget page)? pagerBuild;
-  final CosmosScreen Function(BuildContext ctx, RouteOutput output, Widget page)? screenBuild;
+  final Page<dynamic> Function(BuildContext ctx, RouteOutput output, Widget page)? pageBuild;
+  final CosmosLayout Function(BuildContext ctx, RouteOutput output, Widget page)? layoutBuild;
   final List<CosmosRouteBase> routes;
 
   const CosmosRouteShell({
@@ -18,10 +18,10 @@ class CosmosRouteShell extends CosmosRouteBase {
     this.innerNavigator,
     this.observers,
     this.restorationScopeId,
-    this.screenBuild,
-    this.pagerBuild,
+    this.layoutBuild,
+    this.pageBuild,
   }) : assert(
-          screenBuild != null || pagerBuild != null,
+          layoutBuild != null || pageBuild != null,
           'You must provide at least one UI Build (screenBuild or pagerBuild) function',
         );
 
@@ -31,8 +31,8 @@ class CosmosRouteShell extends CosmosRouteBase {
         observers: observers,
         parentNavigatorKey: parentNavigator,
         restorationScopeId: restorationScopeId ?? GlobalKey().toString(),
-        pageBuilder: pagerBuild != null ? (BuildContext context, GoRouterState state, Widget child) => pagerBuild!(context, RouteOutput.fromGo(state), child) : null,
-        builder: screenBuild != null ? (BuildContext context, GoRouterState state, Widget child) => screenBuild!(context, RouteOutput.fromGo(state), child) : null,
+        pageBuilder: pageBuild != null ? (BuildContext context, GoRouterState state, Widget child) => pageBuild!(context, RouteOutput.fromGo(state), child) : null,
+        builder: layoutBuild != null ? (BuildContext context, GoRouterState state, Widget child) => layoutBuild!(context, RouteOutput.fromGo(state), child) : null,
         routes: <RouteBase>[
           for (CosmosRouteBase route in routes) route.compose(isSub: isSub),
         ],
