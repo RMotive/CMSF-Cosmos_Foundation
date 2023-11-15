@@ -1,6 +1,8 @@
 import 'package:cosmos_foundation/contracts/cosmos_theme_base.dart';
+import 'package:cosmos_foundation/errors/cosmos_theme_manager_init_error.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+
 
 /// Stores the provate reference for the static change notifier for the Theming handling.
 ///
@@ -13,7 +15,7 @@ List<CosmosThemeBase> _themes = <CosmosThemeBase>[];
 /// Validates and returns the correct object to handle listeners notifications when the
 /// theme has changed.
 ValueNotifier<CosmosThemeBase> get _validNotifier {
-  if (_notifier == null) throw Exception("Theme is not initialized yet");
+  if (_notifier == null) throw const CosmosThemeManagerInitError();
   return _notifier as ValueNotifier<CosmosThemeBase>;
 }
 
@@ -25,19 +27,28 @@ void updateTheme<TTheme extends CosmosThemeBase>(
 }) {
   if (saveLocalKey != null) {
     final LocalStorage store = LocalStorage(saveLocalKey);
-    store.ready.then((bool value) {
-      if (value) {
-        store.setItem(
-          saveLocalKey,
-          themeIdentifier,
-          (Object nonEncodable) => <String, Object>{saveLocalKey: nonEncodable},
-        );
-      }
-    });
+    store.ready.then(
+      (bool value) {
+        if (value) {
+          store.setItem(
+            saveLocalKey,
+            themeIdentifier,
+            (Object nonEncodable) => <String, Object>{saveLocalKey: nonEncodable},
+          );
+        }
+      },
+    );
   }
   CosmosThemeBase? base = _themes.where((CosmosThemeBase element) => element.themeIdentifier == themeIdentifier).firstOrNull;
   if (base == null) throw Exception('The identifier wasn\'t found in the themes subscribed');
-  _validNotifier.value = base;
+  try {
+    _validNotifier.value = base;
+  } on CosmosThemeManagerInitError {
+    initTheme(base, _themes);
+    _validNotifier.value = base;
+  } catch (_) {
+    rethrow;
+  }
 }
 
 /// Looks for local storaged references about the theme selected by the user
