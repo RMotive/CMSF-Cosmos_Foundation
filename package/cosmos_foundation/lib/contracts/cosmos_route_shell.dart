@@ -1,5 +1,5 @@
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
-import 'package:cosmos_foundation/contracts/cosmos_screen.dart';
+import 'package:cosmos_foundation/contracts/cosmos_layout.dart';
 import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
