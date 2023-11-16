@@ -44,7 +44,7 @@ class FutureWidget<T> extends StatelessWidget {
         future: futureWrapper(),
         builder: (BuildContext context, AsyncSnapshot<T> snapshot) {
         return AnimatedSwitcher(
-          duration: 2.seconds,
+          duration: 600.miliseconds,
           switchInCurve: Curves.decelerate,
           child: builderWrapper(context, snapshot),
         );
@@ -68,7 +68,7 @@ class _DefaultLoadingView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(12),
           child: Text(
-            "Reocering data...",
+            "Recovering data...",
             style: Theme.of(context).textTheme.labelLarge?.apply(
                   fontStyle: FontStyle.italic,
                 ),
