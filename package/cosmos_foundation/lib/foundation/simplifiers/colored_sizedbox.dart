@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ColoredSizedbox extends StatelessWidget {
+class CosmosColorBox extends StatelessWidget {
   final Color backgroundColor;
   final Size boxSize;
 
-  const ColoredSizedbox({
+  const CosmosColorBox({
     super.key,
     required this.backgroundColor,
     required this.boxSize,
