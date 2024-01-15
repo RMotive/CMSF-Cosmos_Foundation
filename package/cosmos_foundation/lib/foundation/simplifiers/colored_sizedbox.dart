@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
 class CosmosColorBox extends StatelessWidget {
-  final Color backgroundColor;
-  final Size boxSize;
+  final Color color;
+  final Size size;
 
   const CosmosColorBox({
     super.key,
-    required this.backgroundColor,
-    required this.boxSize,
+    required this.size,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: backgroundColor,
+      color: color,
       child: SizedBox(
-        width: boxSize.width,
-        height: boxSize.height,
+        width: size.width,
+        height: size.height,
       ),
     );
   }
