@@ -15,10 +15,10 @@ abstract class CosmosPage extends StatelessWidget {
         minHeight: screenSize.height,
       ),
       child: SingleChildScrollView(
-        child: compose(),
+        child: compose(context),
       ),
     );
   }
 
-  Widget compose();
+  Widget compose(BuildContext ctx);
 }
