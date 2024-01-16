@@ -10,6 +10,7 @@ abstract class CosmosPage extends StatelessWidget {
     final Size screenSize = MediaQuery.sizeOf(context);
 
     return SingleChildScrollView(
+      primary: true,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: screenSize.width,
