@@ -1,5 +1,4 @@
 import 'package:cosmos_foundation/contracts/cosmos_page.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/colored_sizedbox.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) {
@@ -17,10 +16,10 @@ class ExamplePage extends CosmosPage {
   Widget compose(BuildContext ctx, Size window) {
     return SizedBox.fromSize(
       size: window,
-      child: Center(
+      child: const Center(
         child: Row(
           children: [
-            const SizedBox(
+            SizedBox(
               height: 200,
               width: 100,
             ),

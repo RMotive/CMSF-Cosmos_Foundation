@@ -9,8 +9,8 @@ class CosmosUriStruct {
 
   const CosmosUriStruct(
     this.host,
-    this.path,
-    this.port, {
+    this.path, {
+    this.port, 
     this.qryParams,
     this.protocol = CosmosProtocols.https,
   });
@@ -19,7 +19,7 @@ class CosmosUriStruct {
     return CosmosUriStruct(
       source.host,
       '${source.path}/$endpoint',
-      source.port,
+      port: source.port,
       qryParams: source.qryParams,
       protocol: source.protocol,
     );
