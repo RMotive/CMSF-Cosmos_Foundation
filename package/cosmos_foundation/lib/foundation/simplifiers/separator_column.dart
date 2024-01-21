@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SeparatorColumn extends StatelessWidget {
+class CosmosSeparatedColumn extends StatelessWidget {
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment mainAxisAlignment;
   final VerticalDirection verticalDirection;
@@ -11,7 +11,7 @@ class SeparatorColumn extends StatelessWidget {
   final bool includeStart;
   final bool includeEnd;
   final double spacing;
-  const SeparatorColumn({
+  const CosmosSeparatedColumn({
     super.key,
     required this.children,
     required this.spacing,
