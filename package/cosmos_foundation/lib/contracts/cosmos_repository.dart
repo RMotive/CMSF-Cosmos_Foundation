@@ -1,7 +1,15 @@
 import 'package:cosmos_foundation/models/structs/cosmos_uri_struct.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class CosmosRepository {
-  final CosmosUriStruct host;
+  late final CosmosUriStruct host;
+  final CosmosUriStruct production;
+  final CosmosUriStruct? development;
 
-  const CosmosRepository(this.host);
+  CosmosRepository(
+    this.production, {
+    this.development,
+  }) {
+    host = kDebugMode ? (development ?? production) : production;
+  }
 }
