@@ -25,13 +25,15 @@ class CosmosUriStruct {
     );
   }
 
-  Uri generateUri({String endpoint = ''}) {
+  Uri generateUri({String? endpoint}) {
+    String buildtEndpoint = path;
+    if (endpoint != null) buildtEndpoint += '/$endpoint';
+
     return Uri(
       scheme: protocol.scheme,
       host: host,
-      path: path,
+      path: buildtEndpoint,
       port: port,
-      pathSegments: <String>[endpoint],
       queryParameters: qryParams,
     );
   }
