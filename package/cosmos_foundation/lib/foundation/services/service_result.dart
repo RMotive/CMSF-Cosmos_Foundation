@@ -1,24 +1,25 @@
+
 import 'package:cosmos_foundation/alias/aliases.dart';
+import 'package:cosmos_foundation/foundation/services/operation_result.dart';
 
-class ServiceResult {
-  late final JObject? _successResult;
-  late final JObject? _errorResult;
-  late final Object? _exception;
-  late final StackTrace? _tracer;
+class ServiceResult<S> {
+  late final OperationResult _result;
+  late final S Function(JObject json) _factory;
 
-  ServiceResult({JObject? success, JObject? error, Object? exception, StackTrace? trace}) {
-    _successResult = success;
-    _errorResult = error;
-    _exception = exception;
-    _tracer = trace;
+  ServiceResult(OperationResult result, S Function(JObject json) factory) {
+    _result = result;
+    _factory = factory;
   }
 
-  void resolve(Function(JObject) onSucess, Function(JObject) onFailure, Function(Object, StackTrace) onException) {
-    if (_successResult != null) onSucess(_successResult as JObject);
-    if (_errorResult != null) onFailure(_errorResult as JObject);
-
-    Object evaluatedX = _exception ?? Exception("No success, no error, no exception");
-    StackTrace evaluatedST = _tracer ?? StackTrace.current;
-    onException(evaluatedX, evaluatedST);
+  void resolve(
+    Function(S success) onSuccess,
+    Function(JObject failure, int statusCode) onFailure,
+    Function(Object exception, StackTrace trace) onException,
+  ) {
+    _result.resolve(
+      (JObject success) => onSuccess(_factory(success)),
+      (JObject failure, int statusCode) => onFailure(failure, statusCode),
+      (Object exception, StackTrace trace) => onException(exception, trace),
+    );
   }
 }
