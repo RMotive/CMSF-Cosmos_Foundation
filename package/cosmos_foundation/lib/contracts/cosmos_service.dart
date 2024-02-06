@@ -7,9 +7,16 @@ import 'package:http/http.dart';
 
 import 'package:cosmos_foundation/models/structs/cosmos_uri_struct.dart';
 
+typedef Headers = Map<String, String>;
+
 abstract class CosmosService {
   late final CosmosUriStruct endpoint;
   late final Client comm;
+
+  static const Headers _kHeaders = <String, String>{
+    "accept-type": 'application/json',
+    "content-type": 'application/json',
+  };
 
   CosmosService(CosmosUriStruct host, String servicePath) {
     endpoint = CosmosUriStruct.includeEndpoint(host, servicePath);
@@ -19,13 +26,13 @@ abstract class CosmosService {
   Future<OperationResult> post<S, E>(
     String operation,
     IModel request, {
-    Map<String, String>? headers,
+    Headers? headers,
   }) async {
     Uri uri = endpoint.generateUri(endpoint: operation);
     try {
       Response response = await comm.post(
         uri,
-        headers: headers,
+        headers: headers ?? _kHeaders,
         body: jsonEncode(request),
       );
       JObject parsedBody = jsonDecode(response.body);
