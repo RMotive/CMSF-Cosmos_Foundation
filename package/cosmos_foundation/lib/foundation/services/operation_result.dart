@@ -1,4 +1,5 @@
 import 'package:cosmos_foundation/alias/aliases.dart';
+import 'package:cosmos_foundation/helpers/advisor.dart';
 
 class OperationResult {
   late final JObject? _successResult;
@@ -25,6 +26,8 @@ class OperationResult {
 
     Object evaluatedX = _exception ?? Exception("No success, no error, no exception");
     StackTrace evaluatedST = _tracer ?? StackTrace.current;
+
+    const Advisor('HTTP').adviseWarning(evaluatedX.toString());
     onException(evaluatedX, evaluatedST);
   }
 }
