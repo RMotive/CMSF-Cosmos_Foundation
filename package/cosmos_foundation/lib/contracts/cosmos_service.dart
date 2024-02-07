@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:cosmos_foundation/alias/aliases.dart';
 import 'package:cosmos_foundation/contracts/interfaces/i_model.dart';
 import 'package:cosmos_foundation/foundation/services/operation_result.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/browser_client.dart';
 import 'package:http/http.dart';
 
 import 'package:cosmos_foundation/models/structs/cosmos_uri_struct.dart';
@@ -20,7 +22,8 @@ abstract class CosmosService {
 
   CosmosService(CosmosUriStruct host, String servicePath) {
     endpoint = CosmosUriStruct.includeEndpoint(host, servicePath);
-    comm = Client();
+    comm = kIsWeb ? BrowserClient() : Client();
+    
   }
 
   Future<OperationResult> post<S, E>(
