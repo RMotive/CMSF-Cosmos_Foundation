@@ -85,7 +85,12 @@ class Advisor {
   /// DEV NOTE: Always when you create a new one method in this helper abount write new messages, keep the name format and
   /// the call to this main handler method.
   void _advise(String message, Color color, {Map<String, dynamic>? info, bool? startWithUpper}) {
-    String formatted = _buildBasicFormattedMessage(message, color, startWithUpper: startMessageUpper);
+    String formatted = _buildBasicFormattedMessage(
+      message,
+      color,
+      startWithUpper: startMessageUpper,
+      includeTag: true,
+    );
     debugPrint(formatted);
     final String timeMarkLine = DateTime.now().toIso8601String();
     debugPrint(_buildBasicFormattedMessage('timeMark: $timeMarkLine', color, startWithUpper: startWithUpper));
@@ -100,7 +105,7 @@ class Advisor {
   /// Formats and handles the standarizationg of the displayed message.
   ///
   /// Here the message is case-formatted and colorized.
-  String _buildBasicFormattedMessage(String message, Color color, {bool? startWithUpper}) {
+  String _buildBasicFormattedMessage(String message, Color color, {bool? startWithUpper, bool includeTag = false}) {
     String standarized = message;
     if ((startMessageUpper && (startWithUpper != false)) || (startWithUpper == true)) {
       standarized = standarized.toStartUpperCase();
@@ -108,7 +113,9 @@ class Advisor {
 
     final String colorizedTag = _colorizeStringAndReset(tagColor, '[(*)$_tag]');
     final String colorizedHeader = _colorizeStringAndReset(color, standarized);
-    return '$colorizedTag $colorizedHeader';
+    String display = colorizedHeader;
+    if (includeTag) display = '$colorizedTag $colorizedHeader';
+    return display;
   }
 
   /// Wraps a string in a colorized ansii scape to be understandable by the debug console.
