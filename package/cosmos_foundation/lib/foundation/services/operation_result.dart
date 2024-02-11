@@ -21,8 +21,14 @@ class OperationResult {
     Function(JObject failure, int statusCode) onFailure,
     Function(Object exception, StackTrace trace) onException,
   ) {
-    if (_successResult != null) onSucess(_successResult as JObject);
-    if (_errorResult != null) onFailure(_errorResult as JObject, _statusCode ?? 0);
+    if (_successResult != null) {
+      onSucess(_successResult as JObject);
+      return;
+    }
+    if (_errorResult != null) {
+      onFailure(_errorResult as JObject, _statusCode ?? 0);
+      return;
+    }
 
     Object evaluatedX = _exception ?? Exception("No success, no error, no exception");
     StackTrace evaluatedST = _tracer ?? StackTrace.current;
