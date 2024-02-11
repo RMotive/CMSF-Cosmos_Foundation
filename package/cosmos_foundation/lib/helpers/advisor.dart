@@ -12,6 +12,13 @@ import 'package:flutter/material.dart';
 ///   Default colors:
 ///     Success:
 class Advisor {
+  /// Indicates the key to display on timemark property at advise messages.
+  static const String _kAdviseTimemarkKeyDisplay = "Timemark";
+
+  /// Indicates the key to display on extra details property at advise messages.
+  static const String _kAdviseDetailsKeyDisplay = "Details";
+
+
   /// Stores an advisor tag to separate advisors along the application lifecycle
   final String _advisorTag;
 
@@ -127,20 +134,23 @@ class Advisor {
   /// DEV NOTE: Always when you create a new one method in this helper abount write new messages, keep the name format and
   /// the call to this main handler method.
   void _advise(String message, Color color, {Map<String, dynamic>? info, bool? startWithUpper}) {
-    String formatted = _buildBasicFormattedMessage(
-      message,
-      color,
-      startWithUpper: startMessageUpper,
-      includeTag: true,
-    );
-    debugPrint(formatted);
-    final String timeMarkLine = DateTime.now().toIso8601String();
-    debugPrint(_buildBasicFormattedMessage('timeMark: $timeMarkLine', color, startWithUpper: startWithUpper));
+    final String adviseHeader = _buildBasicFormattedMessage(message, color, includeTag: true);
+    debugPrint(adviseHeader);
+    final String timemark = DateTime.now().toIso8601String();
+    final String adviseTimemark = _buildBasicFormattedMessage('$_kAdviseTimemarkKeyDisplay: $timemark', color);
+    debugPrint(adviseTimemark);
     if (info == null) return;
-    debugPrint(_buildBasicFormattedMessage('\tinfo:', color, startWithUpper: startWithUpper));
+    final String adviseDetailsDisplay = _buildBasicFormattedMessage('$_kAdviseDetailsKeyDisplay:', color);
+    debugPrint(adviseDetailsDisplay);
     for (MapEntry<String, dynamic> infoEntry in info.entries) {
-      final String textLine = '\t[${infoEntry.key}]: ${infoEntry.value}';
-      debugPrint(_buildBasicFormattedMessage(textLine, color, startWithUpper: startWithUpper));
+      String key = infoEntry.key;
+      dynamic value = infoEntry.value;
+      // --> If the property in the map is not a nested Map.
+      if (value is! Map) {
+        final String formattedMessage = '[$key]: $value';
+        final String printableDisplay = _buildBasicFormattedMessage(formattedMessage, color);
+        debugPrint(printableDisplay);
+      }
     }
   }
 
@@ -159,6 +169,8 @@ class Advisor {
     if (includeTag) display = '$colorizedTag $colorizedHeader';
     return display;
   }
+
+  void objectPrinter(int depthLevel) {}
 
   /// Wraps a string in a colorized ansii scape to be understandable by the debug console.
   String _colorizeStringAndReset(Color color, String msg) => '\u001b[38;2;${color.red};${color.green};${color.blue}m$msg\u001b[0m';
