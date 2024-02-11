@@ -22,8 +22,7 @@ abstract class CosmosService {
 
   CosmosService(CosmosUriStruct host, String servicePath) {
     endpoint = CosmosUriStruct.includeEndpoint(host, servicePath);
-    comm = kIsWeb ? BrowserClient() : Client();
-    
+    comm = kIsWeb ? BrowserClient() : Client();   
   }
 
   Future<OperationResult> post<S, E>(
@@ -33,15 +32,15 @@ abstract class CosmosService {
   }) async {
     Uri uri = endpoint.generateUri(endpoint: operation);
     try {
-      Response response = await comm.post(
+      final Response response = await comm.post(
         uri,
         headers: headers ?? _kHeaders,
         body: jsonEncode(request),
       );
-      JObject parsedBody = jsonDecode(response.body);
-
-      if (response.statusCode != 200) return OperationResult(error: parsedBody);
-      return OperationResult(success: parsedBody);
+      final JObject parsedBody = jsonDecode(response.body);
+      final int statusCode = response.statusCode;
+      if (response.statusCode == 200) return OperationResult(success: parsedBody, statusCode: 200);
+      return OperationResult(error: parsedBody, statusCode: statusCode);
     } catch (x, st) {
       return OperationResult(exception: x, trace: st);
     }
