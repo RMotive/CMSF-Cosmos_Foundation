@@ -27,11 +27,14 @@ class Advisor {
   /// Color for success messages.
   final Color successColor;
 
-  /// Color for waning messages;
+  /// Color for waning messages.
   final Color warningColor;
 
-  /// Color for advise messages;
+  /// Color for advise messages.
   final Color messageColor;
+
+  /// Color for advise exceptions.
+  final Color exceptionColor;
 
   /// Gets the advisor tag in a to-display format.
   String get _tag => _advisorTag.toUpperCase().substring(0, min(30, _advisorTag.length));
@@ -47,6 +50,7 @@ class Advisor {
     this.successColor = Colors.tealAccent,
     this.warningColor = Colors.amberAccent,
     this.messageColor = Colors.lightBlue,
+    this.exceptionColor = Colors.red,
   }) : _advisorTag = advisorTag;
 
   /// Writes a sucess advise in console.
@@ -57,7 +61,12 @@ class Advisor {
   ///
   /// [startWithUpper]? if is set, overrides the object instance property [startMessageUpper] to
   /// calculate if the header message should start with upper-case or not.
-  void adviseSuccess(String message, {Map<String, dynamic>? info, bool? startWithUpper}) => _advise(message, successColor, info: info, startWithUpper: startWithUpper);
+  void adviseSuccess(
+    String message, {
+    Map<String, dynamic>? info,
+    bool? startWithUpper,
+  }) =>
+      _advise(message, successColor, info: info, startWithUpper: startWithUpper);
 
   /// Writes a warning advise in console.
   ///
@@ -67,7 +76,40 @@ class Advisor {
   ///
   /// [startWithUpper]? if is set, overrides the object instance property [startMessageUpper] to
   /// calculate if the header message should start with upper-case or not.
-  void adviseWarning(String message, {Map<String, dynamic>? info, bool? startWithUpper}) => _advise(message, warningColor, info: info, startWithUpper: startWithUpper);
+  void adviseWarning(
+    String message, {
+    Map<String, dynamic>? info,
+    bool? startWithUpper,
+  }) =>
+      _advise(message, warningColor, info: info, startWithUpper: startWithUpper);
+
+  /// Writes an exception advise in console.
+  ///
+  /// [subject] message header that will be displayed.
+  ///
+  /// [x] exception catched to advise.
+  ///
+  /// [t] tracer for exception source.
+  ///
+  /// [info]? if is set, additional information that will be displayed by each entry as a new row.
+  ///
+  /// [startWithUpper]? if is set, overrides the object instance property [startMessageUpper] to
+  /// calculate if the header message should start with upper-case or not.
+  void adviseException(
+    String subject,
+    Exception x,
+    StackTrace t, {
+    Map<String, dynamic>? info,
+    bool? startWithUpper,
+  }) =>
+      _advise(subject, exceptionColor,
+          info: <String, dynamic>{
+            "message": x,
+            "trace": t,
+          }..addEntries(
+              info?.entries ?? <MapEntry<String, dynamic>>[],
+            ),
+          startWithUpper: startWithUpper);
 
   /// Writes a message advise in console.
   ///
