@@ -166,7 +166,7 @@ class Advisor {
       final String key = detail.key;
       final dynamic content = detail.value;
       if (content is! Map) {
-        final String standardFormat = '$depthIndent[$key]: [$content]';
+        final String standardFormat = '$depthIndent[$key]: $content';
         final String standardDisplayAdvise = _buildBasicFormattedMessage(standardFormat, color);
         debugPrint(standardDisplayAdvise);
         continue;
