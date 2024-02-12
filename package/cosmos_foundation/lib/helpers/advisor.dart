@@ -142,9 +142,7 @@ class Advisor {
     if (info == null) return;
     final String adviseDetailsDisplay = _buildBasicFormattedMessage('$_kAdviseDetailsKeyDisplay:', color);
     debugPrint(adviseDetailsDisplay);
-    for (MapEntry<String, dynamic> infoEntry in info.entries) {
-      objectPrinter(0, color, infoEntry);
-    }
+    objectPrinter(1, '\t', color, info);
   }
 
   /// Formats and handles the standarizationg of the displayed message.
@@ -163,17 +161,20 @@ class Advisor {
     return display;
   }
 
-  void objectPrinter(int depthLevel, Color color, MapEntry<String, dynamic> entry) {
-    // --> If the property in the map is not a nested Map.
-    String key = entry.key;
-    dynamic value = entry.value;
-    if (value is! Map) {
-      final String formattedMessage = '\t[$key]: $value';
-      final String printableDisplay = _buildBasicFormattedMessage(formattedMessage, color);
-      debugPrint(printableDisplay);
-      return;
+  void objectPrinter(int depthLevel, String depthIndent, Color color, Map<String, dynamic> details) {
+    for (MapEntry<String, dynamic> detail in details.entries) {
+      final String key = detail.key;
+      final dynamic content = detail.value;
+      if (content is! Map) {
+        final String standardFormat = '$depthIndent[$key]: [$content]';
+        final String standardDisplayAdvise = _buildBasicFormattedMessage(standardFormat, color);
+        debugPrint(standardDisplayAdvise);
+        continue;
+      }
+
+      final Map<String, dynamic> castedContentToObject = (content as Map<String, dynamic>);
+      objectPrinter(depthLevel + 1, depthIndent += '\t', color, castedContentToObject);
     }
-    objectPrinter(depthLevel, color, entry);
   }
 
   /// Wraps a string in a colorized ansii scape to be understandable by the debug console.
