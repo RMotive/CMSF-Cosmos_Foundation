@@ -171,6 +171,7 @@ class Advisor {
       final String formattedMessage = '\t[$key]: $value';
       final String printableDisplay = _buildBasicFormattedMessage(formattedMessage, color);
       debugPrint(printableDisplay);
+      return;
     }
     objectPrinter(depthLevel, color, entry);
   }
