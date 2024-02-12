@@ -143,14 +143,7 @@ class Advisor {
     final String adviseDetailsDisplay = _buildBasicFormattedMessage('$_kAdviseDetailsKeyDisplay:', color);
     debugPrint(adviseDetailsDisplay);
     for (MapEntry<String, dynamic> infoEntry in info.entries) {
-      String key = infoEntry.key;
-      dynamic value = infoEntry.value;
-      // --> If the property in the map is not a nested Map.
-      if (value is! Map) {
-        final String formattedMessage = '[$key]: $value';
-        final String printableDisplay = _buildBasicFormattedMessage(formattedMessage, color);
-        debugPrint(printableDisplay);
-      }
+      objectPrinter(0, color, infoEntry);
     }
   }
 
@@ -170,7 +163,17 @@ class Advisor {
     return display;
   }
 
-  void objectPrinter(int depthLevel) {}
+  void objectPrinter(int depthLevel, Color color, MapEntry<String, dynamic> entry) {
+    // --> If the property in the map is not a nested Map.
+    String key = entry.key;
+    dynamic value = entry.value;
+    if (value is! Map) {
+      final String formattedMessage = '\t[$key]: $value';
+      final String printableDisplay = _buildBasicFormattedMessage(formattedMessage, color);
+      debugPrint(printableDisplay);
+    }
+    objectPrinter(depthLevel, color, entry);
+  }
 
   /// Wraps a string in a colorized ansii scape to be understandable by the debug console.
   String _colorizeStringAndReset(Color color, String msg) => '\u001b[38;2;${color.red};${color.green};${color.blue}m$msg\u001b[0m';

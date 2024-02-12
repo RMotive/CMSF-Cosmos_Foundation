@@ -1,5 +1,6 @@
 
 import 'package:cosmos_foundation/contracts/cosmos_theme_base.dart';
+import 'package:cosmos_foundation/helpers/advisor.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart' hide Theme;
 
@@ -61,6 +62,8 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
     listener = listenTheme;
     if (widget.homeWidget != null) byHome = widget.homeWidget;
     if (widget.homeBuilder != null) byHome = widget.homeBuilder?.call(context);
+
+    const Advisor('COSMOS').adviseMessage('Starting engines⚙️⚙️⚙️');
   }
 
   @override
