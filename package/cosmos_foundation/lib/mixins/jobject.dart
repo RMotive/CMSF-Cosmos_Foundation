@@ -12,7 +12,7 @@ mixin class Jobject {
   /// [defaultValue] The specified default value to return if all the fallbacks resulted in a null value.
   ///
   /// [caseSensitive] Specifies if the key searching in the object should consider the specific casing of the words.
-  static TExpectation bindProperty<TExpectation>(JObject json, List<String> fallbacks, TExpectation defaultValue, {bool caseSensitive = true}) {
+  TExpectation bindProperty<TExpectation>(JObject json, List<String> fallbacks, TExpectation defaultValue, {bool caseSensitive = true}) {
     TExpectation? gatheredValue;
     for (String key in fallbacks) {
       for (JElement element in json.entries) {
