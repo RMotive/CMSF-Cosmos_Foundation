@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cosmos_foundation/alias/aliases.dart';
-import 'package:cosmos_foundation/contracts/interfaces/i_model.dart';
+import 'package:cosmos_foundation/contracts/bases/model_base.dart';
 import 'package:cosmos_foundation/foundation/services/operation_result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/browser_client.dart';
@@ -27,7 +27,7 @@ abstract class CosmosService {
 
   Future<OperationResult> post<S, E>(
     String operation,
-    IModel request, {
+    ModelBase request, {
     Headers? headers,
   }) async {
     Uri uri = endpoint.generateUri(endpoint: operation);
