@@ -176,7 +176,7 @@ class Advisor {
       final String newObjectKeyDisplay = _buildBasicFormattedMessage(newObjectFormat, color);
       debugPrint(newObjectKeyDisplay);
       final Map<String, dynamic> castedContentToObject = (content as Map<String, dynamic>);
-      objectPrinter(depthLevel + 1, depthIndent += '\t', color, castedContentToObject);
+      objectPrinter(depthLevel + 1, '$depthIndent\t', color, castedContentToObject);
     }
   }
 
