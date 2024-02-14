@@ -12,7 +12,7 @@ extension JUtils on Map<String, dynamic> {
   /// [defaultValue] The specified default value to return if all the fallbacks resulted in a null value.
   ///
   /// [caseSensitive] Specifies if the key searching in the object should consider the specific casing of the words.
-  TExpectation bindProperty<TExpectation>(List<String> fallbacks, TExpectation defaultValue, {bool caseSensitive = false}) {
+  TExpectation _bindProperty<TExpectation>(List<String> fallbacks, TExpectation defaultValue, {bool caseSensitive = false}) {
     TExpectation? gatheredValue;
     for (String key in fallbacks) {
       for (JElement element in entries) {
@@ -26,4 +26,9 @@ extension JUtils on Map<String, dynamic> {
     }
     return gatheredValue ?? defaultValue;
   }
+
+  T bindProp<T>(String key, T defaultValue) => _bindProperty(<String>[key], defaultValue);
+  T bindPropSensitive<T>(String key, T defaultValue) => _bindProperty(<String>[key], defaultValue, caseSensitive: true);
+  T bindPropFallback<T>(List<String> fallback, T defaultValue) => _bindProperty(fallback, defaultValue);
+  T bindPropFallbackSensitive<T>(List<String> fallback, T defaultValue) => _bindProperty(fallback, defaultValue, caseSensitive: true);
 }
