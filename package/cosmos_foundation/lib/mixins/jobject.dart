@@ -27,7 +27,7 @@ extension JUtils on Map<String, dynamic> {
     return gatheredValue ?? defaultValue;
   }
 
-  Map<String, dynamic> get empty => <String, dynamic>{};
+  static JObject get empty => <String, dynamic>{};
   T bindProp<T>(String key, T defaultValue) => _bindProperty(<String>[key], defaultValue);
   T bindPropSensitive<T>(String key, T defaultValue) => _bindProperty(<String>[key], defaultValue, caseSensitive: true);
   T bindPropFallback<T>(List<String> fallback, T defaultValue) => _bindProperty(fallback, defaultValue);
