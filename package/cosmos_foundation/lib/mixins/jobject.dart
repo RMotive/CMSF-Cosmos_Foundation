@@ -1,7 +1,7 @@
 import 'package:cosmos_foundation/alias/aliases.dart';
 
 /// Provides utilities to handle jObjects such read and write.
-mixin class Jobject {
+mixin Jobject {
   /// Binds an specified property into the gathered json.
   ///
   /// [json] The json object to scrap in.
