@@ -1,7 +1,7 @@
 import 'package:cosmos_foundation/alias/aliases.dart';
 
 /// Provides utilities to handle jObjects such read and write.
-mixin Jobject {
+extension JUtils on Map<String, dynamic> {
   /// Binds an specified property into the gathered json.
   ///
   /// [json] The json object to scrap in.
@@ -12,10 +12,10 @@ mixin Jobject {
   /// [defaultValue] The specified default value to return if all the fallbacks resulted in a null value.
   ///
   /// [caseSensitive] Specifies if the key searching in the object should consider the specific casing of the words.
-  TExpectation bindProperty<TExpectation>(JObject json, List<String> fallbacks, TExpectation defaultValue, {bool caseSensitive = true}) {
+  TExpectation bindProperty<TExpectation>(List<String> fallbacks, TExpectation defaultValue, {bool caseSensitive = true}) {
     TExpectation? gatheredValue;
     for (String key in fallbacks) {
-      for (JElement element in json.entries) {
+      for (JElement element in entries) {
         final String currentElementKey = element.key;
         if (caseSensitive && (currentElementKey != key)) continue;
         if (!caseSensitive && (currentElementKey.toLowerCase() != key.toLowerCase())) continue;
