@@ -112,7 +112,7 @@ class Advisor {
       _advise(subject, exceptionColor,
           info: <String, dynamic>{
             "message": x,
-            "trace": t,
+            "trace": t.toString().replaceAll('\t', '').replaceAll('\n', ''),
           }..addEntries(
               info?.entries ?? <MapEntry<String, dynamic>>[],
             ),
