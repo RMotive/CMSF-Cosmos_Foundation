@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class Focuser {
+final class Focuser {
   static void focus(FocusNode node) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       node.requestFocus();
