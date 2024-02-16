@@ -35,11 +35,11 @@ class ControlController {
   }
 
   /// Request for the control text
-  /// If the current control doesn`t have a text editing controller, will be returned [null].
-  String? get text {
-    if (textController != null) return textController?.text;
+  /// If the current control doesn`t have a text editing controller, will be returned [''] empty string.
+  String get text {
+    if (textController != null) return (textController?.text as String);
     Advisor('CONTROL-[($name)]').adviseWarning('Current controller context doesn\'t have a text editing controller');
-    return null;
+    return '';
   }
 
   /// Request to get the focus on the current control context.
