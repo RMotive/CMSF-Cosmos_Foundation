@@ -18,7 +18,7 @@ class RouteOptions {
     if ((_name != null && _name!.isEmpty) || parsedPath.isEmpty) return 'init-path-parsed';
     if (_name != null && _name!.startsWith('/')) return _name!.substring(1);
     if (_name != null) return _name as String;
-    return parsedPath;
+    return hashCode.toString();
   }
 
   const RouteOptions(String path, {String? name})

@@ -10,17 +10,12 @@ import 'package:go_router/go_router.dart';
 /// A single Route object to indicate the existance of a Route into the Route manager.
 /// This means that this object only creates the clnfiguration for handle the redirection/direction of
 /// a complex/simple UI Page ([CosmosPage]).
-class CosmosRoute extends CosmosRouteBase {
+class CosmosRouteNode extends CosmosRouteBase {
   /// Routing options to handle the location and behavior.
   final RouteOptions routeOptions;
 
   /// Build function to create the UI Page [CosmosPage] and draw it in the screen.
   final CosmosPage Function(BuildContext ctx, RouteOutput output) build;
-
-  /// Routes below the current Route node.
-  /// Note: this don't mean [subRoutes] will be wrapped by this route, this means
-  /// that [subRoutes] path will be calculated after this [RouteOptions].
-  final List<CosmosRoute> subRoutes;
 
   /// When the client enters into this route, will be redirected to this resolved redirect function.
   final FutureOr<String?> Function(BuildContext ctx, RouteOutput output)? redirect;
@@ -33,11 +28,11 @@ class CosmosRoute extends CosmosRouteBase {
   /// A single Route object to indicate the existance of a Route into the Route manager.
   /// This means that this object only creates the clnfiguration for handle the redirection/direction of
   /// a complex/simple UI Page ([CosmosPage]).
-  const CosmosRoute(
+  const CosmosRouteNode(
     this.routeOptions, {
     super.parentNavigator,
     required this.build,
-    this.subRoutes = const <CosmosRoute>[],
+    super.routes,
     this.redirect,
     this.pageBuild,
     this.onExit,
@@ -68,7 +63,7 @@ class CosmosRoute extends CosmosRouteBase {
                 RouteOutput.fromGo(state),
               ),
       routes: <RouteBase>[
-        for (CosmosRoute cr in subRoutes) cr.compose(isSub: true),
+        for (CosmosRouteBase cr in routes) cr.compose(isSub: true),
       ],
       builder: (BuildContext context, GoRouterState state) => build(
         context,

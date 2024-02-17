@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
 import 'package:cosmos_foundation/extensions/int_extension.dart';
+import 'package:cosmos_foundation/models/options/route_options.dart';
+import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +14,7 @@ import 'package:cosmos_foundation/helpers/route_driver.dart' as rh;
 class CosmosRouting extends GoRouter {
   CosmosRouting({
     required List<CosmosRouteBase> routes,
+    FutureOr<RouteOptions?> Function(BuildContext, RouteOutput)? redirect,
     GlobalKey<NavigatorState>? navigator,
   }) : super.routingConfig(
           navigatorKey: navigator ?? GlobalKey<NavigatorState>(),
@@ -18,12 +23,19 @@ class CosmosRouting extends GoRouter {
               routes: <RouteBase>[
                 for (CosmosRouteBase routeBase in routes) routeBase.compose(),
               ],
+              redirect: (BuildContext context, GoRouterState state) async {
+                if (redirect != null) return null;
+
+                RouteOutput output = RouteOutput.fromGo(state);
+                RouteOptions? route = await redirect?.call(context, output);
+                return route?.path;
+              },
             ),
           ),
         ) {
     Future<void>.delayed(
       120.miliseconds,
-      () => rh.RouteDriver.init(super.configuration.navigatorKey),
+      () => rh.RouteDriver.init(super.configuration.navigatorKey, routes),
     );
   }
 }

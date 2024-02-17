@@ -4,17 +4,16 @@ import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class CosmosRouteShell extends CosmosRouteBase {
+class CosmosRouteLayout extends CosmosRouteBase {
   final GlobalKey<NavigatorState>? innerNavigator;
   final List<NavigatorObserver>? observers;
   final String? restorationScopeId;
   final Page<dynamic> Function(BuildContext ctx, RouteOutput output, Widget page)? pageBuild;
   final CosmosLayout Function(BuildContext ctx, RouteOutput output, Widget page)? layoutBuild;
-  final List<CosmosRouteBase> routes;
 
-  const CosmosRouteShell({
+  const CosmosRouteLayout({
     super.parentNavigator,
-    required this.routes,
+    super.routes,
     this.innerNavigator,
     this.observers,
     this.restorationScopeId,
