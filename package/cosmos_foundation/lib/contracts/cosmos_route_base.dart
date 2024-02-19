@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:cosmos_foundation/contracts/cosmos_route_node.dart';
+import 'package:cosmos_foundation/models/options/route_options.dart';
+import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,5 +24,5 @@ abstract class CosmosRouteBase {
 
   /// Compose the current interfaced object [CosmosRouteBase] to a readable [RouteBase] object used by the Router manager
   /// [GoRouter].
-  RouteBase compose({bool isSub = false});
+  RouteBase compose({bool isSub = false, FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection});
 }

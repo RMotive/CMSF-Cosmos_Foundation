@@ -65,6 +65,11 @@ class RouteDriver {
     push ? _nav.context.pushNamed(options.name) : _nav.context.goNamed(options.name);
   }
 
+  String? calculateAbsolutePath(RouteOptions instance) {
+    if (!_claculatedAbsolutePaths.containsKey(instance.hashCode)) return null;
+    return _claculatedAbsolutePaths[instance.hashCode];
+  }
+
   void removeAll() {
     _nav.popUntil(
       (Route<dynamic> route) => route.isActive,
