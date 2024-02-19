@@ -29,7 +29,12 @@ class CosmosRouting extends GoRouter {
                 RouteOutput output = RouteOutput.fromGo(state);
                 RouteOptions? route = await redirect.call(context, output);
                 if (route == null) return null;
-                String? absolutePath = rh.RouteDriver.i.calculateAbsolutePath(route);
+                String? absolutePath = rh.RouteDriver.i.calculateAbsolutePath(
+                  route,
+                  onInit: () {
+                    return rh.RouteDriver.i.calculateAbsolutePath(route);
+                  },
+                );
                 return absolutePath;
               },
             ),

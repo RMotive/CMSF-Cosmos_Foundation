@@ -23,11 +23,19 @@ class RouteDriver {
   /// Stores the reference for an advisor that prints in the context of the manager.
   //static const Advisor _advisor = Advisor('route-driver');
 
+  static bool _isInited = false;
+
+  static List<Function> _awaitingInitializing = <Function>[];
+
   static void init(GlobalKey<NavigatorState> nav, List<CosmosRouteBase> routes) {
-    if (_navigator != null) return;
-    _navigator = nav.currentState;
+    _navigator ??= nav.currentState;
     for (CosmosRouteBase route in routes) {
       _calculateAbsolutePath(route, '');
+    }
+
+    _isInited = true;
+    for (Function awaiter in _awaitingInitializing) {
+      awaiter.call();
     }
   }
 
@@ -65,7 +73,12 @@ class RouteDriver {
     push ? _nav.context.pushNamed(options.name) : _nav.context.goNamed(options.name);
   }
 
-  String? calculateAbsolutePath(RouteOptions instance) {
+  String? calculateAbsolutePath(RouteOptions instance, {Function? onInit}) {
+    if (!_isInited) {
+      if (onInit != null) _awaitingInitializing.add(onInit);
+      return null;
+    }
+
     if (!_claculatedAbsolutePaths.containsKey(instance.hashCode)) return null;
     return _claculatedAbsolutePaths[instance.hashCode];
   }
