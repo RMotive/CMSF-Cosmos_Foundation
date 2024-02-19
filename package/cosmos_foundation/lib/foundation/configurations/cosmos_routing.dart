@@ -26,17 +26,13 @@ class CosmosRouting extends GoRouter {
                 for (CosmosRouteBase routeBase in routes) routeBase.compose(),
               ],
               redirect: (BuildContext context, GoRouterState state) async {
+                RouteDriver.initRouteTree(routes);
                 if (redirect == null) return null;
 
                 RouteOutput output = RouteOutput.fromGo(state);
                 RouteOptions? route = await redirect.call(context, output);
                 if (route == null) return null;
-                String? absolutePath = _routeDriver.calculateAbsolutePath(
-                  route,
-                  onInit: (String? absolutePath) {
-                    _routeDriver.driveTo(route);
-                  },
-                );
+                String? absolutePath = _routeDriver.calculateAbsolutePath(route);
                 return absolutePath;
               },
             ),
@@ -44,7 +40,7 @@ class CosmosRouting extends GoRouter {
         ) {
     Future<void>.delayed(
       120.miliseconds,
-      () => RouteDriver.init(super.configuration.navigatorKey, routes),
+      () => RouteDriver.initNavigator(super.configuration.navigatorKey),
     );
   }
 }

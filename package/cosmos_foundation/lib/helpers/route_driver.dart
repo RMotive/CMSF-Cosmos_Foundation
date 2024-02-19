@@ -1,5 +1,6 @@
 import 'package:cosmos_foundation/contracts/cosmos_route_node.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
+import 'package:cosmos_foundation/helpers/advisor.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -23,20 +24,24 @@ class RouteDriver {
   /// Stores the reference for an advisor that prints in the context of the manager.
   //static const Advisor _advisor = Advisor('route-driver');
 
-  static bool _isInited = false;
+  static bool _isTreeInited = false;
 
-  static final List<Function> _awaitingInitializing = <Function>[];
+  static bool _isNavigatorInited = false;
 
-  static void init(GlobalKey<NavigatorState> nav, List<CosmosRouteBase> routes) {
+  static const Advisor _advisor = Advisor('route-driver');
+
+  static void initNavigator(GlobalKey<NavigatorState> nav) {
+    if (_isNavigatorInited) return;
     _navigator ??= nav.currentState;
+    _isNavigatorInited = true;
+  }
+
+  static void initRouteTree(List<CosmosRouteBase> routes) {
+    if (_isTreeInited) return;
     for (CosmosRouteBase route in routes) {
       _calculateAbsolutePath(route, '');
     }
-
-    _isInited = true;
-    for (Function awaiter in _awaitingInitializing) {
-      awaiter.call();
-    }
+    _isTreeInited = true;
   }
 
   static void _calculateAbsolutePath(CosmosRouteBase route, String acumulatedPath) {
@@ -73,19 +78,11 @@ class RouteDriver {
     push ? _nav.context.pushNamed(options.name) : _nav.context.goNamed(options.name);
   }
 
-  String? calculateAbsolutePath(RouteOptions instance, {Function(String? absolutePath)? onInit}) {
-    if (!_isInited) {
-      if (onInit != null) {
-        _awaitingInitializing.add(
-          () {
-            String? absolutPath = calculateAbsolutePath(instance);
-            onInit(absolutPath);
-          },
-        );
-      }
+  String? calculateAbsolutePath(RouteOptions instance) {
+    if (_isTreeInited) {
+      _advisor.adviseWarning('Route tree not initialized yet');
       return null;
     }
-
     if (!_claculatedAbsolutePaths.containsKey(instance.hashCode)) return null;
     return _claculatedAbsolutePaths[instance.hashCode];
   }
