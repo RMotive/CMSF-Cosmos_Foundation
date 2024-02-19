@@ -24,11 +24,13 @@ class CosmosRouting extends GoRouter {
                 for (CosmosRouteBase routeBase in routes) routeBase.compose(),
               ],
               redirect: (BuildContext context, GoRouterState state) async {
-                if (redirect != null) return null;
+                if (redirect == null) return null;
 
                 RouteOutput output = RouteOutput.fromGo(state);
-                RouteOptions? route = await redirect?.call(context, output);
-                return route?.path;
+                RouteOptions? route = await redirect.call(context, output);
+                if (route == null) return null;
+                String? absolutePath = rh.RouteDriver.i.calculateAbsolutePath(route);
+                return absolutePath;
               },
             ),
           ),
