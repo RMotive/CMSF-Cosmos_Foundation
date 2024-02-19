@@ -79,7 +79,7 @@ class RouteDriver {
   }
 
   String? calculateAbsolutePath(RouteOptions instance) {
-    if (_isTreeInited) {
+    if (!_isTreeInited) {
       _advisor.adviseWarning('Route tree not initialized yet');
       return null;
     }
