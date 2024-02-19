@@ -25,7 +25,7 @@ class RouteDriver {
 
   static bool _isInited = false;
 
-  static List<Function> _awaitingInitializing = <Function>[];
+  static final List<Function> _awaitingInitializing = <Function>[];
 
   static void init(GlobalKey<NavigatorState> nav, List<CosmosRouteBase> routes) {
     _navigator ??= nav.currentState;
@@ -73,9 +73,16 @@ class RouteDriver {
     push ? _nav.context.pushNamed(options.name) : _nav.context.goNamed(options.name);
   }
 
-  String? calculateAbsolutePath(RouteOptions instance, {Function? onInit}) {
+  String? calculateAbsolutePath(RouteOptions instance, {Function(String? absolutePath)? onInit}) {
     if (!_isInited) {
-      if (onInit != null) _awaitingInitializing.add(onInit);
+      if (onInit != null) {
+        _awaitingInitializing.add(
+          () {
+            String? absolutPath = calculateAbsolutePath(instance);
+            onInit(absolutPath);
+          },
+        );
+      }
       return null;
     }
 

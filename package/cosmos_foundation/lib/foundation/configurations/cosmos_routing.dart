@@ -7,7 +7,9 @@ import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cosmos_foundation/helpers/route_driver.dart' as rh;
+import 'package:cosmos_foundation/helpers/route_driver.dart';
+
+final RouteDriver _routeDriver = RouteDriver.i;
 
 /// This hook provides an abstracted interface for routing between GoRouter and Cosmos Foundation internal utilities initializations, by that, this
 /// interfaced hook should be forced.
@@ -29,10 +31,10 @@ class CosmosRouting extends GoRouter {
                 RouteOutput output = RouteOutput.fromGo(state);
                 RouteOptions? route = await redirect.call(context, output);
                 if (route == null) return null;
-                String? absolutePath = rh.RouteDriver.i.calculateAbsolutePath(
+                String? absolutePath = _routeDriver.calculateAbsolutePath(
                   route,
-                  onInit: () {
-                    return rh.RouteDriver.i.calculateAbsolutePath(route);
+                  onInit: (String? absolutePath) {
+                    _routeDriver.driveTo(route);
                   },
                 );
                 return absolutePath;
@@ -42,7 +44,7 @@ class CosmosRouting extends GoRouter {
         ) {
     Future<void>.delayed(
       120.miliseconds,
-      () => rh.RouteDriver.init(super.configuration.navigatorKey, routes),
+      () => RouteDriver.init(super.configuration.navigatorKey, routes),
     );
   }
 }
