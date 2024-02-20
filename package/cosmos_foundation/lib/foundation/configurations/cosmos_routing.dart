@@ -44,10 +44,10 @@ class CosmosRouting extends GoRouter {
             ),
           ),
         ) {
-    RouteDriver.initNavigator(super.configuration.navigatorKey);
     Future<void>.delayed(
       150.miliseconds,
       () {
+        RouteDriver.initNavigator(super.configuration.navigatorKey);
         if (developmentRoute != null) {
           _routeDriver.driveTo(
             developmentRoute,
