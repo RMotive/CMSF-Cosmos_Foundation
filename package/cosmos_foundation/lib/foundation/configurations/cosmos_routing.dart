@@ -49,7 +49,10 @@ class CosmosRouting extends GoRouter {
       () {
         RouteDriver.initNavigator(super.configuration.navigatorKey);
         if (developmentRoute != null) {
-          _routeDriver.driveTo(developmentRoute);
+          _routeDriver.driveTo(
+            developmentRoute,
+            ignoreRedirection: true,
+          );
         }
       },
     );
