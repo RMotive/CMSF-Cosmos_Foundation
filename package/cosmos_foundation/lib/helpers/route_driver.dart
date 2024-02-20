@@ -1,6 +1,7 @@
 import 'package:cosmos_foundation/alias/aliases.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_node.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
+import 'package:cosmos_foundation/foundation/configurations/cosmos_routing.dart';
 import 'package:cosmos_foundation/helpers/advisor.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:flutter/material.dart';
@@ -70,8 +71,9 @@ class RouteDriver {
 
   void driveTo(
     RouteOptions options, {
+    bool ignoreRedirection = false,
     bool push = false,
-    Object? extra,
+    JObject? extra,
   }) {
     // --> Uncomment when needed, currently is unnecessary cause the RouteOptions object, already adds the hashcode
     // to the name property when it has a unspecified name.
@@ -87,6 +89,12 @@ class RouteDriver {
     //   );
     //   return;
     // }
+    if (ignoreRedirection) {
+      extra ??= <String, dynamic>{};
+      if (!extra.containsKey(kIgnoreRedirectKey)) {
+        extra.addEntries(<MapEntry<String, dynamic>>[const MapEntry<String, dynamic>(kIgnoreRedirectKey, true)]);
+      }
+    }
     push ? _nav.context.pushNamed(options.name, extra: extra) : _nav.context.goNamed(options.name, extra: extra);
   }
 
