@@ -10,11 +10,13 @@ import 'package:go_router/go_router.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 
 final RouteDriver _routeDriver = RouteDriver.i;
+bool _applicationStart = false;
 
 /// This hook provides an abstracted interface for routing between GoRouter and Cosmos Foundation internal utilities initializations, by that, this
 /// interfaced hook should be forced.
 class CosmosRouting extends GoRouter {
   CosmosRouting({
+    RouteOptions? developmentRoute,
     required List<CosmosRouteBase> routes,
     FutureOr<RouteOptions?> Function(BuildContext, RouteOutput)? redirect,
     GlobalKey<NavigatorState>? navigator,
@@ -27,6 +29,10 @@ class CosmosRouting extends GoRouter {
               ],
               redirect: (BuildContext context, GoRouterState state) async {
                 RouteDriver.initRouteTree(routes);
+                if (developmentRoute != null && !_applicationStart) {
+                  _applicationStart = true;
+                  return _routeDriver.calculateAbsolutePath(developmentRoute);
+                }
                 if (redirect == null) return null;
 
                 RouteOutput output = RouteOutput.fromGo(state);
