@@ -5,6 +5,7 @@ import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:cosmos_foundation/models/outputs/route_output.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,7 +41,12 @@ class CosmosRouteNode extends CosmosRouteBase {
   });
 
   @override
-  RouteBase compose({bool isSub = false, FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection}) {
+  RouteBase compose({
+    bool isSub = false,
+    RouteOptions? developmentRoute,
+    bool applicationStart = true,
+    FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection,
+  }) {
     String parsedPath = routeOptions.path;
     if (routeOptions.path.startsWith('/')) {
       if (isSub) parsedPath = parsedPath.substring(1, parsedPath.length);
@@ -58,6 +64,9 @@ class CosmosRouteNode extends CosmosRouteBase {
                 RouteOutput.fromGo(state),
               ),
       redirect: (BuildContext ctx, GoRouterState state) async {
+        if (kDebugMode && (!applicationStart && developmentRoute != null)) {
+          return RouteDriver.i.calculateAbsolutePath(developmentRoute);
+        }
         RouteOutput output = RouteOutput.fromGo(state);
         FutureOr<RouteOptions?>? resultOptions;
         resultOptions = injectRedirection?.call(ctx, output) ?? redirect?.call(ctx, output);

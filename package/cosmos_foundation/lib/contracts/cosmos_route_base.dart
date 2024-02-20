@@ -24,5 +24,10 @@ abstract class CosmosRouteBase {
 
   /// Compose the current interfaced object [CosmosRouteBase] to a readable [RouteBase] object used by the Router manager
   /// [GoRouter].
-  RouteBase compose({bool isSub = false, FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection});
+  RouteBase compose({
+    bool isSub = false,
+    RouteOptions? developmentRoute,
+    bool applicationStart,
+    FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection,
+  });
 }

@@ -25,11 +25,11 @@ class CosmosRouting extends GoRouter {
           routingConfig: _HookedListener(
             RoutingConfig(
               routes: <RouteBase>[
-                for (CosmosRouteBase routeBase in routes) routeBase.compose(),
+                for (CosmosRouteBase routeBase in routes) routeBase.compose(applicationStart: false, developmentRoute: developmentRoute),
               ],
               redirect: (BuildContext context, GoRouterState state) async {
                 RouteDriver.initRouteTree(routes);
-                if (developmentRoute != null && !_applicationStart) {
+                if (kDebugMode && (developmentRoute != null && !_applicationStart)) {
                   _applicationStart = true;
                   return _routeDriver.calculateAbsolutePath(developmentRoute);
                 }
