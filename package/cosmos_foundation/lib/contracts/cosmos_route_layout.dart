@@ -48,8 +48,6 @@ class CosmosRouteLayout extends CosmosRouteBase {
           route.compose(
             isSub: isSub,
             injectRedirection: injectRedirection,
-            applicationStart: applicationStart,
-            developmentRoute: developmentRoute,
           ),
       ],
     );

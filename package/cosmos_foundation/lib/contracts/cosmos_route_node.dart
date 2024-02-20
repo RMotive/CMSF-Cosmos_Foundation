@@ -2,12 +2,16 @@ import 'dart:async';
 
 import 'package:cosmos_foundation/contracts/cosmos_page.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
+import 'package:cosmos_foundation/foundation/configurations/cosmos_routing.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+
+final RouteDriver _routeDriver = RouteDriver.i;
 
 /// A single Route object to indicate the existance of a Route into the Route manager.
 /// This means that this object only creates the clnfiguration for handle the redirection/direction of
@@ -64,15 +68,17 @@ class CosmosRouteNode extends CosmosRouteBase {
                 RouteOutput.fromGo(state),
               ),
       redirect: (BuildContext ctx, GoRouterState state) async {
-        if (kDebugMode && (!applicationStart && developmentRoute != null)) {
-          return RouteDriver.i.calculateAbsolutePath(developmentRoute);
+        if (RouteDriver.evaluateRedirectionHelp(state, kIgnoreRedirectKey) && developmentRoute != null && kDebugMode) {
+          return _routeDriver.calculateAbsolutePath(developmentRoute);
         }
+        
+                
         RouteOutput output = RouteOutput.fromGo(state);
         FutureOr<RouteOptions?>? resultOptions;
         resultOptions = injectRedirection?.call(ctx, output) ?? redirect?.call(ctx, output);
         RouteOptions? calcualtedRedirectionResult = await resultOptions;
         if (calcualtedRedirectionResult == null) return null;
-        String? absolutePath = RouteDriver.i.calculateAbsolutePath(calcualtedRedirectionResult);
+        String? absolutePath = _routeDriver.calculateAbsolutePath(calcualtedRedirectionResult);
         return absolutePath;
       },
       routes: <RouteBase>[

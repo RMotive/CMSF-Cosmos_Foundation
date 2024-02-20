@@ -1,3 +1,4 @@
+import 'package:cosmos_foundation/alias/aliases.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_node.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
 import 'package:cosmos_foundation/helpers/advisor.dart';
@@ -44,6 +45,13 @@ class RouteDriver {
     _isTreeInited = true;
   }
 
+  static bool evaluateRedirectionHelp(GoRouterState routingOutput, String key) {
+    JObject? extraData = (routingOutput.extra as JObject?);
+    if (extraData == null) return false;
+    bool? value = extraData[key];
+    return value ?? false;
+  }
+
   static void _calculateAbsolutePath(CosmosRouteBase route, String acumulatedPath) {
     if (route is CosmosRouteNode) {
       RouteOptions routeOptions = route.routeOptions;
@@ -60,7 +68,11 @@ class RouteDriver {
     }
   }
 
-  void driveTo(RouteOptions options, {bool push = false}) {
+  void driveTo(
+    RouteOptions options, {
+    bool push = false,
+    Object? extra,
+  }) {
     // --> Uncomment when needed, currently is unnecessary cause the RouteOptions object, already adds the hashcode
     // to the name property when it has a unspecified name.
     //
@@ -75,7 +87,7 @@ class RouteDriver {
     //   );
     //   return;
     // }
-    push ? _nav.context.pushNamed(options.name) : _nav.context.goNamed(options.name);
+    push ? _nav.context.pushNamed(options.name, extra: extra) : _nav.context.goNamed(options.name, extra: extra);
   }
 
   String? calculateAbsolutePath(RouteOptions instance) {

@@ -26,8 +26,6 @@ abstract class CosmosRouteBase {
   /// [GoRouter].
   RouteBase compose({
     bool isSub = false,
-    RouteOptions? developmentRoute,
-    bool applicationStart,
     FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection,
   });
 }
