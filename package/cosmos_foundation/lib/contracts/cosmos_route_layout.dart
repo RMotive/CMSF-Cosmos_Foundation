@@ -30,7 +30,12 @@ class CosmosRouteLayout extends CosmosRouteBase {
         );
 
   @override
-  RouteBase compose({bool isSub = false, FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection}) {
+  RouteBase compose({
+    bool isSub = false,
+    RouteOptions? developmentRoute,
+    bool applicationStart = true,
+    FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection,
+  }) {
     return ShellRoute(
       navigatorKey: innerNavigator,
       observers: observers,
@@ -39,7 +44,13 @@ class CosmosRouteLayout extends CosmosRouteBase {
       pageBuilder: pageBuild != null ? (BuildContext context, GoRouterState state, Widget child) => pageBuild!(context, RouteOutput.fromGo(state), child) : null,
       builder: layoutBuild != null ? (BuildContext context, GoRouterState state, Widget child) => layoutBuild!(context, RouteOutput.fromGo(state), child) : null,
       routes: <RouteBase>[
-        for (CosmosRouteBase route in routes) route.compose(isSub: isSub, injectRedirection: injectRedirection),
+        for (CosmosRouteBase route in routes)
+          route.compose(
+            isSub: isSub,
+            injectRedirection: injectRedirection,
+            applicationStart: applicationStart,
+            developmentRoute: developmentRoute,
+          ),
       ],
     );
   }
