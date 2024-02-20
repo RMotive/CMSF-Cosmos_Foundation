@@ -44,10 +44,10 @@ class CosmosRouting extends GoRouter {
             ),
           ),
         ) {
-    ValueNotifier<NavigatorState?> expectingTrue = ValueNotifier<NavigatorState?>(super.configuration.navigatorKey.currentState);
-    expectingTrue.addListener(
+    RouteDriver.initNavigator(super.configuration.navigatorKey);
+    Future<void>.delayed(
+      150.miliseconds,
       () {
-        RouteDriver.initNavigator(super.configuration.navigatorKey);
         if (developmentRoute != null) {
           _routeDriver.driveTo(
             developmentRoute,
