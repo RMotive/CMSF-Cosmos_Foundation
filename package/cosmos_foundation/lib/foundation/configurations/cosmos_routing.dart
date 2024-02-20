@@ -44,8 +44,8 @@ class CosmosRouting extends GoRouter {
             ),
           ),
         ) {
-    Future<void>.delayed(
-      120.miliseconds,
+    ValueNotifier<NavigatorState?> expectingTrue = ValueNotifier<NavigatorState?>(super.configuration.navigatorKey.currentState);
+    expectingTrue.addListener(
       () {
         RouteDriver.initNavigator(super.configuration.navigatorKey);
         if (developmentRoute != null) {
