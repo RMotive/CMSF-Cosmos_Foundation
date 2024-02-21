@@ -14,6 +14,12 @@ class RouteDriver {
     if (_navigator != null) return _navigator as NavigatorState;
     throw Exception('Router helper navigator not initialized, you cannot use this helper yet.');
   }
+  static String? get currentPath {
+    if (_navigator != null) {
+      return GoRouterState.of(_nav.context).path;
+    }
+    throw Exception('Router helper navigator not initialized, you cannot use this helper yet.');
+  }
 
   static RouteDriver? _instance;
   // Avoid self instance
