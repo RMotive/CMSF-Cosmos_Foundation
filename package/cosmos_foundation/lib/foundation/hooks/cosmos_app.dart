@@ -97,7 +97,13 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
     );
   }
 
+  
+
   Widget frameListener(BuildContext ctx, Widget? child) {
+    if (!widget.listenFrameSize) {
+      return widget.generalBuilder!(context, child);
+    }
+
     return ValueListenableBuilder<CosmosThemeBase>(
       valueListenable: listener,
       builder: (BuildContext context, _, __) {
