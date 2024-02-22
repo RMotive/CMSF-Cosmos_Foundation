@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 /// Defines a class that handles a bundle of properties used by controls standard theming
 class StandardThemeStruct {
@@ -6,7 +6,7 @@ class StandardThemeStruct {
   final Color background;
 
   /// Defines the inner text color.
-  final Color textColor;
+  final Color foreground;
 
   /// Defines the control border color
   final Color? borderColor;
@@ -15,22 +15,31 @@ class StandardThemeStruct {
   final String? iconRef;
 
   /// Wheter the control has an icon can use this property
-  /// if this property is unset, then will use [textColor].
+  /// if this property is unset, then will use [foreground].
   final Color? _iconColor;
 
   /// Wheter the control has an icon can use this property
-  /// if this property is unset, then will use [textColor].
-  Color get iconColor => _iconColor ?? textColor;
+  /// if this property is unset, then will use [foreground].
+  Color get iconColor => _iconColor ?? foreground;
 
   /// Defines the control inner text style that will be used.
-  final TextStyle? textStyle;
+  ///
+  /// If the text style doesn't have defined a [color] then will be overriden with
+  /// the property [foreground] from this instance.
+  final TextStyle? _textStyle;
+  TextStyle? get textStyle {
+    return _textStyle?.copyWith(
+      color: _textStyle?.color ?? foreground,
+    );
+  }
 
   const StandardThemeStruct({
     required this.background,
-    required this.textColor,
+    required this.foreground,
     this.borderColor,
     this.iconRef,
-    this.textStyle,
+    TextStyle? textStyle,
     Color? iconColor,
-  }) : _iconColor = iconColor;
+  })  : _textStyle = textStyle,
+        _iconColor = iconColor;
 }
