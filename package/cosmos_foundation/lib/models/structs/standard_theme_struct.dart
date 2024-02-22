@@ -34,8 +34,8 @@ class StandardThemeStruct {
   }
 
   const StandardThemeStruct({
-    required this.background,
-    required this.foreground,
+    this.background,
+    this.foreground,
     this.borderColor,
     this.iconRef,
     TextStyle? textStyle,
