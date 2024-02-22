@@ -35,10 +35,15 @@ class CosmosRouting extends GoRouter {
                 RouteDriver.initRouteTree(routes);
                 if (redirect == null) return null;
 
-                RouteOutput output = RouteOutput.fromGo(state);
-                RouteOptions? route = await redirect.call(context, output);
-                if (route == null) return null;
-                String? absolutePath = _routeDriver.calculateAbsolutePath(route);
+                String path = state.uri.toString();
+                RouteOptions? calculatedRoute = _routeDriver.calculateRouteOptions(path);
+                if (calculatedRoute == null) {
+                  throw Exception("Served route doesn't have a valid absolute path calculation and route options subscribed to its request.");
+                }
+                RouteOutput output = RouteOutput.fromGo(state, calculatedRoute);
+                RouteOptions? delegatedRoute = await redirect.call(context, output);
+                if (delegatedRoute == null) return null;
+                String? absolutePath = _routeDriver.calculateAbsolutePath(delegatedRoute);
                 return absolutePath;
               },
             ),

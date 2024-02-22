@@ -14,12 +14,6 @@ class RouteDriver {
     if (_navigator != null) return _navigator as NavigatorState;
     throw Exception('Router helper navigator not initialized, you cannot use this helper yet.');
   }
-  String? get currentPath {
-    if (_navigator != null) {
-      return GoRouterState.of(_nav.context).path;
-    }
-    throw Exception('Router helper navigator not initialized, you cannot use this helper yet.');
-  }
 
   static RouteDriver? _instance;
   // Avoid self instance
@@ -28,7 +22,7 @@ class RouteDriver {
   
 
   /// Stores the calculation of absolute paths for the giving routing tree initialized in the application.
-  static final Map<int, String> _claculatedAbsolutePaths = <int, String>{};
+  static final Map<RouteOptions, String> _claculatedAbsolutePaths = <RouteOptions, String>{};
   /// Stores the reference for an advisor that prints in the context of the manager.
   //static const Advisor _advisor = Advisor('route-driver');
 
@@ -67,7 +61,7 @@ class RouteDriver {
         relativePath = relativePath.replaceFirst('/', '');
       }
       String absolutePath = '$acumulatedPath/$relativePath';
-      _claculatedAbsolutePaths[routeOptions.hashCode] = absolutePath;
+      _claculatedAbsolutePaths[routeOptions] = absolutePath;
       acumulatedPath = absolutePath;
     }
     for (CosmosRouteBase routeLeef in route.routes) {
@@ -109,8 +103,15 @@ class RouteDriver {
       _advisor.adviseWarning('Route tree not initialized yet');
       return null;
     }
-    if (!_claculatedAbsolutePaths.containsKey(instance.hashCode)) return null;
-    return _claculatedAbsolutePaths[instance.hashCode];
+    if (!_claculatedAbsolutePaths.containsKey(instance)) return null;
+    return _claculatedAbsolutePaths[instance];
+  }
+
+  RouteOptions? calculateRouteOptions(String absolutePath) {
+    for (MapEntry<RouteOptions, String> calculation in _claculatedAbsolutePaths.entries) {
+      if (absolutePath == calculation.value) return calculation.key;
+    }
+    return null;
   }
 
   void removeAll() {

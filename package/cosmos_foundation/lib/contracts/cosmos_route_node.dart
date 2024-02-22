@@ -65,7 +65,7 @@ class CosmosRouteNode extends CosmosRouteBase {
           ? null
           : (BuildContext context, GoRouterState state) => pageBuild!(
                 context,
-                RouteOutput.fromGo(state),
+                RouteOutput.fromGo(state, routeOptions),
               ),
       redirect: (BuildContext ctx, GoRouterState state) async {
         if (RouteDriver.evaluateRedirectionHelp(state, kIgnoreRedirectKey) && developmentRoute != null && kDebugMode) {
@@ -73,7 +73,7 @@ class CosmosRouteNode extends CosmosRouteBase {
         }
         
                 
-        RouteOutput output = RouteOutput.fromGo(state);
+        RouteOutput output = RouteOutput.fromGo(state, routeOptions);
         FutureOr<RouteOptions?>? resultOptions;
         resultOptions = injectRedirection?.call(ctx, output) ?? redirect?.call(ctx, output);
         RouteOptions? calcualtedRedirectionResult = await resultOptions;
@@ -86,7 +86,7 @@ class CosmosRouteNode extends CosmosRouteBase {
       ],
       builder: (BuildContext context, GoRouterState state) => build(
         context,
-        RouteOutput.fromGo(state),
+        RouteOutput.fromGo(state, routeOptions),
       ),
     );
   }

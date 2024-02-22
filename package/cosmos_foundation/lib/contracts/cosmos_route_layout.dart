@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
 import 'package:cosmos_foundation/contracts/cosmos_layout.dart';
+import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+final RouteDriver _routeDriver = RouteDriver.i;
 
 class CosmosRouteLayout extends CosmosRouteBase {
   final GlobalKey<NavigatorState>? innerNavigator;
@@ -41,8 +44,26 @@ class CosmosRouteLayout extends CosmosRouteBase {
       observers: observers,
       parentNavigatorKey: parentNavigator,
       restorationScopeId: restorationScopeId ?? GlobalKey().toString(),
-      pageBuilder: pageBuild != null ? (BuildContext context, GoRouterState state, Widget child) => pageBuild!(context, RouteOutput.fromGo(state), child) : null,
-      builder: layoutBuild != null ? (BuildContext context, GoRouterState state, Widget child) => layoutBuild!(context, RouteOutput.fromGo(state), child) : null,
+      pageBuilder: pageBuild == null
+          ? null
+          : (BuildContext context, GoRouterState state, Widget child) {
+              String path = state.uri.toString();
+              RouteOptions? route = _routeDriver.calculateRouteOptions(path);
+              if (route == null) {
+                throw Exception("Served route doesn't have a valid absolute path calculation and route options subscribed to its request.");
+              }
+              return pageBuild!(context, RouteOutput.fromGo(state, route), child);
+            },
+      builder: layoutBuild == null
+          ? null
+          : (BuildContext context, GoRouterState state, Widget child) {
+              String path = state.uri.toString();
+              RouteOptions? route = _routeDriver.calculateRouteOptions(path);
+              if (route == null) {
+                throw Exception("Served route doesn't have a valid absolute path calculation and route options subscribed to its request.");
+              }
+              return layoutBuild!(context, RouteOutput.fromGo(state, route), child);
+            },
       routes: <RouteBase>[
         for (CosmosRouteBase route in routes)
           route.compose(
