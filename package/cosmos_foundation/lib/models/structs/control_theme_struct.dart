@@ -9,14 +9,15 @@ class ControlThemeStruct {
   final Color textColor;
 
   /// Specifies the icon color if there is one, otherwise will use [textColor].
-  final Color? iconColor;
+  final Color? _iconColor;
+  Color get iconColor => _iconColor ?? textColor;
 
   final Color? borderColor;
 
   const ControlThemeStruct({
     required this.background,
     required this.textColor,
-    this.iconColor,
+    Color? iconColor,
     this.borderColor,
-  });
+  }) : _iconColor = iconColor;
 }
