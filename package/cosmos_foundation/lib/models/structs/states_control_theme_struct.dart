@@ -23,7 +23,7 @@ class StateControlThemeStruct {
   /// Defines a theme struct for the control when it is selected.
   final StandardThemeStruct? _selectStruct;
 
-  StateControlThemeStruct({
+  const StateControlThemeStruct({
     required this.mainStruct,
     StandardThemeStruct? hoverStruct,
     StandardThemeStruct? selectStruct,
