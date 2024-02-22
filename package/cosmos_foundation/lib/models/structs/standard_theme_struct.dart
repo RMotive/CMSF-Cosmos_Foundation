@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 /// Defines a class that handles a bundle of properties used by controls standard theming
 class StandardThemeStruct {
   /// Defines the control surface color
-  final Color background;
+  final Color? background;
 
   /// Defines the inner text color.
-  final Color foreground;
+  final Color? foreground;
 
   /// Defines the control border color
   final Color? borderColor;
@@ -20,7 +20,7 @@ class StandardThemeStruct {
 
   /// Wheter the control has an icon can use this property
   /// if this property is unset, then will use [foreground].
-  Color get iconColor => _iconColor ?? foreground;
+  Color get iconColor => _iconColor ?? foreground!;
 
   /// Defines the control inner text style that will be used.
   ///
