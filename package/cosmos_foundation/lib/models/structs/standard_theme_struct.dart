@@ -42,4 +42,22 @@ class StandardThemeStruct {
     Color? iconColor,
   })  : _textStyle = textStyle,
         _iconColor = iconColor;
+
+  StandardThemeStruct copyWith({
+    Color? background,
+    Color? foreground,
+    Color? borderColor,
+    String? iconRef,
+    Color? iconColor,
+    TextStyle? textStyle,
+  }) {
+    return StandardThemeStruct(
+      background: background ?? this.background,
+      foreground: foreground ?? this.foreground,
+      borderColor: borderColor ?? this.borderColor,
+      iconRef: iconRef ?? iconRef,
+      iconColor: iconColor ?? _iconColor,
+      textStyle: textStyle ?? _textStyle,
+    );
+  }
 }

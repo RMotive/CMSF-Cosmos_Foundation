@@ -9,14 +9,24 @@ class StateControlThemeStruct {
   final StandardThemeStruct mainStruct;
 
   /// Defines a theme struct for the control when it is hovered.
-  final StandardThemeStruct? hoverStruct;
+  final StandardThemeStruct? _hoverStruct;
+  StandardThemeStruct? get hoverStruct {
+    if (_hoverStruct == null) return null;
+
+    if (_hoverStruct?.background != null) return _hoverStruct;
+
+    return _hoverStruct?.copyWith(
+      background: mainStruct.background,
+    );
+  }
 
   /// Defines a theme struct for the control when it is selected.
-  final StandardThemeStruct? selectStruct;
+  final StandardThemeStruct? _selectStruct;
 
-  const StateControlThemeStruct({
+  StateControlThemeStruct({
     required this.mainStruct,
-    this.hoverStruct,
-    this.selectStruct,
-  });
+    StandardThemeStruct? hoverStruct,
+    StandardThemeStruct? selectStruct,
+  })  : _selectStruct = selectStruct,
+        _hoverStruct = hoverStruct;
 }
