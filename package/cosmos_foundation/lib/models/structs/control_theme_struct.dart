@@ -1,23 +1,22 @@
-import 'dart:ui';
+import 'package:cosmos_foundation/models/structs/standard_theme_struct.dart';
 
-/// Specifies a theming struct for controls.
-class ControlThemeStruct {
-  /// Color for the control background.
-  final Color background;
+/// Specifies a theming struct for state foundation controls.
+class StateControlThemeStruct {
+  /// The button default state theme to use.
+  ///
+  /// If there's not another state defined, but the control is in one of the other
+  /// states, will use this[mainStruct] as default values.
+  final StandardThemeStruct mainStruct;
 
-  /// Specifies the color of the text on the control.
-  final Color textColor;
+  /// Defines a theme struct for the control when it is hovered.
+  final StandardThemeStruct? hoverStruct;
 
-  /// Specifies the icon color if there is one, otherwise will use [textColor].
-  final Color? _iconColor;
-  Color get iconColor => _iconColor ?? textColor;
+  /// Defines a theme struct for the control when it is selected.
+  final StandardThemeStruct? selectStruct;
 
-  final Color? borderColor;
-
-  const ControlThemeStruct({
-    required this.background,
-    required this.textColor,
-    Color? iconColor,
-    this.borderColor,
-  }) : _iconColor = iconColor;
+  const StateControlThemeStruct({
+    required this.mainStruct,
+    this.hoverStruct,
+    this.selectStruct,
+  });
 }
