@@ -29,8 +29,8 @@ class CosmosRouting extends GoRouter {
               ],
               redirect: (BuildContext context, GoRouterState state) async {
                 RouteDriver.initRouteTree(routes);
-                if (developmentRoute != null && state.name != null) {
-                  return _routeDriver.evaluteDevRedirection(developmentRoute, state.name as String);
+                if (developmentRoute != null && state.path != null) {
+                  return _routeDriver.evaluteDevRedirection(developmentRoute, state.path as String);
                 }
                 if (redirect == null) return null;
 
