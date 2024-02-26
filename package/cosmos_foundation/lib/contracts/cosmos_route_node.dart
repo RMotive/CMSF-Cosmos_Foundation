@@ -68,10 +68,9 @@ class CosmosRouteNode extends CosmosRouteBase {
                 RouteOutput.fromGo(state, routeOptions),
               ),
       redirect: (BuildContext ctx, GoRouterState state) async {
-        if (RouteDriver.evaluateRedirectionHelp(state, kIgnoreRedirectKey) && developmentRoute != null && kDebugMode) {
-          return _routeDriver.calculateAbsolutePath(developmentRoute);
-        }
-        
+        if (_routeDriver.evaluateSubDevRedirection()) {
+          return null;
+        }        
                 
         RouteOutput output = RouteOutput.fromGo(state, routeOptions);
         FutureOr<RouteOptions?>? resultOptions;

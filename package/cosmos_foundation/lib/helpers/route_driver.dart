@@ -32,6 +32,10 @@ class RouteDriver {
 
   static const Advisor _advisor = Advisor('route-driver');
 
+  static late RouteOptions _devRoute;
+
+  static bool _isDevResolver = false;
+
   static void initNavigator(GlobalKey<NavigatorState> nav) {
     if (_isNavigatorInited) return;
     _navigator ??= nav.currentState;
@@ -112,6 +116,20 @@ class RouteDriver {
       if (absolutePath == calculation.value) return calculation.key;
     }
     return null;
+  }
+
+  String? evaluteDevRedirection(RouteOptions route, String currentName) {
+    _devRoute = route;
+    if (!_claculatedAbsolutePaths.containsKey(route)) return null;
+    String routeName = route.name;
+    if (currentName != routeName) return calculateAbsolutePath(route);
+    return null;
+  }
+
+  bool evaluateSubDevRedirection() {
+    if (_isDevResolver) return false;
+    _isDevResolver = true;
+    return true;
   }
 
   void removeAll() {

@@ -64,7 +64,6 @@ class _CosmosAppState extends State<CosmosApp<CosmosThemeBase>> {
     if (widget.homeBuilder != null) byHome = widget.homeBuilder?.call(context);
 
     const Advisor('COSMOS').adviseMessage('Starting engines⚙️⚙️⚙️');
-    debugPrint('Has started');
   }
 
   @override
