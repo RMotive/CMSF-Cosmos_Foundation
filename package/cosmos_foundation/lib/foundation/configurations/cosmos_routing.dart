@@ -28,6 +28,7 @@ class CosmosRouting extends GoRouter {
                 for (CosmosRouteBase routeBase in routes) routeBase.compose(),
               ],
               redirect: (BuildContext context, GoRouterState state) async {
+                debugPrint('redirecting');
                 if (RouteDriver.evaluateRedirectionHelp(state, kIgnoreRedirectKey) && developmentRoute != null && kDebugMode) {
                   return _routeDriver.calculateAbsolutePath(developmentRoute);
                 }
