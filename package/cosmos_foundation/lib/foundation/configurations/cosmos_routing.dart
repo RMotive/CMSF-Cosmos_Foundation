@@ -52,12 +52,6 @@ class CosmosRouting extends GoRouter {
       150.miliseconds,
       () {
         RouteDriver.initNavigator(super.configuration.navigatorKey);
-        if (developmentRoute != null) {
-          _routeDriver.driveTo(
-            developmentRoute,
-            ignoreRedirection: true,
-          );
-        }
       },
     );
   }
