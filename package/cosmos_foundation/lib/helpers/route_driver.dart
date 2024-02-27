@@ -32,7 +32,6 @@ class RouteDriver {
 
   static const Advisor _advisor = Advisor('route-driver');
 
-  static late RouteOptions _devRoute;
 
   static bool _isDevResolver = false;
 
@@ -119,7 +118,6 @@ class RouteDriver {
   }
 
   String? evaluteDevRedirection(RouteOptions devRoute, String currentPath) {
-    _devRoute = devRoute;
     if (!_calculatedAbsolutePaths.containsKey(devRoute)) return null;
     String devRoutePath = _calculatedAbsolutePaths[devRoute] as String;
     if (devRoutePath != currentPath) return calculateAbsolutePath(devRoute);
