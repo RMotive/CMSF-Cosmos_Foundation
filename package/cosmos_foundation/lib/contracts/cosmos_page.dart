@@ -16,8 +16,6 @@ abstract class CosmosPage extends StatelessWidget {
             constraints: BoxConstraints(
               minWidth: constrains.maxWidth,
               minHeight: constrains.maxHeight,
-              maxWidth: constrains.maxWidth,
-              maxHeight: constrains.maxHeight,
             ),
             child: compose(context, screenSize),
           ),
