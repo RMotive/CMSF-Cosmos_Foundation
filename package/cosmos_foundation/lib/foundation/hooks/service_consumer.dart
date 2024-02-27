@@ -1,27 +1,27 @@
 import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:flutter/material.dart';
 
-class FutureWidget<T> extends StatelessWidget {
-  final Future<T> future;
+class ServiceConsumer<T> extends StatelessWidget {
+  final Future<T> service;
   final Duration? delay;
   final bool emptyAsError;
   final Widget Function(BuildContext ctx)? loadingBuilder;
   final Widget Function(BuildContext ctx, Object? error, T? data)? errorBuilder;
   final Widget Function(BuildContext ctx, T data) successBuilder;
 
-  const FutureWidget({
+  const ServiceConsumer({
     super.key,
     this.loadingBuilder,
     this.errorBuilder,
     this.delay,
     this.emptyAsError = false,
-    required this.future,
+    required this.service,
     required this.successBuilder,
   });
 
   Future<T> futureWrapper() async {
     if (delay != null) await Future<void>.delayed(delay as Duration);
-    return future;
+    return service;
   }
 
   Widget builderWrapper(BuildContext ctx, AsyncSnapshot<T> snapshot) {
