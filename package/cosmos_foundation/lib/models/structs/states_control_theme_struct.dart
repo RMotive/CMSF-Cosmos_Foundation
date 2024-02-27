@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 import 'package:cosmos_foundation/models/structs/standard_theme_struct.dart';
 
@@ -18,10 +18,13 @@ class StateControlThemeStruct {
 
     Color? background = _hoverStruct?.background;
     Color? foreground = _hoverStruct?.foreground;
+    TextStyle? textStyle = _hoverStruct?.textStyle;
+    
     if (background != null && foreground != null) return _hoverStruct;
     return _hoverStruct?.copyWith(
       background: background ?? mainStruct.background,
       foreground: foreground ?? mainStruct.foreground,
+      textStyle: textStyle ?? mainStruct.textStyle,
     );
   }
 
@@ -33,10 +36,13 @@ class StateControlThemeStruct {
 
     Color? background = _selectStruct?.background;
     Color? foreground = _selectStruct?.foreground;
+    TextStyle? textStyle = _selectStruct?.textStyle;
+
     if (background != null && foreground != null) return _selectStruct;
     return _selectStruct?.copyWith(
       background: background ?? mainStruct.background,
       foreground: foreground ?? mainStruct.foreground,
+      textStyle: textStyle ?? mainStruct.textStyle,
     );
   }
   
