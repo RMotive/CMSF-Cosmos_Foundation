@@ -51,7 +51,7 @@ class CosmosTable<TSample> extends StatelessWidget {
                 ),
                 Visibility(
                   visible: (samples.isEmpty && (onEmpty != null)),
-                  child: onEmpty!.call(),
+                  child: onEmpty?.call() ?? const SizedBox(),
                 ),
               ],
             ),
@@ -61,3 +61,4 @@ class CosmosTable<TSample> extends StatelessWidget {
     );
   }
 }
+
