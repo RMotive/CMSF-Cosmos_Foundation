@@ -50,7 +50,7 @@ class CosmosTable<TSample> extends StatelessWidget {
                   ),
                 ),
                 Visibility(
-                  visible: samples.isEmpty && onEmpty != null,
+                  visible: (samples.isEmpty && (onEmpty != null)),
                   child: onEmpty!.call(),
                 ),
               ],
