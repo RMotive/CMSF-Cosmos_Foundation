@@ -118,9 +118,11 @@ class RouteDriver {
     }
     _advisor.adviseSuccess(
       'Success drive',
-      info: <String, String>{
+      info: <String, dynamic>{
         'route-name': options.name,
+        'route-extra': extra,
         'context': _nav.context.toString(),
+        'push': push,
       },
     );
   }
