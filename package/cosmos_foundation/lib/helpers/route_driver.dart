@@ -98,7 +98,25 @@ class RouteDriver {
         extra.addEntries(<MapEntry<String, dynamic>>[const MapEntry<String, dynamic>(kIgnoreRedirectKey, true)]);
       }
     }
-    push ? _nav.context.pushNamed(options.name, extra: extra) : _nav.context.goNamed(options.name, extra: extra);
+    
+    if (push) {
+      _nav.context.pushNamed(
+        options.name,
+        extra: extra,
+      );
+    } else {
+      _nav.context.goNamed(
+        options.name,
+        extra: extra,
+      );
+    }
+    _advisor.adviseSuccess(
+      'Success drive',
+      info: <String, String>{
+        'route-name': options.name,
+        'context': _nav.context.toString(),
+      },
+    );
   }
 
   String? calculateAbsolutePath(RouteOptions instance) {
