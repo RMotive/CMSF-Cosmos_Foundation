@@ -36,7 +36,13 @@ class RouteDriver {
   static bool _isDevResolver = false;
 
   static void initNavigator(GlobalKey<NavigatorState> nav) {
-    if (_isNavigatorInited) return;
+    if (_isNavigatorInited) {
+      _advisor.adviseWarning('Navigator already inited');
+      return;
+    }
+    if (nav.currentState == null) {
+      _advisor.adviseWarning('Error, given navigator null');
+    }
     _navigator ??= nav.currentState;
     _isNavigatorInited = true;
   }
