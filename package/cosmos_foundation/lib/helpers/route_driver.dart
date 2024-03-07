@@ -49,6 +49,12 @@ class RouteDriver {
       _calculateAbsolutePath(route, '');
     }
     _isTreeInited = true;
+    _advisor.adviseSuccess(
+      'Successfully route tree inited',
+      info: <String, dynamic>{
+        'route-tree': _calculatedAbsolutePaths,
+      },
+    );
   }
 
   static bool evaluateRedirectionHelp(GoRouterState routingOutput, String key) {
