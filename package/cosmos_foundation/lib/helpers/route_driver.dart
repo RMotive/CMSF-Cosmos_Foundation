@@ -156,9 +156,12 @@ class RouteDriver {
     return null;
   }
 
-  String? evaluteDevRedirection(RouteOptions devRoute, String currentPath) {
+  /// Evaluates if the development route redirection should be performed
+  String? evaluteDevRedirection(RouteOptions devRoute, String currentPath, String? targetPath) {
     if (!_calculatedAbsolutePaths.containsKey(devRoute)) return null;
+    
     String devRoutePath = _calculatedAbsolutePaths[devRoute] as String;
+    if (devRoutePath == currentPath) return targetPath;
     if (devRoutePath != currentPath) return calculateAbsolutePath(devRoute);
     return null;
   }
