@@ -28,23 +28,24 @@ class RouteDriver {
 
   static bool _isTreeInited = false;
 
-  static bool _isNavigatorInited = false;
-
   static const Advisor _advisor = Advisor('route-driver');
 
 
   static bool _isDevResolver = false;
 
   static void initNavigator(GlobalKey<NavigatorState> nav) {
-    if (_isNavigatorInited) {
-      _advisor.adviseWarning('Navigator already inited');
-      return;
-    }
     if (nav.currentState == null) {
       _advisor.adviseWarning('Error, given navigator null');
+      return;
     }
+
     _navigator ??= nav.currentState;
-    _isNavigatorInited = true;
+    _advisor.adviseSuccess(
+      'Navigator manager successfully inited',
+      info: <String, dynamic>{
+        'manager-hash': _navigator.hashCode,
+      },
+    );
   }
 
   static void initRouteTree(List<CosmosRouteBase> routes) {
