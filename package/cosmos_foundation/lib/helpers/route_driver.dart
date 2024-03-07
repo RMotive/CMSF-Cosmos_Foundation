@@ -105,7 +105,7 @@ class RouteDriver {
         extra.addEntries(<MapEntry<String, dynamic>>[const MapEntry<String, dynamic>(kIgnoreRedirectKey, true)]);
       }
     }
-    
+    if (!_nav.context.mounted) return;
     if (push) {
       _nav.context.pushNamed(
         options.name,

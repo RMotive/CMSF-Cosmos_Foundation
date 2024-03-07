@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
-import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 
@@ -14,7 +14,7 @@ final RouteDriver _routeDriver = RouteDriver.i;
 
 /// This hook provides an abstracted interface for routing between GoRouter and Cosmos Foundation internal utilities initializations, by that, this
 /// interfaced hook should be forced.
-class CosmosRouting extends GoRouter {
+class CosmosRouting extends GoRouter {  
   CosmosRouting({
     RouteOptions? developmentRoute,
     required List<CosmosRouteBase> routes,
@@ -48,12 +48,7 @@ class CosmosRouting extends GoRouter {
             ),
           ),
         ) {
-    Future<void>.delayed(
-      150.miliseconds,
-      () {
-        RouteDriver.initNavigator(super.configuration.navigatorKey);
-      },
-    );
+    RouteDriver.initNavigator(super.configuration.navigatorKey);
   }
 }
 
