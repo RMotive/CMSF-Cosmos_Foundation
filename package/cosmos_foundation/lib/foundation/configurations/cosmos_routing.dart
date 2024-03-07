@@ -44,7 +44,7 @@ class CosmosRouting extends GoRouter {
                   calculatedTargetPath = _routeDriver.evaluteDevRedirection(developmentRoute, currentPath, targetPath);
                 }
 
-                if (redirect == null) return null;
+                if (redirect == null) return calculatedTargetPath;
                 RouteOptions? calculatedRoute = _routeDriver.calculateRouteOptions(currentPath);
                 if (calculatedRoute == null) {
                   throw Exception("Served route doesn't have a valid absolute path calculation and route options subscribed to its request.");
