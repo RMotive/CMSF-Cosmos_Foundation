@@ -119,14 +119,14 @@ class RouteDriver {
       return;
     }
     if (push) {
-      navCtx.pushNamed(
+      _navigator?.currentContext?.pushNamed(
         options.name,
-        extra: extra,
+        extra: extra
       );
     } else {
-      navCtx.goNamed(
+      _navigator?.currentContext?.pushNamed(
         options.name,
-        extra: extra,
+        extra: extra
       );
     }
     _advisor.adviseSuccess(
