@@ -31,7 +31,6 @@ class CosmosRouting extends GoRouter {
                 for (CosmosRouteBase routeBase in routes) routeBase.compose(),
               ],
               redirect: (BuildContext context, GoRouterState state) async {
-                String? calculatedTargetPath;
                 if (!_initDriver) {
                   RouteDriver.initRouteTree(routes);
                   RouteDriver.initNavigator(navigator ?? _kDefaultNavigator);
@@ -41,10 +40,11 @@ class CosmosRouting extends GoRouter {
                 String currentPath = state.uri.toString();
                 String? targetPath = state.fullPath;
                 if (developmentRoute != null && targetPath != null) {
-                  calculatedTargetPath = _routeDriver.evaluteDevRedirection(developmentRoute, currentPath, targetPath);
+                  String? devRouteEvaluation = _routeDriver.evaluteDevRedirection(developmentRoute, currentPath, targetPath);
+                  if (devRouteEvaluation != null) return devRouteEvaluation;
                 }
 
-                if (redirect == null) return calculatedTargetPath;
+                if (redirect == null) return null;
                 RouteOptions? calculatedRoute = _routeDriver.calculateRouteOptions(currentPath);
                 if (calculatedRoute == null) {
                   throw Exception("Served route doesn't have a valid absolute path calculation and route options subscribed to its request.");
@@ -52,7 +52,7 @@ class CosmosRouting extends GoRouter {
                 RouteOutput output = RouteOutput.fromGo(state, calculatedRoute);
                 RouteOptions? delegatedRoute = await redirect.call(context, output);
                 if (delegatedRoute == null) return null;
-                calculatedTargetPath = _routeDriver.calculateAbsolutePath(delegatedRoute);
+                String? calculatedTargetPath = _routeDriver.calculateAbsolutePath(delegatedRoute);
                 return calculatedTargetPath;
               },
             ),
