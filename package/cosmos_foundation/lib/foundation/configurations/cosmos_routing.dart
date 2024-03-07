@@ -14,6 +14,7 @@ const String kIgnoreRedirectKey = "ignore-redirection-key-2024";
 final RouteDriver _routeDriver = RouteDriver.i;
 final GlobalKey<NavigatorState> _kDefaultNavigator = GlobalKey<NavigatorState>();
 bool _initDriver = false;
+String _currentRoute = "";
 
 /// This hook provides an abstracted interface for routing between GoRouter and Cosmos Foundation internal utilities initializations, by that, this
 /// interfaced hook should be forced.
@@ -37,11 +38,14 @@ class CosmosRouting extends GoRouter {
                   _initDriver = true;
                 }
 
-                String currentPath = state.uri.toString();
+                String currentPath = _currentRoute;
                 String? targetPath = state.fullPath;
                 if (developmentRoute != null && targetPath != null) {
                   String? devRouteEvaluation = _routeDriver.evaluteDevRedirection(developmentRoute, currentPath, targetPath);
-                  if (devRouteEvaluation != null) return devRouteEvaluation;
+                  if (devRouteEvaluation != null) {
+                    _currentRoute = devRouteEvaluation;
+                    return devRouteEvaluation;
+                  }
                 }
 
                 if (redirect == null) return null;
@@ -53,6 +57,8 @@ class CosmosRouting extends GoRouter {
                 RouteOptions? delegatedRoute = await redirect.call(context, output);
                 if (delegatedRoute == null) return null;
                 String? calculatedTargetPath = _routeDriver.calculateAbsolutePath(delegatedRoute);
+
+                _currentRoute = calculatedTargetPath ?? targetPath ?? currentPath;
                 return calculatedTargetPath;
               },
             ),
