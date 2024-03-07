@@ -9,9 +9,9 @@ import 'package:go_router/go_router.dart';
 
 /// This helper provides several functionallities for Cosmos Foundation routing.
 class RouteDriver {
-  static NavigatorState? _navigator;
-  static NavigatorState get _nav {
-    if (_navigator != null) return _navigator as NavigatorState;
+  static GlobalKey<NavigatorState>? _navigator;
+  static GlobalKey<NavigatorState> get _nav {
+    if (_navigator != null) return _navigator as GlobalKey<NavigatorState>;
     throw Exception('Router helper navigator not initialized, you cannot use this helper yet.');
   }
 
@@ -34,12 +34,7 @@ class RouteDriver {
   static bool _isDevResolver = false;
 
   static void initNavigator(GlobalKey<NavigatorState> nav) {
-    if (nav.currentState == null) {
-      _advisor.adviseWarning('Error, given navigator null');
-      return;
-    }
-
-    _navigator ??= nav.currentState;
+    _navigator ??= nav;
     _advisor.adviseSuccess(
       'Navigator manager successfully inited',
       info: <String, dynamic>{
@@ -105,17 +100,21 @@ class RouteDriver {
         extra.addEntries(<MapEntry<String, dynamic>>[const MapEntry<String, dynamic>(kIgnoreRedirectKey, true)]);
       }
     }
-    if (!_nav.context.mounted) {
+    
+    NavigatorState? navState = _nav.currentState;
+    BuildContext? navCtx = navState?.context;
+
+    if (navCtx == null || !navCtx.mounted) {
       _advisor.adviseWarning('Can\'t perform driving cause the Navigator is defunct');
       return;
     }
     if (push) {
-      _nav.context.pushNamed(
+      navCtx.pushNamed(
         options.name,
         extra: extra,
       );
     } else {
-      _nav.context.goNamed(
+      navCtx.goNamed(
         options.name,
         extra: extra,
       );
@@ -125,7 +124,7 @@ class RouteDriver {
       info: <String, dynamic>{
         'route-name': options.name,
         'route-extra': extra,
-        'context': _nav.context.toString(),
+        'context': navCtx.toString(),
         'push': push,
       },
     );
@@ -161,7 +160,7 @@ class RouteDriver {
   }
 
   void removeAll() {
-    _nav.popUntil(
+    _nav.currentState?.popUntil(
       (Route<dynamic> route) => route.isActive,
     );
   }
