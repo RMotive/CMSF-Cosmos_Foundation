@@ -9,8 +9,10 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 
+
 const String kIgnoreRedirectKey = "ignore-redirection-key-2024";
 final RouteDriver _routeDriver = RouteDriver.i;
+final GlobalKey<NavigatorState> _kDefaultNavigator = GlobalKey<NavigatorState>();
 
 /// This hook provides an abstracted interface for routing between GoRouter and Cosmos Foundation internal utilities initializations, by that, this
 /// interfaced hook should be forced.
@@ -21,7 +23,7 @@ class CosmosRouting extends GoRouter {
     FutureOr<RouteOptions?> Function(BuildContext, RouteOutput)? redirect,
     GlobalKey<NavigatorState>? navigator,
   }) : super.routingConfig(
-          navigatorKey: navigator ?? GlobalKey<NavigatorState>(),
+          navigatorKey: navigator ?? _kDefaultNavigator,
           routingConfig: _HookedListener(
             RoutingConfig(
               routes: <RouteBase>[
@@ -29,6 +31,7 @@ class CosmosRouting extends GoRouter {
               ],
               redirect: (BuildContext context, GoRouterState state) async {
                 RouteDriver.initRouteTree(routes);
+                RouteDriver.initNavigator(navigator ?? _kDefaultNavigator);
                 if (developmentRoute != null && state.fullPath != null) {
                   return _routeDriver.evaluteDevRedirection(developmentRoute, state.fullPath as String);
                 }
@@ -47,9 +50,7 @@ class CosmosRouting extends GoRouter {
               },
             ),
           ),
-        ) {
-    RouteDriver.initNavigator(super.configuration.navigatorKey);
-  }
+        );
 }
 
 class _HookedListener extends ValueListenable<RoutingConfig> {

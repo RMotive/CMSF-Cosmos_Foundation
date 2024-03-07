@@ -16,7 +16,6 @@ class CosmosApp<TThemeBase extends CosmosThemeBase> extends StatefulWidget {
   final RouterConfig<Object>? routerConfig;
   final bool listenFrameSize;
   final bool useLegacyDebugBanner;
-  
 
   const CosmosApp({
     super.key,
