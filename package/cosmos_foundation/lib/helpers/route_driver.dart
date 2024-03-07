@@ -113,18 +113,19 @@ class RouteDriver {
     
     NavigatorState? navState = _nav.currentState;
     BuildContext? navCtx = navState?.context;
+    BuildContext? navigation = _nav.currentContext;
 
-    if (navCtx == null || !navCtx.mounted) {
+    if (navCtx == null || !navCtx.mounted || navigation == null || !navigation.mounted) {
       _advisor.adviseWarning('Can\'t perform driving cause the Navigator is defunct');
       return;
     }
     if (push) {
-      _navigator?.currentContext?.pushNamed(
+      navigation.pushNamed(
         options.name,
         extra: extra
       );
     } else {
-      _navigator?.currentContext?.pushNamed(
+      navigation.goNamed(
         options.name,
         extra: extra
       );
@@ -134,7 +135,7 @@ class RouteDriver {
       info: <String, dynamic>{
         'route-name': options.name,
         'route-extra': extra,
-        'context': navCtx.toString(),
+        'context': navigation.toString(),
         'push': push,
       },
     );
