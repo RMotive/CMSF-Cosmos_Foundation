@@ -52,7 +52,11 @@ class RouteDriver {
     _advisor.adviseSuccess(
       'Successfully route tree inited',
       info: <String, dynamic>{
-        'route-tree': _calculatedAbsolutePaths,
+        'route-tree': _calculatedAbsolutePaths.map(
+          (RouteOptions key, String value) {
+            return MapEntry<String, dynamic>("(${key.name} | ${key.path} | ${key.hashCode})", value);
+          },
+        ),
       },
     );
   }
