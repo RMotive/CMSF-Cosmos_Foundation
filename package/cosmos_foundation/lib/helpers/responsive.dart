@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cosmos_foundation/extensions/list_extension.dart';
 import 'package:cosmos_foundation/models/options/responsive_property_breakpoint_options.dart';
 import 'package:cosmos_foundation/models/options/responsive_property_options.dart';
+import 'package:cosmos_foundation/models/structs/clamp_constraints.dart';
 
 /// Singleton Helper.
 /// This helper provides several responsiveness functionallities.
@@ -78,5 +79,39 @@ class Responsive {
     }
     // --> Means that the current screen size is higher than the last one breakpoint, so ->
     return sortedBreaks.last.value;
+  }
+
+  /// Calculates a clamped window ratio based on a given start and end break for a min and max values based on the current
+  /// value percent related to the min and max breaks to get the current value for the min and max vlaue gaps.
+  ///
+  /// Example:
+  ///   current: 100
+  ///   minVal: 100
+  ///   maxVal: 200
+  ///   minBreak: 0
+  ///   maxBreak: 100
+  ///   result -> 200 cause the current value hits the max break and the max break represents the 200 max value
+  ///
+  /// Example 2:
+  ///   current: 75
+  ///   minVal: 100
+  ///   maxVal: 200
+  ///   minBreak: 0
+  ///   maxBreak: 100
+  ///   result -> 150
+  ///   cause the percent resulted in the min and max break gap related with the current value = 75%
+  ///   and then we calculate the 75% of the max possible value.
+  static double clampWindowRatio(double current, ClampConstraints constraints) {
+    final ClampConstraints cts = constraints;
+
+    // --> Simple validations
+    if (current <= cts.minBreak) return cts.minValue;
+    if (current >= cts.maxBreak) return cts.maxBreak;
+
+    double breakGap = cts.maxBreak - cts.minBreak;
+    double currentVal = current - cts.minBreak;
+    double trsPercent = currentVal / breakGap;
+
+    return cts.maxValue * trsPercent;
   }
 }
