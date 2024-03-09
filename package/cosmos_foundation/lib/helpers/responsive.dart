@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:cosmos_foundation/extensions/list_extension.dart';
 import 'package:cosmos_foundation/models/options/responsive_property_breakpoint_options.dart';
 import 'package:cosmos_foundation/models/options/responsive_property_options.dart';
-import 'package:cosmos_foundation/models/structs/clamp_constraints.dart';
+import 'package:cosmos_foundation/models/structs/clamp_ratio_constraints.dart';
 
 /// Singleton Helper.
 /// This helper provides several responsiveness functionallities.
@@ -101,8 +101,8 @@ class Responsive {
   ///   result -> 150
   ///   cause the percent resulted in the min and max break gap related with the current value = 75%
   ///   and then we calculate the 75% of the max possible value.
-  static double clampWindowRatio(double current, ClampConstraints constraints) {
-    final ClampConstraints cts = constraints;
+  static double clampRatio(double current, ClampRatioConstraints constraints) {
+    final ClampRatioConstraints cts = constraints;
 
     // --> Simple validations
     if (current <= cts.minBreak) return cts.minValue;
