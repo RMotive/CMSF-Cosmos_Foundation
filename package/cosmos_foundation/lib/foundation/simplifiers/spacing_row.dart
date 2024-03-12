@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CosmosSeparatedRow extends StatelessWidget {
+class SpacingRow extends StatelessWidget {
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment mainAxisAlignment;
   final VerticalDirection verticalDirection;
@@ -11,7 +11,7 @@ class CosmosSeparatedRow extends StatelessWidget {
   final bool includeStart;
   final bool includeEnd;
   final double spacing;
-  const CosmosSeparatedRow({
+  const SpacingRow({
     super.key,
     required this.children,
     required this.spacing,
@@ -39,12 +39,12 @@ class CosmosSeparatedRow extends StatelessWidget {
           SizedBox.square(
             dimension: spacing,
           ),
-        for (Widget item in children) ...<Widget>{
-          if (!(children.indexOf(item) == 0))
+        for (int i = 0; i < children.length; i++) ...<Widget>{
+          if (i != 0)
             SizedBox.square(
               dimension: spacing,
             ),
-          item,
+          children[i],
         },
         if (includeEnd)
           SizedBox.square(
