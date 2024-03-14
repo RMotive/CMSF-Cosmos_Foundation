@@ -14,7 +14,7 @@ class CosmosRouteLayout extends CosmosRouteBase {
   final GlobalKey<NavigatorState>? innerNavigator;
   final List<NavigatorObserver>? observers;
   final String? restorationScopeId;
-  final Page<dynamic> Function(BuildContext ctx, RouteOutput output, Widget page)? pageBuild;
+  final Page<dynamic> Function(BuildContext ctx, RouteOutput output, Widget page)? layoutTransitionBuild;
   final CosmosLayout Function(BuildContext ctx, RouteOutput output, Widget page)? layoutBuild;
   final FutureOr<RouteOptions> Function(BuildContext ctx, RouteOutput output)? redirect; 
 
@@ -25,11 +25,11 @@ class CosmosRouteLayout extends CosmosRouteBase {
     this.observers,
     this.restorationScopeId,
     this.layoutBuild,
-    this.pageBuild,
+    this.layoutTransitionBuild,
     this.redirect,
   }) : assert(
-          layoutBuild != null || pageBuild != null,
-          'You must provide at least one UI Build (screenBuild or pagerBuild) function',
+          layoutBuild != layoutTransitionBuild,
+          'You must provide at least one UI Build (layoutBuild or layoutTransitionBuild) function',
         );
 
   @override
@@ -44,7 +44,7 @@ class CosmosRouteLayout extends CosmosRouteBase {
       observers: observers,
       parentNavigatorKey: parentNavigator,
       restorationScopeId: restorationScopeId ?? GlobalKey().toString(),
-      pageBuilder: pageBuild == null
+      pageBuilder: layoutTransitionBuild == null
           ? null
           : (BuildContext context, GoRouterState state, Widget child) {
               String path = state.uri.toString();
@@ -52,7 +52,7 @@ class CosmosRouteLayout extends CosmosRouteBase {
               if (route == null) {
                 throw Exception("Served route doesn't have a valid absolute path calculation and route options subscribed to its request.");
               }
-              return pageBuild!(context, RouteOutput.fromGo(state, route), child);
+              return layoutTransitionBuild!(context, RouteOutput.fromGo(state, route), child);
             },
       builder: layoutBuild == null
           ? null

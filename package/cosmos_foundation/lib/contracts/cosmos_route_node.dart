@@ -19,13 +19,13 @@ class CosmosRouteNode extends CosmosRouteBase {
   final RouteOptions routeOptions;
 
   /// Build function to create the UI Page [CosmosPage] and draw it in the screen.
-  final CosmosPage Function(BuildContext ctx, RouteOutput output) build;
+  final CosmosPage Function(BuildContext ctx, RouteOutput output)? pageBuild;
 
   /// When the client enters into this route, will be redirected to this resolved redirect function.
   final FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? redirect;
 
   /// Custom Page build for use another animation and page transition options.
-  final Page<dynamic> Function(BuildContext ctx, RouteOutput output)? pageBuild;
+  final Page<dynamic> Function(BuildContext ctx, RouteOutput output)? pageTransitionBuild;
 
   final FutureOr<bool> Function(BuildContext ctx)? onExit;
 
@@ -35,12 +35,15 @@ class CosmosRouteNode extends CosmosRouteBase {
   const CosmosRouteNode(
     this.routeOptions, {
     super.parentNavigator,
-    required this.build,
+    this.pageBuild,
     super.routes,
     this.redirect,
-    this.pageBuild,
+    this.pageTransitionBuild,
     this.onExit,
-  });
+  }) : assert(
+          pageTransitionBuild != pageTransitionBuild,
+          'You must provide at least one UI Build (layoutBuild or layoutTransitionBuild) function',
+        );
 
   @override
   RouteBase compose({
@@ -59,9 +62,9 @@ class CosmosRouteNode extends CosmosRouteBase {
       name: routeOptions.name,
       parentNavigatorKey: parentNavigator,
       onExit: onExit,
-      pageBuilder: pageBuild == null
+      pageBuilder: pageTransitionBuild == null
           ? null
-          : (BuildContext context, GoRouterState state) => pageBuild!(
+          : (BuildContext context, GoRouterState state) => pageTransitionBuild!(
                 context,
                 RouteOutput.fromGo(state, routeOptions),
               ),
@@ -81,10 +84,12 @@ class CosmosRouteNode extends CosmosRouteBase {
       routes: <RouteBase>[
         for (CosmosRouteBase cr in routes) cr.compose(isSub: true),
       ],
-      builder: (BuildContext context, GoRouterState state) => build(
-        context,
-        RouteOutput.fromGo(state, routeOptions),
-      ),
+      builder: pageBuild == null
+          ? null
+          : (BuildContext context, GoRouterState state) => pageBuild!(
+                context,
+                RouteOutput.fromGo(state, routeOptions),
+              ),
     );
   }
 }
