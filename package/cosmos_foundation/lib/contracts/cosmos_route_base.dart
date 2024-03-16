@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cosmos_foundation/contracts/cosmos_route_node.dart';
+import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/widgets.dart';
@@ -33,6 +34,8 @@ abstract class CosmosRouteBase {
   CustomTransitionPage<T> noTransitionPage<T>(Widget page) {
     return CustomTransitionPage<T>(
       child: page,
+      transitionDuration: 0.seconds,
+      reverseTransitionDuration: 0.seconds,
       transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
         return child;
       },
