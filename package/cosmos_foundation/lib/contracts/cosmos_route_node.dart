@@ -8,7 +8,6 @@ import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-
 final RouteDriver _routeDriver = RouteDriver.i;
 
 /// A single Route object to indicate the existance of a Route into the Route manager.
@@ -19,14 +18,16 @@ class CosmosRouteNode extends CosmosRouteBase {
   final RouteOptions routeOptions;
 
   /// Build function to create the UI Page [CosmosPage] and draw it in the screen.
-  final CosmosPage Function(BuildContext ctx, RouteOutput output)? pageBuild;
+  final CosmosPage Function(BuildContext ctx, RouteOutput output) pageBuild;
 
   /// When the client enters into this route, will be redirected to this resolved redirect function.
   final FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? redirect;
 
   /// Custom Page build for use another animation and page transition options.
-  final Page<dynamic> Function(BuildContext ctx, RouteOutput output)? transitionBuild;
+  final Page<dynamic> Function(CosmosPage page)? transitionBuild;
 
+  /// Callback invoked when the current route is popped or removed from the history.
+  /// (.go() can remove it from the history too.)
   final FutureOr<bool> Function(BuildContext ctx)? onExit;
 
   /// A single Route object to indicate the existance of a Route into the Route manager.
@@ -34,16 +35,13 @@ class CosmosRouteNode extends CosmosRouteBase {
   /// a complex/simple UI Page ([CosmosPage]).
   const CosmosRouteNode(
     this.routeOptions, {
+    required this.pageBuild,
     super.parentNavigator,
-    this.pageBuild,
     super.routes,
     this.redirect,
     this.transitionBuild,
     this.onExit,
-  }) : assert(
-          pageBuild != transitionBuild,
-          'You must provide at least one UI Build (layoutBuild or layoutTransitionBuild) function for ${routeOptions}',
-        );
+  });
 
   @override
   RouteBase compose({
@@ -62,17 +60,11 @@ class CosmosRouteNode extends CosmosRouteBase {
       name: routeOptions.name,
       parentNavigatorKey: parentNavigator,
       onExit: onExit,
-      pageBuilder: transitionBuild == null
-          ? null
-          : (BuildContext context, GoRouterState state) => transitionBuild!(
-                context,
-                RouteOutput.fromGo(state, routeOptions),
-              ),
       redirect: (BuildContext ctx, GoRouterState state) async {
         if (_routeDriver.evaluateSubDevRedirection()) {
           return null;
-        }        
-                
+        }
+
         RouteOutput output = RouteOutput.fromGo(state, routeOptions);
         FutureOr<RouteOptions?>? resultOptions;
         resultOptions = injectRedirection?.call(ctx, output) ?? redirect?.call(ctx, output);
@@ -84,12 +76,12 @@ class CosmosRouteNode extends CosmosRouteBase {
       routes: <RouteBase>[
         for (CosmosRouteBase cr in routes) cr.compose(isSub: true),
       ],
-      builder: pageBuild == null
-          ? null
-          : (BuildContext context, GoRouterState state) => pageBuild!(
-                context,
-                RouteOutput.fromGo(state, routeOptions),
-              ),
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        RouteOutput routeOutput = RouteOutput.fromGo(state, routeOptions);
+        CosmosPage pageLaid = pageBuild(context, routeOutput);
+
+        return transitionBuild?.call(pageLaid) ?? noTransitionPage(pageLaid);
+      },
     );
   }
 }

@@ -28,4 +28,14 @@ abstract class CosmosRouteBase {
     bool isSub = false,
     FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? injectRedirection,
   });
+
+  /// Builds a custom no transition page wrapping the given widget.
+  CustomTransitionPage<T> noTransitionPage<T>(Widget page) {
+    return CustomTransitionPage<T>(
+      child: page,
+      transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+        return child;
+      },
+    );
+  }
 }
