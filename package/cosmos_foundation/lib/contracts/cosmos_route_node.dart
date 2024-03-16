@@ -25,7 +25,7 @@ class CosmosRouteNode extends CosmosRouteBase {
   final FutureOr<RouteOptions?> Function(BuildContext ctx, RouteOutput output)? redirect;
 
   /// Custom Page build for use another animation and page transition options.
-  final Page<dynamic> Function(BuildContext ctx, RouteOutput output)? pageTransitionBuild;
+  final Page<dynamic> Function(BuildContext ctx, RouteOutput output)? transitionBuild;
 
   final FutureOr<bool> Function(BuildContext ctx)? onExit;
 
@@ -38,10 +38,10 @@ class CosmosRouteNode extends CosmosRouteBase {
     this.pageBuild,
     super.routes,
     this.redirect,
-    this.pageTransitionBuild,
+    this.transitionBuild,
     this.onExit,
   }) : assert(
-          pageTransitionBuild != pageTransitionBuild,
+          pageBuild != transitionBuild,
           'You must provide at least one UI Build (layoutBuild or layoutTransitionBuild) function for ${routeOptions}',
         );
 
@@ -62,9 +62,9 @@ class CosmosRouteNode extends CosmosRouteBase {
       name: routeOptions.name,
       parentNavigatorKey: parentNavigator,
       onExit: onExit,
-      pageBuilder: pageTransitionBuild == null
+      pageBuilder: transitionBuild == null
           ? null
-          : (BuildContext context, GoRouterState state) => pageTransitionBuild!(
+          : (BuildContext context, GoRouterState state) => transitionBuild!(
                 context,
                 RouteOutput.fromGo(state, routeOptions),
               ),

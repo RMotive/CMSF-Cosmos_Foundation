@@ -14,7 +14,7 @@ class CosmosRouteLayout extends CosmosRouteBase {
   final GlobalKey<NavigatorState>? innerNavigator;
   final List<NavigatorObserver>? observers;
   final String? restorationScopeId;
-  final Page<dynamic> Function(BuildContext ctx, RouteOutput output, Widget page)? layoutTransitionBuild;
+  final Page<dynamic> Function(BuildContext ctx, RouteOutput output, Widget page)? transitionBuild;
   final CosmosLayout Function(BuildContext ctx, RouteOutput output, Widget page)? layoutBuild;
   final FutureOr<RouteOptions> Function(BuildContext ctx, RouteOutput output)? redirect; 
 
@@ -25,10 +25,10 @@ class CosmosRouteLayout extends CosmosRouteBase {
     this.observers,
     this.restorationScopeId,
     this.layoutBuild,
-    this.layoutTransitionBuild,
+    this.transitionBuild,
     this.redirect,
   }) : assert(
-          layoutBuild != layoutTransitionBuild,
+          layoutBuild != transitionBuild,
           'You must provide at least one UI Build (layoutBuild or layoutTransitionBuild) function',
         );
 
@@ -44,7 +44,7 @@ class CosmosRouteLayout extends CosmosRouteBase {
       observers: observers,
       parentNavigatorKey: parentNavigator,
       restorationScopeId: restorationScopeId ?? GlobalKey().toString(),
-      pageBuilder: layoutTransitionBuild == null
+      pageBuilder: transitionBuild == null
           ? null
           : (BuildContext context, GoRouterState state, Widget child) {
               String path = state.uri.toString();
@@ -52,7 +52,7 @@ class CosmosRouteLayout extends CosmosRouteBase {
               if (route == null) {
                 throw Exception("Served route doesn't have a valid absolute path calculation and route options subscribed to its request.");
               }
-              return layoutTransitionBuild!(context, RouteOutput.fromGo(state, route), child);
+              return transitionBuild!(context, RouteOutput.fromGo(state, route), child);
             },
       builder: layoutBuild == null
           ? null
