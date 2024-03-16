@@ -163,7 +163,8 @@ class RouteDriver {
     
     String devRoutePath = _calculatedAbsolutePaths[devRoute] as String;
     if (devRoutePath == currentPath) return targetPath;
-    if (devRoutePath != currentPath) return calculateAbsolutePath(devRoute);
+    if (currentPath.isEmpty || (currentPath == devRoutePath && devRoutePath == targetPath)) return devRoutePath;
+    if (currentPath != devRoutePath) return targetPath;
     return null;
   }
 
