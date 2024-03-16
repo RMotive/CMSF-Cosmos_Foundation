@@ -24,4 +24,9 @@ class RouteOptions {
   const RouteOptions(String path, {String? name})
       : _path = path,
         _name = name;
+  
+  @override
+  String toString() {
+    return '$_path | $hashCode';
+  }
 }

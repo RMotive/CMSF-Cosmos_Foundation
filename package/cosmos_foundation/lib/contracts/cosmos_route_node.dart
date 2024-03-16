@@ -42,7 +42,7 @@ class CosmosRouteNode extends CosmosRouteBase {
     this.onExit,
   }) : assert(
           pageTransitionBuild != pageTransitionBuild,
-          'You must provide at least one UI Build (layoutBuild or layoutTransitionBuild) function',
+          'You must provide at least one UI Build (layoutBuild or layoutTransitionBuild) function for ${routeOptions}',
         );
 
   @override
