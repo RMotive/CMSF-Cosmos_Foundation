@@ -44,11 +44,7 @@ class CosmosRouteLayout extends CosmosRouteBase {
       restorationScopeId: restorationScopeId ?? GlobalKey().toString(),
       pageBuilder: (BuildContext context, GoRouterState state, Widget child) {
         String path = state.uri.toString();
-        RouteOptions? route = _routeDriver.getOptions(path);
-        if (route == null) {
-          throw Exception("Served route doesn't have a valid absolute path calculation and route options subscribed to its request.");
-        }
-
+        RouteOptions route = _routeDriver.getOptions(path);
         CosmosLayout layoutLaid = layoutBuild(context, RouteOutput.fromGo(state, route), child);
         return transitionBuild?.call(layoutLaid) ?? noTransitionPage(layoutLaid);
       },
