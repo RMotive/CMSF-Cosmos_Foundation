@@ -61,7 +61,7 @@ class CosmosRouteNode extends CosmosRouteBase {
       parentNavigatorKey: parentNavigator,
       onExit: onExit,
       redirect: (BuildContext ctx, GoRouterState state) async {
-        if (_routeDriver.evaluateSubDevRedirection()) {
+        if (_routeDriver.devRedirectNode()) {
           return null;
         }
 
@@ -70,7 +70,7 @@ class CosmosRouteNode extends CosmosRouteBase {
         resultOptions = injectRedirection?.call(ctx, output) ?? redirect?.call(ctx, output);
         RouteOptions? calcualtedRedirectionResult = await resultOptions;
         if (calcualtedRedirectionResult == null) return null;
-        String? absolutePath = _routeDriver.calculateAbsolutePath(calcualtedRedirectionResult);
+        String? absolutePath = _routeDriver.getAbsolute(calcualtedRedirectionResult);
         return absolutePath;
       },
       routes: <RouteBase>[

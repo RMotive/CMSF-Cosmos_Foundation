@@ -14,12 +14,12 @@ class RouteOutput {
     required this.absolutePath,
   });
   factory RouteOutput.fromGo(GoRouterState goState, RouteOptions options) {
-    String? absolutePath = RouteDriver.i.calculateAbsolutePath(options);
+    String? absolutePath = RouteDriver.i.getAbsolute(options);
 
     return RouteOutput(
       route: options,
       pageKey: goState.pageKey,
-      absolutePath: absolutePath ?? (goState.uri.toString()),
+      absolutePath: absolutePath,
     );
   }
 }
