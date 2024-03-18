@@ -154,6 +154,14 @@ class RouteDriver {
     for (MapEntry<RouteOptions, String> calculation in _calculatedAbsolutePaths.entries) {
       if (absolutePath == calculation.value) return calculation.key;
     }
+
+    _advisor.adviseWarning(
+      'No absolute path calculation found',
+      info: <String, dynamic>{
+        'absolute-path': absolutePath,
+        'calculation-tree': _calculatedAbsolutePaths,
+      },
+    );
     return null;
   }
 
