@@ -28,7 +28,7 @@ class ControlHandler extends StatelessWidget {
               onHover?.call(false);
             }
           : null,
-      child: InkWell(
+      child: GestureDetector(
         onTap: onClick,
         child: child,
       ),
